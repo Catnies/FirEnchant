@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.enchantment
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.enchantment.EnchantmentSettingFactory
 
 // 附魔配置工厂类
@@ -12,9 +13,25 @@ object FirEnchantmentSettingFactoryImpl: EnchantmentSettingFactory {
         val tag = RtagItem.of(item)
         val enchantmentKey: String = tag.get("FirEnchant", "Enchantment") ?: return null
         val data = FirEnchantmentManager.instance.getEnchantmentData(enchantmentKey) ?: return null
-        val level: Int = tag.get("FirEnchant", "Level") ?: return null
-        val failure: Int = tag.get("FirEnchant", "Failure") ?: return null
-        val usedDustTime: Int = tag.get("FirEnchant", "DustTimes") ?: 0
+
+        val level: Int = when (val result: Any = tag.get("FirEnchant", "Level")) {
+            is Int -> result
+            is String -> result.toIntOrNull()
+            else -> null
+        } ?: return null
+
+        val failure: Int = when (val result: Any = tag.get("FirEnchant", "Failure")) {
+            is Int -> result
+            is String -> result.toIntOrNull()
+            else -> null
+        } ?: return null
+
+        val usedDustTime: Int = when (val result: Any = tag.get("FirEnchant", "DustTimes")) {
+            is Int -> result
+            is String -> result.toIntOrNull()
+            else -> null
+        } ?: return null
+
         return FirEnchantmentSetting(data, level, failure, usedDustTime)
     }
 

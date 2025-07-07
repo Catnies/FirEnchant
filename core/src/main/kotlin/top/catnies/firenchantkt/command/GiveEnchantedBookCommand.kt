@@ -19,7 +19,6 @@ import java.util.concurrent.ThreadLocalRandom
  * 给予附魔书.
  */
 object GiveEnchantedBookCommand: AbstractCommand() {
-
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("giveenchantedbook").requires { VersionCommand.requires(it) }
             .then(Commands.argument("player", ArgumentTypes.players())
@@ -44,7 +43,11 @@ object GiveEnchantedBookCommand: AbstractCommand() {
         val enchantmentKey = context.getArgument("enchantment", Enchantment::class.java).key()
         val levelRange = context.getArgument("level", IntegerRangeProvider::class.java)
         val failureRange = context.getArgument("failure", IntegerRangeProvider::class.java)
-        val consumedSoulsRange = context.getArgument("consumedSouls", IntegerRangeProvider::class.java)
+
+        var consumedSoulsRange: IntegerRangeProvider? = null;
+        try {
+            consumedSoulsRange = context.getArgument("consumedSouls", IntegerRangeProvider::class.java)
+        } catch (_: IllegalArgumentException) {}
 
         val level = getRandomFromRange(levelRange.range())
         val failure = getRandomFromRange(failureRange.range())
