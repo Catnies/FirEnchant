@@ -9,8 +9,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 import top.catnies.firenchantkt.api.FirEnchantAPI;
 
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -24,6 +26,7 @@ import java.util.UUID;
 @DatabaseTable(tableName = "firenchant_item_repair")
 public class ItemRepairTable {
 
+
     public ItemRepairTable(UUID playerId, byte[] itemData, long duration) {
         this.playerId = playerId;
         this.itemData = itemData;
@@ -32,14 +35,14 @@ public class ItemRepairTable {
     }
     
     @DatabaseField(generatedId = true)
-    private int id;
+    public int id; // A23: 改为public
     
     @DatabaseField(canBeNull = false, index = true, dataType = DataType.UUID)
     private UUID playerId;
     
     @DatabaseField(canBeNull = false, dataType = DataType.BYTE_ARRAY)
-    private byte[] itemData; // 序列化的破损物品数据
-    
+    public byte[] itemData; // 序列化的破损物品数据, A23: 改为public
+
     @DatabaseField(canBeNull = false, dataType = DataType.LONG)
     private long startTime;
     
@@ -47,7 +50,7 @@ public class ItemRepairTable {
     private long duration; // 修复所需时间（毫秒）
     
     @DatabaseField(canBeNull = false, defaultValue = "false", dataType = DataType.BOOLEAN)
-    private boolean received = false;
+    public boolean received = false; // A23: 改为public
     
     /**
      * 检查修复是否已经完成
@@ -78,5 +81,10 @@ public class ItemRepairTable {
      */
     public ItemStack getRepairedItem() {
         return FirEnchantAPI.INSTANCE.repairBrokenGear(getBrokenItem());
+    }
+
+    @Override
+    public String toString() {
+        return "id:"+id+",player:"+playerId+",startTime:"+startTime+",duration:"+duration+",received:"+received+",itemData:"+Arrays.toString(itemData);
     }
 }

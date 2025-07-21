@@ -1,10 +1,9 @@
 package top.catnies.firenchantkt.gui
 
-import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.ItemLore
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.scheduler.BukkitTask
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.FixTableConfig
 import top.catnies.firenchantkt.database.FirConnectionManager
@@ -15,7 +14,6 @@ import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
-import top.catnies.firenchantkt.util.MessageUtils
 import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
@@ -29,6 +27,7 @@ import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
+import xyz.xenondevs.invui.item.impl.AutoUpdateItem
 import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.item.impl.controlitem.PageItem
 import xyz.xenondevs.invui.window.Window
@@ -65,12 +64,12 @@ class FirFixTableMenu(
     val completedAdditionLores = config.MENU_OUTPUT_COMPLETED_ADDITION_LORE
 
     /*构建时对象*/
-    lateinit var gui: Gui
-    lateinit var window: Window
-    lateinit var inputInventory: VirtualInventory
-    lateinit var confirmBottom: SimpleItem
-    lateinit var previousPageBottom: PageItem
-    lateinit var nextPageBottom: PageItem
+    private lateinit var gui: PagedGui<Item>
+    private lateinit var window: Window
+    private lateinit var inputInventory: VirtualInventory
+    private lateinit var confirmBottom: SimpleItem
+    private lateinit var previousPageBottom: PageItem
+    private lateinit var nextPageBottom: PageItem
 
     var closeHandlers: MutableList<Runnable> = mutableListOf() // 关闭菜单时触发
     var showBottom: Boolean = false
@@ -100,22 +99,60 @@ class FirFixTableMenu(
         }
     }
 
+    // 创建 GUI & Window
+    private fun buildGuiAndWindow() {
+        gui = PagedGui.items()
+            .setStructure(Structure(*structureArray))
+            .addIngredient(outputSlot, Markers.CONTENT_LIST_SLOT_HORIZONTAL)
+            .addIngredient(inputSlot, inputInventory)
+            .addIngredient(fixSlot, confirmBottom)
+            .addIngredient(previousPageSlot, previousPageBottom)
+            .addIngredient(nextPageSlot, nextPageBottom)
+            // 翻页内容
+            .setContent(repairList)
+            // 自定义物品
+            .also {
+                customItems.filter { customItem -> getMarkCount(customItem.key) > 0 }
+                    .forEach { (char, pair) ->
+                        val menuCustomItem = MenuCustomItem({ s -> pair.first!! }, pair.second)
+                        it.addIngredient(char, menuCustomItem)
+                    }
+            }
+            .build()
+        // 如果关闭菜单则返回输入框里的所有物品.
+        closeHandlers.add {
+            val itemStacks = inputInventory.items.toList().filterNotNull()
+            player.giveOrDropList(itemStacks)
+        }
+
+        window = Window.single {
+            it.setViewer(player)
+            it.setTitle(titleDeny)
+            it.setCloseHandlers(closeHandlers)
+            it.setGui(gui)
+            it.build()
+        }
+    }
+
     // 添加输入虚拟背包
     private fun buildInputInventory() {
         inputInventory = VirtualInventory(1)
-
-        // 禁止非破损物品放入, 同时刷新菜单标题.
+        // 禁止非破损物品放入
         inputInventory.preUpdateHandler = Consumer { event ->
-            if (event.isSwap || event.isAdd) {
-                if (!brokenGear.isBrokenGear(event.newItem)) {
-                    event.isCancelled = true
-                    return@Consumer
-                }
+            if (event.isAdd && !brokenGear.isBrokenGear(event.newItem)) {
+                event.isCancelled = true
+                return@Consumer
+            }
+        }
+        // 刷新菜单标题
+        inputInventory.postUpdateHandler = Consumer { event ->
+            if (!event.newItem.nullOrAir()) {
+                plugin.logger.info("new item is nor air")
                 window.changeTitle(titleAccept)
                 showBottom = true
                 confirmBottom.notifyWindows()
-            }
-            if (event.isRemove) {
+            } else {
+                plugin.logger.info("new item is air")
                 window.changeTitle(titleDeny)
                 showBottom = false
                 confirmBottom.notifyWindows()
@@ -123,27 +160,101 @@ class FirFixTableMenu(
         }
     }
 
-    // 添加确认修复按钮
+    // 构建确认按钮
     private fun buildConfirmItem() {
         confirmBottom = SimpleItem({ s: String? ->
-            if (!showBottom) return@SimpleItem ItemStack(Material.AIR)
-            else return@SimpleItem fixSlotItem!!
-        }) { click ->
-            /* 执行修复功能 */
+            // 未放入破损物品时,显示空气
+            if (!showBottom)
+                return@SimpleItem ItemStack(Material.AIR)
+            //
+            else {
+                // TODO 确认按钮显示修复时间 §?
+                fixSlotItem?.replacePlaceholder(mutableMapOf( "cost_time" to "10"))
+                return@SimpleItem fixSlotItem!!
+            }
+        }) {
+            // 点击事件 -> 转移损坏物品到修复队列中
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
             if (!brokenGear.isBrokenGear(inputItem)) return@SimpleItem
 
             val repairTime = 600 * 1000L // TODO 计算物品修复时间
             val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime)
-            itemRepairData.insert(repairTable)
-            // 将物品删除
+            itemRepairData.insert(repairTable) // 操作数据库
+            // 安全将玩家放入的破碎物品移出
+            // Notice! 此方法似乎不会触发inputInventory的两个 UpdateHandler
             inputInventory.removeIf(UpdateReason.SUPPRESSED) { !it.nullOrAir() }
-            // 插入队列, 刷新队列
+            // 往修复队列 repairList 中添加UI元素
             addDataToRepairList(repairTable)
+            // 刷新自己(确认按钮)和修复队列
+            gui.setContent(repairList)
+            showBottom = false // 因此得手动设置旗标变量为 false
+            confirmBottom.notifyWindows()
         }
     }
 
+
+
+    // 从数据库中读取并构建修复队列物品
+    private fun initRepairItems() {
+        val activeData = itemRepairData.getByPlayerActiveAndCompletedList(player.uniqueId)
+        activeData.removeIf { it.received }
+        activeData.forEach { addDataToRepairList(it) }
+    }
+
+    // 根据给予的ItemRepairTable数据, 向 修复队列 中添加UI元素
+    private fun addDataToRepairList(itemRepairTable: ItemRepairTable) {
+        if (itemRepairTable.received) return
+
+        val originItem = itemRepairTable.itemData.deserializeFromBytes()
+        val builder = ItemBuilder(originItem)
+
+        if (itemRepairTable.isCompleted)
+            // 完成
+            builder.addLoreLines(completedAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
+        else
+            // 未完成
+            builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
+
+        val autoUpdateItem = MenuRepairItem(
+            data = itemRepairTable,
+            period = outputUpdateTime,
+            originItem = originItem,
+            showItem = builder,
+            clickHandler = { click ->
+            // 点击事件 -> 取出物品
+            // 检查物品状态是完成or未完成
+            if (itemRepairTable.isCompleted) {
+                // 给予玩家修复后物品
+                val item = itemRepairTable.repairedItem
+                click.player.give(item)
+                // TODO 正确提示玩家
+                click.player.sendMessage("该物品修复完成!")
+            // 未完成
+            } else {
+                // 给予玩家修复后物品
+                val item = itemRepairTable.getBrokenItem()
+                click.player.give(item)
+                // TODO 正确提示玩家
+                click.player.sendMessage ("取消修复物品!")
+            }
+            // 更新数据库
+            itemRepairTable.received = true
+            itemRepairData.insert(itemRepairTable)
+            // 删除修复队列中的UI
+            removeDataFromRepairList(itemRepairTable)
+            gui.setContent(repairList)
+            // 刷新gui
+            repairList.forEach { item ->  item.notifyWindows() }
+
+            true
+        })
+
+        repairList.add(autoUpdateItem)
+
+    }
+
     // 上一页 和 下一页
+    // TODO 翻页功能
     private fun buildPageItem() {
         previousPageBottom = object :PageItem(false) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
@@ -170,65 +281,6 @@ class FirFixTableMenu(
                 return ItemBuilder(itemStack)
             }
         }
-    }
-
-    // 创建 GUI & Window
-    private fun buildGuiAndWindow() {
-        gui = PagedGui.items()
-            .setStructure(Structure(*structureArray))
-            .addIngredient(outputSlot, Markers.CONTENT_LIST_SLOT_HORIZONTAL)
-            .addIngredient(inputSlot, inputInventory)
-            .addIngredient(fixSlot, confirmBottom)
-            .addIngredient(previousPageSlot, previousPageBottom)
-            .addIngredient(nextPageSlot, nextPageBottom)
-            // 翻页内容
-            .setContent(repairList)
-            // 自定义物品
-            .also {
-                customItems.filter { customItem -> getMarkCount(customItem.key) > 0 }
-                    .forEach { (char, pair) ->
-                        val menuCustomItem = MenuCustomItem({ s -> pair.first!! }, pair.second)
-                        it.addIngredient(char, menuCustomItem)
-                    }
-            }
-            .build()
-
-        // 如果关闭菜单则返回输入框里的所有物品.
-        closeHandlers.add {
-            val itemStacks = inputInventory.items.toList().filterNotNull()
-            player.giveOrDropList(itemStacks)
-        }
-
-        window = Window.single {
-            it.setViewer(player)
-            it.setTitle(titleDeny)
-            it.setCloseHandlers(closeHandlers)
-            it.setGui(gui)
-            it.build()
-        }
-    }
-
-    // 创建修复队列
-    private fun initRepairItems() {
-        val activeData = itemRepairData.getByPlayerActiveAndCompletedList(player.uniqueId)
-        activeData.removeIf { it.isReceived }
-        activeData.forEach { addDataToRepairList(it) }
-    }
-
-    // 往修复队列里添加新的数据
-    private fun addDataToRepairList(itemRepairTable: ItemRepairTable) {
-        if (itemRepairTable.isReceived) return
-
-        val originItem = itemRepairTable.itemData.deserializeFromBytes()
-        val builder = ItemBuilder(originItem)
-        if (itemRepairTable.isCompleted) builder.addLoreLines(completedAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-        else builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-        val autoUpdateItem = MenuRepairItem(itemRepairTable, outputUpdateTime, originItem, builder, { click ->
-            // TODO 检查物品状态是完成or未完成
-            click.player.sendMessage("wocao 66666!")
-            true
-        })
-        repairList.add(autoUpdateItem)
     }
 
     // 从修复队列里删除数据
