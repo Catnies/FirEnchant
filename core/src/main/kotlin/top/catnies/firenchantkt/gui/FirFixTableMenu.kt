@@ -1,9 +1,9 @@
 package top.catnies.firenchantkt.gui
 
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.scheduler.BukkitTask
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.FixTableConfig
 import top.catnies.firenchantkt.database.FirConnectionManager
@@ -11,14 +11,12 @@ import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
 import top.catnies.firenchantkt.item.fixtable.FirBrokenGear
 import top.catnies.firenchantkt.util.ItemUtils.deserializeFromBytes
+import top.catnies.firenchantkt.util.ItemUtils.getEnchantmentValue
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
-import top.catnies.firenchantkt.util.MessageUtils.renderToComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
-import xyz.xenondevs.inventoryaccess.component.AdventureComponentWrapper
-import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.gui.structure.Markers
 import xyz.xenondevs.invui.gui.structure.Structure
@@ -27,7 +25,6 @@ import xyz.xenondevs.invui.inventory.event.UpdateReason
 import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.builder.ItemBuilder
-import xyz.xenondevs.invui.item.impl.AutoUpdateItem
 import xyz.xenondevs.invui.item.impl.SimpleItem
 import xyz.xenondevs.invui.item.impl.controlitem.PageItem
 import xyz.xenondevs.invui.window.Window
@@ -147,12 +144,10 @@ class FirFixTableMenu(
         // 刷新菜单标题
         inputInventory.postUpdateHandler = Consumer { event ->
             if (!event.newItem.nullOrAir()) {
-                plugin.logger.info("new item is nor air")
                 window.changeTitle(titleAccept)
                 showBottom = true
                 confirmBottom.notifyWindows()
             } else {
-                plugin.logger.info("new item is air")
                 window.changeTitle(titleDeny)
                 showBottom = false
                 confirmBottom.notifyWindows()
@@ -162,22 +157,25 @@ class FirFixTableMenu(
 
     // 构建确认按钮
     private fun buildConfirmItem() {
-        confirmBottom = SimpleItem({ s: String? ->
+        confirmBottom = SimpleItem({
             // 未放入破损物品时,显示空气
             if (!showBottom)
                 return@SimpleItem ItemStack(Material.AIR)
             //
             else {
-                // TODO 确认按钮显示修复时间 §?
-                fixSlotItem?.replacePlaceholder(mutableMapOf( "cost_time" to "10"))
-                return@SimpleItem fixSlotItem!!
+                // 显示修复所需时间
+                val show = fixSlotItem?.clone() // 需要使用clone以防止占位符丢失
+                show?.replacePlaceholder(mutableMapOf(
+                    "cost_time" to "${getCostTime(inputInventory.items.first())}"
+                ))
+                return@SimpleItem show ?: ItemStack(Material.AIR)
             }
         }) {
             // 点击事件 -> 转移损坏物品到修复队列中
             val inputItem = inputInventory.items.first() ?: return@SimpleItem
             if (!brokenGear.isBrokenGear(inputItem)) return@SimpleItem
 
-            val repairTime = 600 * 1000L // TODO 计算物品修复时间
+            val repairTime = getCostTime(inputItem) * 1000L // 计算物品修复时间
             val repairTable = ItemRepairTable(player.uniqueId, inputItem.serializeToBytes(), repairTime)
             itemRepairData.insert(repairTable) // 操作数据库
             // 安全将玩家放入的破碎物品移出
@@ -192,8 +190,6 @@ class FirFixTableMenu(
         }
     }
 
-
-
     // 从数据库中读取并构建修复队列物品
     private fun initRepairItems() {
         val activeData = itemRepairData.getByPlayerActiveAndCompletedList(player.uniqueId)
@@ -206,20 +202,32 @@ class FirFixTableMenu(
         if (itemRepairTable.received) return
 
         val originItem = itemRepairTable.itemData.deserializeFromBytes()
-        val builder = ItemBuilder(originItem)
+        // TODO 修正 lore 颜色, 或者寻找合适的方法刷新 lore
+        val provider = ItemProvider {
+//            player.sendMessage("1")
+            val item = originItem.clone()
 
-        if (itemRepairTable.isCompleted)
-            // 完成
-            builder.addLoreLines(completedAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-        else
-            // 未完成
-            builder.addLoreLines(activeAdditionLores.map { line -> AdventureComponentWrapper(line.renderToComponent())})
-
+            val added : List<Component>
+            // 完成lore
+            if (itemRepairTable.isCompleted)  added = completedAdditionLores.map { return@map Component.text(it) }
+            // 未完成lore
+            else added = activeAdditionLores.map { return@map Component.text(it) }
+            if (item.lore() != null)
+                item.lore()!!.addAll(added)
+            else {
+                item.lore(added)
+            }
+            // TODO 补全付费提示
+            item.replacePlaceholder(mutableMapOf(
+                "remain_time" to "${itemRepairTable.remainingTime / 1000}"
+            ))
+            return@ItemProvider item
+        }
         val autoUpdateItem = MenuRepairItem(
             data = itemRepairTable,
             period = outputUpdateTime,
             originItem = originItem,
-            showItem = builder,
+            showItem = provider,
             clickHandler = { click ->
             // 点击事件 -> 取出物品
             // 检查物品状态是完成or未完成
@@ -231,6 +239,7 @@ class FirFixTableMenu(
                 click.player.sendMessage("该物品修复完成!")
             // 未完成
             } else {
+                // TODO 增加付费加速功能
                 // 给予玩家修复后物品
                 val item = itemRepairTable.getBrokenItem()
                 click.player.give(item)
@@ -254,11 +263,10 @@ class FirFixTableMenu(
     }
 
     // 上一页 和 下一页
-    // TODO 翻页功能
     private fun buildPageItem() {
         previousPageBottom = object :PageItem(false) {
             override fun getItemProvider(gui: PagedGui<*>): ItemProvider {
-                // TODO 我觉得不能频繁使用 Clone?
+                // 需要使用Clone
                 val itemStack = previousPageItem!!.clone()
                 itemStack.replacePlaceholder(mutableMapOf(
                     "currentPage" to "${gui.currentPage}",
@@ -290,4 +298,12 @@ class FirFixTableMenu(
 
     // 统计 Structure 里有多少个某种 Slot 字符
     private fun getMarkCount(char: Char) = structureArray.sumOf { it.count { c -> c == char } }
+
+    // 返回修复所需秒
+    fun getCostTime(item: ItemStack?) : Int {
+        var result = 1800
+        // 根据魔咒等级额外增加时间
+        item?.let { result += (it.getEnchantmentValue() * 600).toInt() }
+        return result
+    }
 }
