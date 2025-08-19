@@ -25,7 +25,7 @@ object ItemUtils {
         if (!other.canEnchantItem(this)) return false
         // 检查物品上的魔咒是否有冲突
         this.enchantments.forEach { (enchantment, lv) ->
-            if (!enchantment.conflictsWith(other)) return false
+            if (enchantment.conflictsWith(other)) return false
             // 如果两个目标魔咒相同
             if (enchantment == other) {
                 if (lv >= enchantment.maxLevel) return false // 不能超过最大等级
