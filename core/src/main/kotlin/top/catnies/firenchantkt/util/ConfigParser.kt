@@ -1,7 +1,6 @@
 package top.catnies.firenchantkt.util
 
 import io.papermc.paper.datacomponent.DataComponentTypes
-import io.papermc.paper.datacomponent.item.CustomModelData
 import io.papermc.paper.datacomponent.item.ItemLore
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.text.Component
@@ -54,7 +53,7 @@ object ConfigParser {
         }
 
         section.getString("item-model")?.let { baseItem.setData(DataComponentTypes.ITEM_MODEL, Key.key(it)) }
-        section.getDouble("custom-model-data").let { baseItem.setData(DataComponentTypes.CUSTOM_MODEL_DATA, CustomModelData.customModelData().addFloat(it.toFloat()).build()) }
+        section.getDouble("custom-model-data").let { baseItem.editMeta { meta -> meta.setCustomModelData(it.toInt()) } }
         section.getInt("amount", 1).let { baseItem.apply { amount = it } }
         section.getString("damage")?.let { baseItem.setData(DataComponentTypes.DAMAGE, section.getInt("damage", 0)) }
         return baseItem
