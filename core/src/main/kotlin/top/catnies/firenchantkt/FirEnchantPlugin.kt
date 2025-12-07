@@ -54,7 +54,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     }
 
     private val job = SupervisorJob()
-    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
+        override val coroutineContext: CoroutineContext = job + Dispatchers.IO
     override var isInitializedRegistry = false
 
     override fun onLoad() {

@@ -63,7 +63,7 @@ class FirEnchantingTableMenu(
 
     var enchantable = 0
     var activeLine = -1
-    var lineStatus: String = "000"
+    var lineStatus: String = "222"
     private val enchantmentSettings = arrayOfNulls<EnchantmentSetting>(3)
     private val enchantingTableContext by lazy { EnchantingTableContext(player, bookShelves, this) }
     // 如果关闭菜单则返回输入框里的所有物品.
