@@ -14,7 +14,7 @@ import org.bukkit.enchantments.Enchantment
 data class OriginalBookData(
     val hookedPlugin: String,
     val hookedID: String,
-    val enchantable: Int,
+    val rollStrategy: RollStrategy,
     val enchantmentList: Set<Enchantment>
 )
 

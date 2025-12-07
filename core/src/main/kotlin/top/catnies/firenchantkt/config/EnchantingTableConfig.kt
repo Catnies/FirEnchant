@@ -8,9 +8,11 @@ import org.bukkit.Material
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_MISSING_KEY
@@ -214,20 +216,28 @@ class EnchantingTableConfig private constructor():
                 if (plugin == null) sendMissingKeyWarn(file.name, "hooked-plugin")
                 val id = yaml.getString("hooked-id")
                 if (id == null) sendMissingKeyWarn(file.name, "hooked-id")
-                val enchantable = yaml.getInt("enchantable", -1)
 
-                val enchantmentStringList = yaml.getStringList("enchantment-list")
-                val enchantments = enchantmentStringList.fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
+                // TODO, 实现Custom
+                val strategy = yaml.getString("roll-strategy")?.let { RollStrategy.valueOf(it) }
+                if (strategy != RollStrategy.VANILLA) {
+                    FirEnchantPlugin.instance.logger.warning("插件暂时还不支持的策略: $strategy")
+                    return@forEach
+                }
+
+                // 读取魔咒
+                val enchantments: MutableSet<Enchantment> = mutableSetOf()
+                val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
                     // 导入列表
-                    if (enchantment.startsWith("import:")) {
-                        val vanillaID = enchantment.substring(7).uppercase()
-                        Material.getMaterial(vanillaID)?.let {
-                            // 获取物品对应的魔咒列表添加
-                            val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
-                            acc.addAll(applicableEnchants)
-                            return@fold acc
-                        }
+                    Material.getMaterial(vanillaID)?.let {
+                        // 获取物品对应的魔咒列表添加
+                        val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
+                        acc.addAll(applicableEnchants)
+                        return@fold acc
                     }
+                    return@fold acc
+                }
+
+                val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments").fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
                     // 导入普通魔咒
                     val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
                     if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
@@ -235,14 +245,17 @@ class EnchantingTableConfig private constructor():
                     return@fold acc
                 }
 
+                // 合并检查
+                enchantments.addAll(importEnchantments)
+                enchantments.addAll(commonEnchantments)
                 if (enchantments.isEmpty()) {
-                    sendMissingKeyWarn(file.name, "enchantment-list")
+                    sendMissingKeyWarn(file.name, "vanilla-enchantments")
                     return@forEach
                 }
 
                 if (plugin != null && id != null) {
                     ORIGINAL_BOOK_MATCHES.add(
-                        OriginalBookData(plugin, id, enchantable, enchantments)
+                        OriginalBookData(plugin, id, strategy, commonEnchantments)
                     )
                 }
             }
