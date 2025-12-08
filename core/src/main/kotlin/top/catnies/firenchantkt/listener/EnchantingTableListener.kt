@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.listener
 
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -17,16 +18,15 @@ class EnchantingTableListener : Listener {
     // 创造模式+shift右键打开原版附魔台;
     @EventHandler(ignoreCancelled = true)
     fun onEnchantingTableClick(event: PlayerInteractEvent) {
-        if (!config.REPLACE_VANILLA_ENCHANTMENT_TABLE) return   // 检查功能是否打开
-        if (event.action == Action.RIGHT_CLICK_BLOCK            // 右键点击方块
-            && !event.player.isSneaking                         // 潜行不算
-            && event.clickedBlock?.type == Material.ENCHANTING_TABLE)   // 点击的是附魔台方块
-        {
-            event.isCancelled = true
-            val nmsHandler = NMSHandlerHolder.getNMSHandler()
-            val bookShelves = nmsHandler.getEnchantmentTableBookShelf(event.clickedBlock!!.location)
-            FirEnchantingTableMenu(event.player, bookShelves).openMenu(emptyMap(), true)
-        }
+        if (!config.REPLACE_VANILLA_ENCHANTMENT_TABLE) return               // 检查功能是否打开
+        if (event.action != Action.RIGHT_CLICK_BLOCK) return                // 不是打开则不管
+        if (event.clickedBlock?.type != Material.ENCHANTING_TABLE) return   // 不是附魔台不管
+        if (event.player.gameMode == GameMode.CREATIVE && event.player.isSneaking) return // 创造模式+shift右键打开不管
+
+        event.isCancelled = true
+        val nmsHandler = NMSHandlerHolder.getNMSHandler()
+        val bookShelves = nmsHandler.getEnchantmentTableBookShelf(event.clickedBlock!!.location)
+        FirEnchantingTableMenu(event.player, bookShelves).openMenu(emptyMap(), true)
     }
 
 }
