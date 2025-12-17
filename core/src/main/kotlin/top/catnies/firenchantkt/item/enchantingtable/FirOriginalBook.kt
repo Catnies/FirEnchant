@@ -46,8 +46,7 @@ class FirOriginalBook: OriginalBook {
         } ?: return
 
         // 获取附魔力
-        val enchantable = (if (originalBookData.enchantable >= 0) originalBookData.enchantable
-        else itemStack.getData(DataComponentTypes.ENCHANTABLE)?.value()) ?: return
+        val enchantable = itemStack.getData(DataComponentTypes.ENCHANTABLE)?.value() ?: return
 
         // 获取这个配置的可附魔列表
         val enchantments = originalBookData.enchantmentList
