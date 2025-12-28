@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.config
 
+import com.google.common.base.Enums
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.key.Key
@@ -13,6 +14,7 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy.*
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_MISSING_KEY
@@ -218,11 +220,17 @@ class EnchantingTableConfig private constructor():
                 if (id == null) sendMissingKeyWarn(file.name, "hooked-id")
 
                 // TODO, 实现Custom
-                val strategy = yaml.getString("roll-strategy")?.let { RollStrategy.valueOf(it) }
-                if (strategy != RollStrategy.VANILLA) {
-                    FirEnchantPlugin.instance.logger.warning("插件暂时还不支持的策略: $strategy")
+                val rollStrategyStr = yaml.getString("roll-strategy", "")!!
+                val rollStrategy = Enums.getIfPresent(RollStrategy::class.java, rollStrategyStr).orNull() ?: run {
+                    FirEnchantPlugin.instance.logger.warning("插件不支持的抽取策略: $rollStrategyStr")
                     return@forEach
                 }
+
+                when(rollStrategy) {
+                    VANILLA -> TODO()
+                    CUSTOM -> TODO()
+                }
+
 
                 // 读取魔咒
                 val enchantments: MutableSet<Enchantment> = mutableSetOf()
@@ -259,6 +267,16 @@ class EnchantingTableConfig private constructor():
                     )
                 }
             }
+    }
+
+    // 读取原版策略的配置
+    private fun readVanillaStrategy() {
+
+    }
+
+    // 读取自定义策略的配置
+    private fun readCustomStrategy() {
+
     }
 
     // 发送缺少键的信息

@@ -15,7 +15,7 @@ data class OriginalBookData(
     val hookedPlugin: String,
     val hookedID: String,
     val rollStrategy: RollStrategy,
-    val enchantmentList: Set<Enchantment>
+    val rollStrategyData: RollStrategyData,
 )
 
 
@@ -24,24 +24,18 @@ enum class RollStrategy {
     VANILLA, CUSTOM
 }
 
+interface RollStrategyData
 
 /**
  * Vanilla 模式下, 附魔的配置
  */
-data class VanillaEnchantmentSetting(
-    val importEnchantments: Set<Enchantment>,
-    val enchantments: Set<Enchantment>
-)
+class VanillaRollStrategyData : RollStrategyData
 
 
 /**
  * CUSTOM 模式下, 每个行的配置
  */
-data class EnchantmentLineEntry(
-    var minFailure: Int = 0,
-    var maxFailure: Int = 100,
-    var enchantmentList: Set<EnchantmentRollEntry> = emptySet()
-)
+class CustomRollStrategyData : RollStrategyData
 
 
 /**
