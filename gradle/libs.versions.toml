@@ -19,7 +19,7 @@ hikaricp = "6.1.0"
 
 # Library
 rtag = "1.5.11"
-invui = "1.47"
+invui = "1.49"
 mhdf-scheduler = "1.0.1"
 
 # Compatibility
