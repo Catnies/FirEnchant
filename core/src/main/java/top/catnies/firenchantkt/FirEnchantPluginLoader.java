@@ -64,6 +64,7 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r23:" + INVUI), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r24:" + INVUI), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r25:" + INVUI), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r26:" + INVUI), null));
 
         // MYSQL
         resolver.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-core:" + ORMLITE), null));
