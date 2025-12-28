@@ -260,7 +260,7 @@ class EnchantingTableConfig private constructor():
                             return@forEach
                         }
                         // 返回结果
-                        VanillaRollStrategyData()
+                        VanillaRollStrategyData(enchantments)
                     }
                     // 读取自定义策略的配置
                     CUSTOM -> TODO()

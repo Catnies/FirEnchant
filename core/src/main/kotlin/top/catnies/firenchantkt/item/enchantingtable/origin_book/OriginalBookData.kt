@@ -29,13 +29,17 @@ interface RollStrategyData
 /**
  * Vanilla 模式下, 附魔的配置
  */
-class VanillaRollStrategyData : RollStrategyData
+class VanillaRollStrategyData(
+    val enchantmentList: Set<Enchantment>
+) : RollStrategyData
 
 
 /**
  * CUSTOM 模式下, 每个行的配置
  */
-class CustomRollStrategyData : RollStrategyData
+class CustomRollStrategyData(
+
+) : RollStrategyData
 
 
 /**
