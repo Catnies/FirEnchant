@@ -6,6 +6,7 @@ import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.Material
+import org.bukkit.Registry
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
@@ -15,6 +16,8 @@ import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy.*
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategyData
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.VanillaRollStrategyData
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_INVALID_ENCHANTMENT
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_ORIGINAL_BOOK_MISSING_KEY
@@ -219,64 +222,54 @@ class EnchantingTableConfig private constructor():
                 val id = yaml.getString("hooked-id")
                 if (id == null) sendMissingKeyWarn(file.name, "hooked-id")
 
-                // TODO, 实现Custom
+                // 策略合法性
                 val rollStrategyStr = yaml.getString("roll-strategy", "")!!
                 val rollStrategy = Enums.getIfPresent(RollStrategy::class.java, rollStrategyStr).orNull() ?: run {
                     FirEnchantPlugin.instance.logger.warning("插件不支持的抽取策略: $rollStrategyStr")
                     return@forEach
                 }
 
-                when(rollStrategy) {
-                    VANILLA -> TODO()
+                // 读取策略
+                val rollStrategyData: RollStrategyData = when(rollStrategy) {
+                    // 读取原版策略的配置
+                    VANILLA -> {
+                        // 读取魔咒
+                        val enchantments: MutableSet<Enchantment> = mutableSetOf()
+                        val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
+                            // 导入列表
+                            Material.getMaterial(vanillaID)?.let {
+                                // 获取物品对应的魔咒列表添加
+                                val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
+                                acc.addAll(applicableEnchants)
+                                return@fold acc
+                            }
+                            return@fold acc
+                        }
+                        // 导入普通魔咒
+                        val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments").fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
+                            val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
+                            if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
+                            else { acc.add(readEnchantment) }
+                            return@fold acc
+                        }
+                        // 合并检查
+                        enchantments.addAll(importEnchantments)
+                        enchantments.addAll(commonEnchantments)
+                        if (enchantments.isEmpty()) {
+                            sendMissingKeyWarn(file.name, "vanilla-enchantments")
+                            return@forEach
+                        }
+                        // 返回结果
+                        VanillaRollStrategyData()
+                    }
+                    // 读取自定义策略的配置
                     CUSTOM -> TODO()
                 }
-
-
-                // 读取魔咒
-                val enchantments: MutableSet<Enchantment> = mutableSetOf()
-                val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
-                    // 导入列表
-                    Material.getMaterial(vanillaID)?.let {
-                        // 获取物品对应的魔咒列表添加
-                        val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
-                        acc.addAll(applicableEnchants)
-                        return@fold acc
-                    }
-                    return@fold acc
-                }
-
-                val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments").fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
-                    // 导入普通魔咒
-                    val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
-                    if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
-                    else { acc.add(readEnchantment) }
-                    return@fold acc
-                }
-
-                // 合并检查
-                enchantments.addAll(importEnchantments)
-                enchantments.addAll(commonEnchantments)
-                if (enchantments.isEmpty()) {
-                    sendMissingKeyWarn(file.name, "vanilla-enchantments")
-                    return@forEach
-                }
-
+                // 添加策略
                 if (plugin != null && id != null) {
-                    ORIGINAL_BOOK_MATCHES.add(
-                        OriginalBookData(plugin, id, strategy, commonEnchantments)
-                    )
+                    ORIGINAL_BOOK_MATCHES.add(OriginalBookData(plugin, id, rollStrategy, rollStrategyData))
                 }
             }
-    }
-
-    // 读取原版策略的配置
-    private fun readVanillaStrategy() {
-
-    }
-
-    // 读取自定义策略的配置
-    private fun readCustomStrategy() {
-
     }
 
     // 发送缺少键的信息
