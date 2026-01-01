@@ -95,6 +95,7 @@ tasks {
         dependsOn(":nms:v1_21_R3:reobfJar")
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
+        dependsOn(":nms:v1_21_R6:reobfJar")
         mergeServiceFiles()
 
         manifest.attributes("paperweight-mappings-namespace" to "mojang")
