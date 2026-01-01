@@ -9,10 +9,8 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.config.ExtractSoulConfig
 import top.catnies.firenchantkt.gui.FirExtractSoulMenu
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
-import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_FUNCTION_NOT_ENABLED
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 object ExtractSoulMenuCommand : AbstractCommand() {
