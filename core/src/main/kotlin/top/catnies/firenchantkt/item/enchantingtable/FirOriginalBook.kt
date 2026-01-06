@@ -11,6 +11,8 @@ import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.VanillaRollStrategyData
 import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
 import kotlin.random.Random
 
@@ -48,35 +50,44 @@ class FirOriginalBook: OriginalBook {
         // 获取附魔力
         val enchantable = itemStack.getData(DataComponentTypes.ENCHANTABLE)?.value() ?: return
 
-        // 获取这个配置的可附魔列表
-        val enchantments = originalBookData.enchantmentList
+        // 原版抽取策略
+        if (originalBookData.rollStrategy == RollStrategy.VANILLA) {
+            // 获取这个配置的可附魔列表
+            val data = originalBookData.rollStrategyData as VanillaRollStrategyData
+            val enchantments = data.enchantmentList
 
-        // 计算附魔结果
-        var index = 0
-        val enchantingTableResults = nmsHandler.getPlayerNextEnchantmentTableResultByEnchantmentList(
+            // 计算附魔结果
+            var index = 0
+            val enchantingTableResults = nmsHandler.getPlayerNextEnchantmentTableResultByEnchantmentList(
                 player, context.bookShelves, enchantable, enchantments
-        ).map { entry ->
-            index++
-            val failureRange = getEnchantBookFailureRange(index)
-            val failure = Random(player.enchantmentSeed + index).nextInt(failureRange.first, failureRange.second)
-            val enchantment = entry.keys.first()
-            val level = entry.values.first()
-            val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
-            FirEnchantmentSettingFactory.fromData(enchantmentData, level, failure, 0)
+            ).map { entry ->
+                index++
+                val failureRange = getEnchantBookFailureRange(index)
+                val failure = Random(player.enchantmentSeed + index).nextInt(failureRange.first, failureRange.second)
+                val enchantment = entry.keys.first()
+                val level = entry.values.first()
+                val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
+                FirEnchantmentSettingFactory.fromData(enchantmentData, level, failure, 0)
+            }
+            if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
+
+            // 广播事件
+            val inputEvent = OriginalBookInputEvent(
+                player, itemStack, enchantments, enchantingTableResults
+            )
+            Bukkit.getPluginManager().callEvent(inputEvent)
+
+            // 应用执行
+            tableMenu.setRecordEnchantable(enchantable)
+            tableMenu.setEnchantmentResult(enchantingTableResults)
+            tableMenu.refreshCanLight()
+            tableMenu.refreshLine()
+            return
         }
-        if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
 
-        // 广播事件
-        val inputEvent = OriginalBookInputEvent(
-            player, itemStack, enchantments, enchantingTableResults
-        )
-        Bukkit.getPluginManager().callEvent(inputEvent)
+        if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
 
-        // 应用执行
-        tableMenu.setRecordEnchantable(enchantable)
-        tableMenu.setEnchantmentResult(enchantingTableResults)
-        tableMenu.refreshCanLight()
-        tableMenu.refreshLine()
+        }
     }
 
     // 获取附魔书失败率的上下界
