@@ -25,11 +25,10 @@ class FirOriginalBook: OriginalBook {
     }
 
     val nmsHandler = NMSHandlerHolder.getNMSHandler()
-    val matches = config.ORIGINAL_BOOK_MATCHES
 
     // 检查物品是否是指定的可附魔物品
     override fun matches(itemStack: ItemStack): Boolean {
-        val originalBookData = matches.find {
+        val originalBookData = config.ORIGINAL_BOOK_MATCHES.find {
             val itemProvider = FirItemProviderRegistry.instance.getItemProvider(it.hookedPlugin) ?: return@find false
             return@find (itemProvider.getIdByItem(itemStack).equals(it.hookedID, true))
         }
@@ -42,7 +41,7 @@ class FirOriginalBook: OriginalBook {
         val tableMenu = context.menu
 
         // 查找对应的配置类
-        val originalBookData = matches.find {
+        val originalBookData = config.ORIGINAL_BOOK_MATCHES.find {
             val itemProvider = FirItemProviderRegistry.instance.getItemProvider(it.hookedPlugin) ?: return@find false
             return@find (itemProvider.getIdByItem(itemStack).equals(it.hookedID, true))
         } ?: return
@@ -86,7 +85,7 @@ class FirOriginalBook: OriginalBook {
         }
 
         if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
-
+            TODO()
         }
     }
 

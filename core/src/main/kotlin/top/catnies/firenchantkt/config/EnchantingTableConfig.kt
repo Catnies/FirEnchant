@@ -31,6 +31,7 @@ import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ETMenuItemData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 import xyz.xenondevs.invui.gui.structure.Structure
+import java.util.Locale
 
 class EnchantingTableConfig private constructor():
     AbstractConfigFile("modules/enchanting_table.yml")
@@ -210,23 +211,27 @@ class EnchantingTableConfig private constructor():
             ResourceCopyUtils.copyFolder(plugin, "original_books", plugin.dataFolder)
         }
         // 将文件夹下的内容加载到 ORIGINAL_BOOK_MATCHES 中.
-        originalBookDirectory.walkTopDown()
+        this.ORIGINAL_BOOK_MATCHES = originalBookDirectory.walkTopDown()
             .maxDepth(1)
             .filter { it.isFile && it.extension == "yml" }
-            .forEach { file ->
+            .mapNotNull { file ->
                 val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
                 val yaml = YamlConfiguration.loadConfiguration(file)
 
-                val plugin = yaml.getString("hooked-plugin")
-                if (plugin == null) sendMissingKeyWarn(file.name, "hooked-plugin")
-                val id = yaml.getString("hooked-id")
-                if (id == null) sendMissingKeyWarn(file.name, "hooked-id")
+                val plugin = yaml.getString("hooked-plugin") ?: run {
+                    sendMissingKeyWarn(file.name, "hooked-plugin")
+                    return@mapNotNull null
+                }
+                val id = yaml.getString("hooked-id") ?: run {
+                    sendMissingKeyWarn(file.name, "hooked-id")
+                    return@mapNotNull null
+                }
 
                 // 策略合法性
                 val rollStrategyStr = yaml.getString("roll-strategy", "")!!
                 val rollStrategy = Enums.getIfPresent(RollStrategy::class.java, rollStrategyStr).orNull() ?: run {
                     FirEnchantPlugin.instance.logger.warning("插件不支持的抽取策略: $rollStrategyStr")
-                    return@forEach
+                    return@mapNotNull null
                 }
 
                 // 读取策略
@@ -237,7 +242,7 @@ class EnchantingTableConfig private constructor():
                         val enchantments: MutableSet<Enchantment> = mutableSetOf()
                         val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
                             // 导入列表
-                            Material.getMaterial(vanillaID)?.let {
+                            Material.getMaterial(vanillaID.uppercase(Locale.ROOT))?.let {
                                 // 获取物品对应的魔咒列表添加
                                 val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
                                 acc.addAll(applicableEnchants)
@@ -257,7 +262,7 @@ class EnchantingTableConfig private constructor():
                         enchantments.addAll(commonEnchantments)
                         if (enchantments.isEmpty()) {
                             sendMissingKeyWarn(file.name, "vanilla-enchantments")
-                            return@forEach
+                            return@mapNotNull null
                         }
                         // 返回结果
                         VanillaRollStrategyData(enchantments)
@@ -265,11 +270,9 @@ class EnchantingTableConfig private constructor():
                     // 读取自定义策略的配置
                     CUSTOM -> TODO()
                 }
-                // 添加策略
-                if (plugin != null && id != null) {
-                    ORIGINAL_BOOK_MATCHES.add(OriginalBookData(plugin, id, rollStrategy, rollStrategyData))
-                }
-            }
+                // 最终策略
+                OriginalBookData(plugin, id, rollStrategy, rollStrategyData)
+            }.toMutableList()
     }
 
     // 发送缺少键的信息

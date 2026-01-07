@@ -129,6 +129,8 @@ tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
         vendor = JvmVendorSpec.JETBRAINS
         languageVersion = JavaLanguageVersion.of(21)
     }
+    jvmArgs("-Dsun.stdout.encoding=UTF-8")
+    jvmArgs("-Dsun.stderr.encoding=UTF-8")
     jvmArgs("-Ddisable.watchdog=true")
     jvmArgs("-Xlog:redefine+class*=info")
     jvmArgs("-XX:+AllowEnhancedClassRedefinition")
