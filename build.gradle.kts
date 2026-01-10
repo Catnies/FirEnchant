@@ -18,6 +18,7 @@ dependencies {
     implementation(project(path = ":nms:v1_21_R3"))
     implementation(project(path = ":nms:v1_21_R4"))
     implementation(project(path = ":nms:v1_21_R5"))
+    implementation(project(path = ":nms:v1_21_R6"))
 }
 
 
