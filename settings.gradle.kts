@@ -9,6 +9,7 @@ include("nms:v1_21_R3")
 include("nms:v1_21_R4")
 include("nms:v1_21_R5")
 include("nms:v1_21_R6")
+include("nms:v1_21_R7")
 
 pluginManagement {
     repositories {
@@ -43,3 +44,4 @@ dependencyResolutionManagement {
         create("library") { from(files("gradle/libs.versions.toml")) }
     }
 }
+

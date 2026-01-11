@@ -19,6 +19,7 @@ dependencies {
     implementation(project(path = ":nms:v1_21_R4"))
     implementation(project(path = ":nms:v1_21_R5"))
     implementation(project(path = ":nms:v1_21_R6"))
+    implementation(project(path = ":nms:v1_21_R7"))
 }
 
 
@@ -97,6 +98,7 @@ tasks {
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")
         dependsOn(":nms:v1_21_R6:reobfJar")
+        dependsOn(":nms:v1_21_R7:reobfJar")
         mergeServiceFiles()
 
         manifest.attributes("paperweight-mappings-namespace" to "mojang")
@@ -115,7 +117,7 @@ tasks {
     runServer {
         dependsOn(shadowJar)
         dependsOn(jar)
-        minecraftVersion("1.21.8")
+        minecraftVersion("1.21.11")
         downloadPlugins {
             hangar("PlaceholderAPI", "2.11.6")
             modrinth("rtag", "1.5.13")
