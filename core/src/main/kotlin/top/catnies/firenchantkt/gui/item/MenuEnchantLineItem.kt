@@ -98,6 +98,8 @@ class MenuEnchantLineItem(
         RtagItem.edit(item) {
             // 去除数据信息, 防止偷窥具体结果
             it.remove("FirEnchant")
+            // 去除CE的ID, 防止发包给我盖了
+            if (!isBook) it.remove("craftengine:id")
         }
     }
 
