@@ -6,6 +6,7 @@ hooked-plugin: "vanilla"
 hooked-id: "book"
 glint: false
 item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+#custom-name: "" # 可选
 item-lore:
   - "<white>等级: <blue><firenchant:level>"
   - "<white>失败率: <red><firenchant:failure>%"

@@ -53,6 +53,9 @@ class FirEnchantmentSetting(
         val itemLore = data.itemLore?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()?.map { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
         itemLore?.let { item.setData(DataComponentTypes.LORE, ItemLore.lore(it)) }
 
+        val customName = data.customName?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()?.let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        customName?.let { item.setData(DataComponentTypes.CUSTOM_NAME, it) }
+
         item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, data.glint)
         return item
     }
