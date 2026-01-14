@@ -207,7 +207,7 @@ enchant-cost:
     # 动作: 玩家点击确认附魔后, 会把 actions 里的动作全部执行一遍;
     actions:
       - type: send_message
-        message: "你使用了一号附魔拦了"
+        message: "你使用了一号附魔栏了"
       - type: cost_level
         cost: 5
       - type: take_item
@@ -230,7 +230,7 @@ enchant-cost:
     max-failure: 100
     actions:
       - type: send_message
-        message: "你使用了二号附魔拦了"
+        message: "你使用了二号附魔栏了"
       - type: cost_level
         cost: 15
       - type: take_item
@@ -252,7 +252,7 @@ enchant-cost:
     max-failure: 100
     actions:
       - type: send_message
-        message: "你使用了三号附魔拦了"
+        message: "你使用了三号附魔栏了"
       - type: cost_level
         cost: 20
       - type: take_item
