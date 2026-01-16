@@ -6,11 +6,11 @@ import io.papermc.paper.registry.RegistryKey
 import net.kyori.adventure.key.Key
 import org.bukkit.Bukkit
 import org.bukkit.Material
-import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.config.extern.CustomRollStrategyData
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
@@ -32,7 +32,6 @@ import top.catnies.firenchantkt.util.resource_wrapper.ETMenuItemData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 import xyz.xenondevs.invui.gui.structure.Structure
 import java.util.Locale
-import kotlin.random.Random
 
 class EnchantingTableConfig private constructor():
     AbstractConfigFile("modules/enchanting_table.yml")
@@ -269,7 +268,15 @@ class EnchantingTableConfig private constructor():
                         VanillaRollStrategyData(enchantments)
                     }
                     // 读取自定义策略的配置
-                    CUSTOM -> TODO()
+                    CUSTOM -> {
+                        val section = yaml.getConfigurationSection("custom-strategy")
+                            ?: run {
+                                sendMissingKeyWarn(file.name, "custom-strategy")
+                                return@mapNotNull null
+                            }
+                        val data = CustomRollStrategyData.fromYamlSection(section)
+                        requireNotNull(data)
+                    }
                 }
                 // 最终策略
                 OriginalBookData(plugin, id, rollStrategy, rollStrategyData)
@@ -294,119 +301,3 @@ class EnchantingTableConfig private constructor():
         )
     }
 }
-
-
-
-data class CustomRollData (
-    val slotData1: SlotData?,
-    val slotData2: SlotData?,
-    val slotData3: SlotData?,
-) {
-
-    companion object {
-        fun fromYaml(section: ConfigurationSection): CustomRollData? {
-            val slotData1: SlotData?= section.getConfigurationSection("first-slot")?.let { SlotData.fromYaml(it) }
-            val slotData2: SlotData? = section.getConfigurationSection("second-slot")?.let { SlotData.fromYaml(it) }
-            val slotData3: SlotData? = section.getConfigurationSection("third-slot")?.let { SlotData.fromYaml(it) }
-            return if (slotData1 == null && slotData2 == null && slotData3 == null) null
-            else CustomRollData(slotData1, slotData2, slotData3)
-        }
-
-    }
-
-    data class SlotData(
-        val minLevel: IntProvider,
-        val costData: CostData,
-        val customRollEnchantmentData: List<EnchantmentData>
-    ) {
-        companion object {
-            fun fromYaml(section: ConfigurationSection): SlotData? {
-                val minLevel: IntProvider? = section.getConfigurationSection("required-player-level")
-                    ?.let { IntProvider.fromYaml(it) }
-                val costData: CostData? = section.getConfigurationSection("cost")
-                    ?.let { CostData.fromYaml(it) }
-                val customRollEnchantmentData: List<EnchantmentData> =
-                    section.getMapList("enchantment-pool").mapNotNull {
-                        EnchantmentData.fromYaml(it)
-                    }
-                return if (minLevel == null || costData == null || customRollEnchantmentData.isEmpty()) null
-                else SlotData(minLevel, costData, customRollEnchantmentData)
-            }
-
-        }
-
-        class CostData(
-            val level: IntProvider = ConstIntProvider(1),
-            val lapis: IntProvider = ConstIntProvider(1)
-        ) {
-
-            companion object {
-                fun fromYaml(section: ConfigurationSection): CostData? {
-
-                    val level = section.getInt("level").takeIf { section.contains("level") }
-                    val lapis = section.getInt("lapis").takeIf { section.contains("lapis") }
-                    return if (level == null || lapis == null) null
-                    else CostData(ConstIntProvider(level), ConstIntProvider(lapis))
-                }
-            }
-
-
-            fun fulfill(): Boolean {
-                TODO()
-            }
-
-
-        }
-
-        data class EnchantmentData(
-            val enchantmentMap: Map<String, Enchantment>,
-            val weight: Int,
-            val failure: IntProvider,
-            val level: IntProvider,
-        ) {
-            companion object {
-                fun fromYaml(section: Map<*, *>): EnchantmentData? {
-
-                    TODO()
-                }
-            }
-
-        }
-    }
-
-}
-
-interface IntProvider {
-    fun value(): Int
-
-    companion object {
-        fun fromYaml(section: ConfigurationSection): IntProvider {
-            TODO()
-        }
-    }
-}
-
-class ConstIntProvider(
-    val value: Int
-): IntProvider {
-    override fun value(): Int {
-        return value
-    }
-
-}
-
-class UniformRandomIntProvider (
-    val min: Int,
-    val max: Int
-) : IntProvider {
-
-    override fun value(): Int {
-        return Random.nextInt(min, max + 1)
-    }
-}
-
-class CustomPlaceholderSetter {
-
-}
-
-

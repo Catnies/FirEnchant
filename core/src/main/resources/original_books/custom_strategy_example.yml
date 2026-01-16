@@ -4,15 +4,12 @@ roll-strategy: "CUSTOM"
 
 custom-strategy:
   first-slot: # 附魔台第一个附魔槽设置
-    required-player-level: { int-provider: uniform, min: 1, max: 4 }
     cost: { level: 1, lapis: 1 } # 附魔花费
     enchantment-pool:
-
       - id: "minecraft:sharpness" # 魔咒 ID
         weight: 50 # 权重
         level: { int-provider: uniform, min: 1, max: 4 } # 等级
         failure: { int-provider: uniform, min: 10, max: 70 }
-
       - id: "minecraft:looting"
         weight: 50
         level: { int-provider: uniform, min: 1, max: 4 }
@@ -21,26 +18,22 @@ custom-strategy:
   second-slot:
     cost: { level: 2, lapis: 2 }
     enchantment-pool:
-
       - id: "minecraft:sharpness"
-        weight: 50
+        weight: 5
         level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
-
       - id: "minecraft:looting"
-        weight: 50
+        weight: 2
         level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
 
   third-slot:
     cost: { level: 3, lapis: 3 }
     enchantment-pool:
-
       - id: "minecraft:sharpness"
         weight: 50
         level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
-
       - id: "minecraft:looting"
         weight: 50
         level: { int-provider: uniform, min: 1, max: 4 }

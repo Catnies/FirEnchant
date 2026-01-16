@@ -7,7 +7,9 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.api.event.enchantingtable.OriginalBookInputEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
+import top.catnies.firenchantkt.config.extern.CustomRollStrategyData
 import top.catnies.firenchantkt.context.EnchantingTableContext
+import top.catnies.firenchantkt.enchantment.FirEnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
@@ -85,7 +87,30 @@ class FirOriginalBook: OriginalBook {
         }
 
         if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
-            TODO()
+            val data = originalBookData.rollStrategyData as CustomRollStrategyData
+
+            val enchantingTableResults = data.slotData.map {
+                if (it == null) {
+                    TODO()
+                }
+
+                val eData = it.roll()
+                val enchantment = eData.enchantment
+                val level = eData.level.value()
+                val failure = eData.failure.value()
+                val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
+                FirEnchantmentSetting(enchantmentData, level, failure, 0)
+            }
+            if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
+            // 广播事件
+
+            // 应用执行
+            tableMenu.setRecordEnchantable(enchantable)
+            tableMenu.setEnchantmentResult(enchantingTableResults)
+            tableMenu.refreshCanLight()
+            tableMenu.refreshLine()
+            return
+
         }
     }
 
@@ -97,6 +122,10 @@ class FirOriginalBook: OriginalBook {
             3 -> config.ENCHANT_COST_LINE_3_MIN_FAILURE to config.ENCHANT_COST_LINE_3_MAX_FAILURE
             else -> 0 to 100
         }
+    }
+
+    private fun customRoll(data: CustomRollStrategyData) {
+
     }
 
 }

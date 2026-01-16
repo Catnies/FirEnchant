@@ -31,20 +31,5 @@ class VanillaRollStrategyData(
 /**
  * CUSTOM 模式下, 每个行的配置
  */
-class CustomRollStrategyData(
 
-) : RollStrategyData
-
-
-/**
- * CUSTOM 模式下, 每个魔咒节点
- */
-data class EnchantmentRollEntry(
-    val enchantment: Enchantment,
-    val weight: Int,
-    var minLevel: Int = enchantment.startLevel,
-    var maxLevel: Int = enchantment.maxLevel,
-    var minFailure: Int = -1,
-    var maxFailure: Int = -1
-)
 
