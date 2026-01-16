@@ -19,6 +19,7 @@ data class EnchantmentData (
 
     // 物品的其他属性
     val itemName: String,
+    val customName: String?,
     val itemLore: List<String>?,
     val glint: Boolean,
 
