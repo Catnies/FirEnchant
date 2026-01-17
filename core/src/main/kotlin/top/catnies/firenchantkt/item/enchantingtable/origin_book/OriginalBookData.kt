@@ -30,6 +30,7 @@ class VanillaRollStrategyData(
 
 /**
  * CUSTOM 模式下, 每个行的配置
+ * 见 extern 包
  */
 
 

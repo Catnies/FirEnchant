@@ -37,18 +37,20 @@ object IntProviderFactory {
 
 // 数提供器接口
 interface IntProvider {
-    fun value(): Int
+    fun value(randomSource: Random? = null): Int
 }
 
 // 常数提供器
 class ConstIntProvider(val value: Int): IntProvider {
-    override fun value() = value
+    override fun value(randomSource: Random?) = value
 
     override fun toString(): String = "Const($value)"
 }
 
 // 加权随机数提供器
-class WeightedRandomIntProvider (val weightedValues: List<Pair<Int, Int>>) : IntProvider {
+class WeightedRandomIntProvider (
+    private val weightedValues: List<Pair<Int, Int>>,
+) : IntProvider {
     private val accumulatedWeights: List<Int>
     private val totalWeight: Int
 
@@ -62,8 +64,9 @@ class WeightedRandomIntProvider (val weightedValues: List<Pair<Int, Int>>) : Int
         totalWeight = accumulatedWeights.last()
     }
 
-    override fun value(): Int {
-        val randomValue = Random.nextInt(totalWeight)
+    override fun value(randomSource: Random?): Int {
+        requireNotNull(randomSource)
+        val randomValue = randomSource.nextInt(totalWeight)
         val index = accumulatedWeights.indexOfFirst { it > randomValue }
         return weightedValues[index].first
     }
@@ -76,12 +79,15 @@ class WeightedRandomIntProvider (val weightedValues: List<Pair<Int, Int>>) : Int
  * 均匀随机数提供器
  * i -> [min, max]
   */
-class UniformRandomIntProvider (val min: Int, val max: Int) : IntProvider {
+class UniformRandomIntProvider (
+    private val min: Int,
+    private val max: Int,
+) : IntProvider {
     init {
         require(min <= max) { "Min must be less than or equal to max" }
     }
 
-    override fun value() = Random.Default.nextInt(min, max + 1)
+    override fun value(randomSource: Random?) = requireNotNull(randomSource).nextInt(min, max + 1)
 
     override fun toString(): String = "UniformRandom[$min,$max]"
 }
@@ -90,16 +96,16 @@ class UniformRandomIntProvider (val min: Int, val max: Int) : IntProvider {
 class GaussianIntProvider(
     private val mean: Double,
     private val stdDev: Double,
-    private val random: Random = Random.Default
 ) : IntProvider {
 
     init {
         require(stdDev > 0) { "Standard deviation must be positive" }
     }
 
-    override fun value(): Int {
-        val gaussian = random.nextDouble().let { u1 ->
-            val u2 = random.nextDouble()
+    override fun value(randomSource: Random?): Int {
+        requireNotNull(randomSource)
+        val gaussian = randomSource.nextDouble().let { u1 ->
+            val u2 = randomSource.nextDouble()
             sqrt(-2.0 * ln(u1)) * cos(2.0 * Math.PI * u2)
         }
         return (mean + gaussian * stdDev).roundToInt()

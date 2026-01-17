@@ -89,20 +89,22 @@ class FirOriginalBook: OriginalBook {
         if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
             val data = originalBookData.rollStrategyData as CustomRollStrategyData
 
-            val enchantingTableResults = data.slotData.map {
-                if (it == null) {
+            val enchantingTableResults = data.slotData.mapIndexed { index, slotData ->
+                if (slotData == null) {
                     TODO()
                 }
 
-                val eData = it.roll()
+                val randomSource = Random(player.enchantmentSeed + index)
+                val eData = slotData.roll(randomSource)
                 val enchantment = eData.enchantment
-                val level = eData.level.value()
-                val failure = eData.failure.value()
+                val level = eData.rollLevel(randomSource)
+                val failure = eData.rollFailure(randomSource)
                 val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
                 FirEnchantmentSetting(enchantmentData, level, failure, 0)
             }
             if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
             // 广播事件
+            //////////////////////////////
 
             // 应用执行
             tableMenu.setRecordEnchantable(enchantable)

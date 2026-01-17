@@ -5,20 +5,18 @@ import io.papermc.paper.registry.RegistryKey
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategyData
 import kotlin.random.Random
 
 
-class CustomRollStrategyData (
+class CustomRollStrategyData(
     val slotData: List<SlotData?>
-//    val slotData1: SlotData?,
-//    val slotData2: SlotData?,
-//    val slotData3: SlotData?,
 ) : RollStrategyData {
 
     companion object {
         fun fromYamlSection(section: ConfigurationSection): CustomRollStrategyData? {
-            val slotData1: SlotData?= section.getConfigurationSection("first-slot")?.let { SlotData.fromYaml(it) }
+            val slotData1: SlotData? = section.getConfigurationSection("first-slot")?.let { SlotData.fromYaml(it) }
             val slotData2: SlotData? = section.getConfigurationSection("second-slot")?.let { SlotData.fromYaml(it) }
             val slotData3: SlotData? = section.getConfigurationSection("third-slot")?.let { SlotData.fromYaml(it) }
             return if (slotData1 == null && slotData2 == null && slotData3 == null) null
@@ -40,24 +38,23 @@ class CustomRollStrategyData (
                         EnchantmentConfigData.fromYaml(it)
                     }
                 return if (costData == null || enchantmentPool.isEmpty()) null
-                else SlotData( costData, enchantmentPool)
+                else SlotData(costData, enchantmentPool)
             }
         }
 
-        fun roll(): EnchantmentConfigData {
+        fun roll(randomSource: Random): EnchantmentConfigData {
             // 累加权重
-             val accumulatedWeights = enchantmentPool.runningFold(0) { acc, e ->
-                 acc + e.weight
-             }.drop(1)
+            val accumulatedWeights = enchantmentPool.runningFold(0) { acc, e ->
+                acc + e.weight
+            }.drop(1)
             // 总权重
-             val totalWeight=accumulatedWeights.last()
+            val totalWeight = accumulatedWeights.last()
             // 随机数
-            val randomValue = Random.nextInt(totalWeight)
+            val randomValue = randomSource.nextInt(totalWeight)
             // 执行抽取
             val index = accumulatedWeights.indexOfFirst { it > randomValue }
             return enchantmentPool[index]
         }
-
 
 
         class EnchantCostData(
@@ -87,28 +84,27 @@ class CustomRollStrategyData (
             val id: String,
             val enchantment: Enchantment,
             val weight: Int,
-            val failure: IntProvider,
-            val level: IntProvider,
-
+            private val failure: IntProvider,
+            private val level: IntProvider,
             ) {
             companion object {
                 fun fromYaml(section: Map<*, *>): EnchantmentConfigData? {
                     val id = section["id"] as? String
                         ?: run {
-                        TODO()
-                    }
-                    val weight =section["weight"] as? Int
+                            TODO()
+                        }
+                    val weight = section["weight"] as? Int
                         ?: run {
-                        TODO()
-                    }
+                            TODO()
+                        }
                     val levelMap = section["level"] as? Map<*, *>
                         ?: run {
-                        TODO()
-                    }
+                            TODO()
+                        }
                     val failureMap = section["failure"] as? Map<*, *>
                         ?: run {
-                        TODO()
-                    }
+                            TODO()
+                        }
 
                     val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
                     val enchantment = enchantmentRegistry.get(NamespacedKey.fromString(id)!!)
@@ -129,6 +125,14 @@ class CustomRollStrategyData (
                         level
                     )
                 }
+            }
+
+            fun rollFailure(randomSource: Random) : Int {
+                return failure.value(randomSource)
+            }
+
+            fun rollLevel(randomSource: Random): Int {
+                return level.value(randomSource)
             }
         }
     }
