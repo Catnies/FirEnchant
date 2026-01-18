@@ -5,8 +5,11 @@ import io.papermc.paper.registry.RegistryKey
 import org.bukkit.NamespacedKey
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
-import org.bukkit.entity.Player
+import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategyData
+import top.catnies.firenchantkt.util.ConfigParser
+import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
+import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
 import kotlin.random.Random
 
 
@@ -24,21 +27,41 @@ class CustomRollStrategyData(
         }
     }
 
+
+
     data class SlotData(
-        val costData: EnchantCostData,
-        val enchantmentPool: List<EnchantmentConfigData>
+        val enchantmentPool: List<EnchantmentConfigData>,
+        val activeItem: ItemRender?,
+        val inactiveItem: ItemRender?,
+        val afterEnchantAction: List<ConfigActionTemplate>?,
     ) {
         companion object {
             fun fromYaml(section: ConfigurationSection): SlotData? {
+                val actions = section.getConfigurationSectionList("actions")
+                    .mapNotNull {
+                        ConfigParser.parseActionTemplate(it, "TODO", "actions")
+                    }.ifEmpty { null }
 
-                val costData: EnchantCostData? = section.getConfigurationSection("cost")
-                    ?.let { EnchantCostData.fromYaml(it) }
+
+                val activeItem = section.getConfigurationSection("active-slot-item")?.let {
+                    ItemRender(it)
+                }
+
+                val inactiveItem = section.getConfigurationSection("inactive-slot-item")?.let {
+                    ItemRender(it)
+                }
+
                 val enchantmentPool: List<EnchantmentConfigData> =
                     section.getMapList("enchantment-pool").mapNotNull {
                         EnchantmentConfigData.fromYaml(it)
                     }
-                return if (costData == null || enchantmentPool.isEmpty()) null
-                else SlotData(costData, enchantmentPool)
+                return if (enchantmentPool.isEmpty()) null
+                else SlotData(
+                    enchantmentPool,
+                    activeItem,
+                    inactiveItem,
+                    actions,
+                    )
             }
         }
 

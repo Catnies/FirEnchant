@@ -2,6 +2,7 @@ package top.catnies.firenchantkt.gui
 
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
+import top.catnies.firenchantkt.engine.ConfigActionTemplate
 
 interface EnchantingTableMenu {
 

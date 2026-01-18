@@ -1,7 +1,6 @@
 package top.catnies.firenchantkt.gui.item
 
 import com.saicone.rtag.RtagItem
-import kotlinx.coroutines.delay
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.ClickType
@@ -34,7 +33,7 @@ class MenuEnchantLineItem(
 
     var canEnchant: Boolean = false
 
-    override fun getItemProvider() = ItemProvider{ string ->
+    override fun getItemProvider() = ItemProvider{ lang ->
         // 未设置时直接返回空
         val enchantmentSetting = tableMenu.getEnchantmentSettingByLine(lineIndex) ?: return@ItemProvider ItemStack.empty().also {
             canEnchant = false
@@ -43,11 +42,19 @@ class MenuEnchantLineItem(
         val itemStack = enchantmentSetting.toItemStack()
         if (tableMenu.activeLine >= lineIndex) {
             canEnchant = true
-            return@ItemProvider renderOnlineItem(itemStack)
+            //
+            val overrideItem = overrideActiveItem?.renderItem(itemStack).also { item ->
+                if (!isBook) RtagItem.edit(item) { it.remove("craftengine:id") }
+            }
+            return@ItemProvider overrideItem ?: renderOnlineItem(itemStack)
         }
         // 如果条件不符合
         canEnchant = false
-        return@ItemProvider renderOfflineItem(itemStack)
+        //
+        val overrideItem = overrideInactiveItem?.renderItem(itemStack).also { item ->
+            if (!isBook) RtagItem.edit(item) { it.remove("craftengine:id") }
+        }
+        return@ItemProvider overrideItem ?: renderOfflineItem(itemStack)
     }
 
     override fun handleClick(
@@ -82,9 +89,12 @@ class MenuEnchantLineItem(
         player.enchantmentSeed = (0..Int.MAX_VALUE).random()
 
         // 执行动作
-        functions.forEach { action ->
+        val toExe = if (overrideActions.isEmpty()) overrideActions else functions
+        toExe.forEach { action ->
             action.executeIfAllowed(mapOf("player" to player))
         }
+        //
+        clearOverride()
     }
 
     // 渲染显示物品
@@ -120,6 +130,26 @@ class MenuEnchantLineItem(
             FirCacheManager.getInstance().addEnchantingHistory(historyTable)
             FirConnectionManager.getInstance().enchantingHistoryData.create(historyTable)
         }
+    }
+
+    private var overrideActions: List<ConfigActionTemplate> = emptyList()
+    private var overrideActiveItem: ItemRender? = null
+    private var overrideInactiveItem: ItemRender? = null
+
+    fun overrideItem(
+        actions: List<ConfigActionTemplate>?,
+        activeItem: ItemRender?,
+        inactiveItem: ItemRender?,
+    ) {
+        actions?.let { this.overrideActions = it }
+        activeItem?.let { this.overrideActiveItem = it }
+        inactiveItem?.let { this.overrideInactiveItem = it }
+    }
+
+    fun clearOverride() {
+        overrideActions = emptyList()
+        overrideActiveItem = null
+        overrideInactiveItem = null
     }
 
 }

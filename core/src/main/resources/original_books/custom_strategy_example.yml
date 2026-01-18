@@ -19,37 +19,6 @@ custom-strategy:
         failure: { int-provider: uniform, min: 10, max: 70 }
 
   second-slot:
-    override:
-      actions:
-        - type: send_message
-          message: "你使用了一号附魔栏了"
-        - type: cost_level
-          cost: 5
-        - type: take_item
-          hooked-plugin: "vanilla"
-          hooked-id: lapis_lazuli
-          count: 1
-      online:
-        lore:
-          - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
-          - " "
-          - "<!i><white><image:enchantment:exp_point> 5 等级"
-          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
-          - " "
-          - "<!i><#a5acb8>→ 点击进行附魔"
-        custom-model-data: 31001
-        item-model: "minecraft:paper"
-      offline:
-        item-name: "<red>材料不足"
-        lore:
-          - "<!i><gray>解锁这个槽位您需要:"
-          - " "
-          - "<!i><white><image:enchantment:exp_point> 5 等级"
-          - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
-          - " "
-          - "<!i><red>→ 无法进行附魔"
-        custom-model-data: 31001
-        item-model: "minecraft:paper"
     enchantment-pool:
       - id: "minecraft:sharpness"
         weight: 5
@@ -59,6 +28,37 @@ custom-strategy:
         weight: 2
         level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
+    actions:
+      - type: send_message
+        message: "你使用了一号附魔栏了"
+      - type: cost_level
+        cost: 5
+      - type: take_item
+        hooked-plugin: "vanilla"
+        hooked-id: lapis_lazuli
+        count: 1
+    active-slot-item:
+      lore:
+        - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
+        - " "
+        - "<!i><white><image:enchantment:exp_point> 5 等级"
+        - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
+        - " "
+        - "<!i><#a5acb8>→ 点击进行附魔"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+    inactive-slot-item:
+      item-name: "<red>材料不足"
+      lore:
+        - "<!i><gray>解锁这个槽位您需要:"
+        - " "
+        - "<!i><white><image:enchantment:exp_point> 5 等级"
+        - "<!i><white><image:enchantment:lapis_lazuli> 1 青金石"
+        - " "
+        - "<!i><red>→ 无法进行附魔"
+      custom-model-data: 31001
+      item-model: "minecraft:paper"
+
 
   third-slot:
     cost: { level: 3, lapis: 3 }

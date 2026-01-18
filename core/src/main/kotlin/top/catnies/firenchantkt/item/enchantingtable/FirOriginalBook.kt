@@ -11,6 +11,7 @@ import top.catnies.firenchantkt.config.extern.CustomRollStrategyData
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
+import top.catnies.firenchantkt.gui.FirEnchantingTableMenu
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
@@ -84,15 +85,22 @@ class FirOriginalBook: OriginalBook {
             tableMenu.refreshCanLight()
             tableMenu.refreshLine()
             return
-        }
 
-        if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
+        } else if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
+
             val data = originalBookData.rollStrategyData as CustomRollStrategyData
 
             val enchantingTableResults = data.slotData.mapIndexed { index, slotData ->
                 if (slotData == null) {
                     TODO()
                 }
+
+                (tableMenu as FirEnchantingTableMenu).overrideSlot(
+                    index,
+                    slotData.afterEnchantAction,
+                    slotData.activeItem,
+                    slotData.inactiveItem,
+                )
 
                 val randomSource = Random(player.enchantmentSeed + index)
                 val eData = slotData.roll(randomSource)
@@ -105,8 +113,9 @@ class FirOriginalBook: OriginalBook {
             if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
             // 广播事件
             //////////////////////////////
-
             // 应用执行
+
+
             tableMenu.setRecordEnchantable(enchantable)
             tableMenu.setEnchantmentResult(enchantingTableResults)
             tableMenu.refreshCanLight()

@@ -6,18 +6,23 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
+import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuEnchantLineItem
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.util.MessageUtils.wrapTitle
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
+import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
+import xyz.xenondevs.invui.gui.AbstractGui
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
+import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.window.Window
 import java.util.function.Consumer
+import java.util.function.Supplier
 
 class FirEnchantingTableMenu(
     val player: Player,
@@ -253,4 +258,19 @@ class FirEnchantingTableMenu(
 
     // 统计 Structure 里有多少个某种 Slot 字符
     private fun getMarkCount(char: Char) = structureArray.sumOf { it.count { c -> c == char } }
+
+    fun overrideSlot(
+        slot: Int,
+        actions: List<ConfigActionTemplate>?,
+        activeItem: ItemRender?,
+        inactiveItem: ItemRender?,
+        ) {
+        require(slot in 0..2)
+
+        lineBottoms[slot].overrideItem(
+            actions,
+            activeItem,
+            inactiveItem
+        )
+    }
 }
