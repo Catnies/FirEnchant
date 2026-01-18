@@ -43,7 +43,7 @@ class MenuEnchantLineItem(
         if (tableMenu.activeLine >= lineIndex) {
             canEnchant = true
             //
-            val overrideItem = overrideActiveItem?.renderItem(itemStack).also { item ->
+            val overrideItem = overrideActiveItem?.renderItem(itemStack)?.also { item ->
                 if (!isBook) RtagItem.edit(item) { it.remove("craftengine:id") }
             }
             return@ItemProvider overrideItem ?: renderOnlineItem(itemStack)
@@ -51,7 +51,7 @@ class MenuEnchantLineItem(
         // 如果条件不符合
         canEnchant = false
         //
-        val overrideItem = overrideInactiveItem?.renderItem(itemStack).also { item ->
+        val overrideItem = overrideInactiveItem?.renderItem(itemStack)?.also { item ->
             if (!isBook) RtagItem.edit(item) { it.remove("craftengine:id") }
         }
         return@ItemProvider overrideItem ?: renderOfflineItem(itemStack)
