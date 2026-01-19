@@ -7,6 +7,7 @@ import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
+import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.gui.item.MenuCustomItem
 import top.catnies.firenchantkt.gui.item.MenuEnchantLineItem
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
@@ -14,15 +15,12 @@ import top.catnies.firenchantkt.util.MessageUtils.wrapTitle
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
-import xyz.xenondevs.invui.gui.AbstractGui
 import xyz.xenondevs.invui.gui.Gui
 import xyz.xenondevs.invui.gui.structure.Structure
 import xyz.xenondevs.invui.inventory.VirtualInventory
 import xyz.xenondevs.invui.inventory.event.UpdateReason
-import xyz.xenondevs.invui.item.Item
 import xyz.xenondevs.invui.window.Window
 import java.util.function.Consumer
-import java.util.function.Supplier
 
 class FirEnchantingTableMenu(
     val player: Player,
@@ -186,7 +184,12 @@ class FirEnchantingTableMenu(
     // 检查玩家能亮几个附魔栏位
     override fun refreshCanLight(): Int {
         val args = mapOf("player" to player)
-        val conditions = arrayOf(conditionLine1, conditionLine2, conditionLine3)
+        //
+        val conditions = arrayOf(
+            overrideConditions[0] ?: conditionLine1,
+            overrideConditions[1] ?: conditionLine2,
+            overrideConditions[2] ?: conditionLine3
+        )
 
         // 找到第一个不满足条件的栏位
         activeLine = conditions.indexOfFirst { condition ->
@@ -221,6 +224,9 @@ class FirEnchantingTableMenu(
 
     // 刷新附魔栏位
     override fun refreshLine() {
+        //
+        clearOverrideConditions()
+
         titleMap[lineStatus]?.let { window.changeTitle(it.wrapTitle(player)) }
         lineBottoms.forEach { it.notifyWindows() }
         bookBottoms.forEach { it.notifyWindows() }
@@ -259,18 +265,29 @@ class FirEnchantingTableMenu(
     // 统计 Structure 里有多少个某种 Slot 字符
     private fun getMarkCount(char: Char) = structureArray.sumOf { it.count { c -> c == char } }
 
+    // 覆写模式
+    private var overrideConditions: MutableMap<Int, List<ConfigConditionTemplate>> = mutableMapOf()
+
+    fun clearOverrideConditions() {
+        overrideConditions.clear()
+    }
+
     fun overrideSlot(
         slot: Int,
         actions: List<ConfigActionTemplate>?,
         activeItem: ItemRender?,
         inactiveItem: ItemRender?,
+        overrideConditions: List<ConfigConditionTemplate>?,
+
         ) {
         require(slot in 0..2)
+
+        overrideConditions?.let{ this.overrideConditions[slot] = it }
 
         lineBottoms[slot].overrideItem(
             actions,
             activeItem,
-            inactiveItem
+            inactiveItem,
         )
     }
 }

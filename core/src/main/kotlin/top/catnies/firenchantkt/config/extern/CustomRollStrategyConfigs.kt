@@ -6,10 +6,12 @@ import org.bukkit.NamespacedKey
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
+import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategyData
 import top.catnies.firenchantkt.util.ConfigParser
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
+import kotlin.collections.mapNotNull
 import kotlin.random.Random
 
 
@@ -34,22 +36,32 @@ class CustomRollStrategyData(
         val activeItem: ItemRender?,
         val inactiveItem: ItemRender?,
         val afterEnchantAction: List<ConfigActionTemplate>?,
+        val conditions: List<ConfigConditionTemplate>?
     ) {
         companion object {
+            const val KEY_ACTIONS = "actions"
+            const val KEY_ACTIVE_SLOT_ITEM = "active-slot-item"
+            const val KEY_INACTIVE_SLOT_ITEM = "inactive-slot-item"
+            const val KEY_PRECONDITIONS = "preconditions"
+
             fun fromYaml(section: ConfigurationSection): SlotData? {
-                val actions = section.getConfigurationSectionList("actions")
+                val actions = section.getConfigurationSectionList(KEY_ACTIONS)
                     .mapNotNull {
-                        ConfigParser.parseActionTemplate(it, "TODO", "actions")
+                        ConfigParser.parseActionTemplate(it, "TODO", KEY_ACTIONS)
                     }.ifEmpty { null }
 
-
-                val activeItem = section.getConfigurationSection("active-slot-item")?.let {
+                val activeItem = section.getConfigurationSection(KEY_ACTIVE_SLOT_ITEM)?.let {
                     ItemRender(it)
                 }
 
-                val inactiveItem = section.getConfigurationSection("inactive-slot-item")?.let {
+                val inactiveItem = section.getConfigurationSection(KEY_INACTIVE_SLOT_ITEM)?.let {
                     ItemRender(it)
                 }
+
+                val conditions = section.getConfigurationSectionList(KEY_PRECONDITIONS)
+                .mapNotNull {
+                    ConfigParser.parseConditionTemplate(it, "TODO", KEY_PRECONDITIONS)
+                }.ifEmpty { null }
 
                 val enchantmentPool: List<EnchantmentConfigData> =
                     section.getMapList("enchantment-pool").mapNotNull {
@@ -61,6 +73,7 @@ class CustomRollStrategyData(
                     activeItem,
                     inactiveItem,
                     actions,
+                    conditions
                     )
             }
         }

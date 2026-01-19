@@ -95,11 +95,13 @@ class FirOriginalBook: OriginalBook {
                     TODO()
                 }
 
+                //
                 (tableMenu as FirEnchantingTableMenu).overrideSlot(
                     index,
                     slotData.afterEnchantAction,
                     slotData.activeItem,
                     slotData.inactiveItem,
+                    slotData.conditions
                 )
 
                 val randomSource = Random(player.enchantmentSeed + index)
@@ -112,10 +114,8 @@ class FirOriginalBook: OriginalBook {
             }
             if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔
             // 广播事件
-            //////////////////////////////
+            ////////////////////////////// TODO
             // 应用执行
-
-
             tableMenu.setRecordEnchantable(enchantable)
             tableMenu.setEnchantmentResult(enchantingTableResults)
             tableMenu.refreshCanLight()
@@ -135,8 +135,5 @@ class FirOriginalBook: OriginalBook {
         }
     }
 
-    private fun customRoll(data: CustomRollStrategyData) {
-
-    }
 
 }

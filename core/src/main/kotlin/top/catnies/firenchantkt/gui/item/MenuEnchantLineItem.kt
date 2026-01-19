@@ -33,7 +33,7 @@ class MenuEnchantLineItem(
 
     var canEnchant: Boolean = false
 
-    override fun getItemProvider() = ItemProvider{ lang ->
+    override fun getItemProvider() = ItemProvider{ _ ->
         // 未设置时直接返回空
         val enchantmentSetting = tableMenu.getEnchantmentSettingByLine(lineIndex) ?: return@ItemProvider ItemStack.empty().also {
             canEnchant = false
@@ -89,7 +89,7 @@ class MenuEnchantLineItem(
         player.enchantmentSeed = (0..Int.MAX_VALUE).random()
 
         // 执行动作
-        val toExe = if (overrideActions.isEmpty()) overrideActions else functions
+        val toExe =  overrideActions ?: functions
         toExe.forEach { action ->
             action.executeIfAllowed(mapOf("player" to player))
         }
@@ -132,7 +132,7 @@ class MenuEnchantLineItem(
         }
     }
 
-    private var overrideActions: List<ConfigActionTemplate> = emptyList()
+    private var overrideActions: List<ConfigActionTemplate>? = null
     private var overrideActiveItem: ItemRender? = null
     private var overrideInactiveItem: ItemRender? = null
 
@@ -147,7 +147,7 @@ class MenuEnchantLineItem(
     }
 
     fun clearOverride() {
-        overrideActions = emptyList()
+        overrideActions = null
         overrideActiveItem = null
         overrideInactiveItem = null
     }
