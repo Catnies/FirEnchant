@@ -17,6 +17,7 @@ class ListenerManger private constructor() {
         Bukkit.getPluginManager().registerEvents(CacheListener(), plugin)
         Bukkit.getPluginManager().registerEvents(BrokenItemListener(), plugin)
         Bukkit.getPluginManager().registerEvents(EnchantingTableListener(), plugin)
+        Bukkit.getPluginManager().registerEvents(LootOverrideListener(), plugin)
     }
 
 }

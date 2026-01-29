@@ -14,6 +14,7 @@ class ConfigManager private constructor() {
         RepairTableConfig.instance,
         EnchantingTableConfig.instance,
         ShowEnchantedBooksConfig.instance,
+        LootOverrideConfig.instance,
     )
 
     // 重载所有配置
