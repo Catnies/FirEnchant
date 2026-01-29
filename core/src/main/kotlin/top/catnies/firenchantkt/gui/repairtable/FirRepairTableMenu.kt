@@ -162,7 +162,7 @@ class FirRepairTableMenu(
 
             // 如果超出了队列上限
             if (repairList.size >= maxRepairItemQueueSize) {
-                player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_QUEUE_FULL)
+                player.sendTranslatableComponent(MessageConstants.REPAIR_TABLE_REPAIR_ITEM_QUEUE_FULL, maxRepairItemQueueSize)
                 return@Consumer
             }
 
