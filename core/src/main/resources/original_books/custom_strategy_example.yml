@@ -7,11 +7,17 @@ custom-strategy:
     enchantment-pool:  # 附魔池
       - id: "minecraft:sharpness" # 魔咒 ID
         weight: 50 # 权重
-        level: { int-provider: uniform, min: 1, max: 4 } # 等级
+        # 等级, 每次附魔结果都是随机的, 包括等级这种数字
+        # 对于随机数, 插件提供了int-provider的机制,
+        # 允许你指定随机数的生成方式, 以满足不同的需求
+        # 常数:    int-provider: const, value: 1, 每次结果都是value
+        # 均匀分布: int-provider: uniform, min: 1, max: 4 , min和max之间(含)的每个整数出现概率相同
+        # 高斯分布: int-provider: normal, mean: 2.0, deviation: 1.0, mean代表平均值, deviation代表标准差,均为浮点数, 结果会四舍五入为整数
+        level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
       - id: "minecraft:looting"
         weight: 50
-        level: { int-provider: uniform, min: 1, max: 4 }
+        level: { int-provider: const, value: 1 }
         failure: { int-provider: uniform, min: 10, max: 70 }
 
   second-slot: # 附魔台第二个附魔槽设置
@@ -24,26 +30,26 @@ custom-strategy:
         weight: 2
         level: { int-provider: uniform, min: 1, max: 4 }
         failure: { int-provider: uniform, min: 10, max: 70 }
-    preconditions:
-      - type: permission
+    preconditions: # [可空] 进行附魔前的判断, 所有条件都满足时才允许附魔
+      - type: permission # 要求玩家有权限节点 enchantingtable.use
         permission: "enchantingtable.use"
-      - type: ">="
+      - type: ">=" # 要求玩家等级大于等于20
         value1: "%player_level%"
         value2: 20
-      - type: "has_item"
+      - type: "has_item" # 要求玩家有3个青金石
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 3
-    actions: # 可选, 覆写默认的附魔行为
-      - type: send_message
+    actions: # [可空] 附魔后额外触发的行为
+      - type: send_message # 发送信息
         message: "你使用了二号附魔栏"
-      - type: cost_level
+      - type: cost_level # 扣除玩家等级
         cost: 5
-      - type: take_item
+      - type: take_item # 扣除玩家1个青金石
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 1
-    active-slot-item: # 可选, 覆写默认的UI物品及描述, 当此栏附魔可进行时
+    active-slot-item: # [可空] 覆写默认的此栏附魔可进行时的UI物品及描述
       lore:
         - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
         - " "
@@ -53,7 +59,7 @@ custom-strategy:
         - "<!i><#a5acb8>→ 点击进行附魔"
       custom-model-data: 31001
       item-model: "minecraft:paper"
-    inactive-slot-item: # 可选, 覆写默认的UI物品及描述, 当此栏附魔不可进行时
+    inactive-slot-item: # [可空] 覆写默认的此栏附魔不可进行时的UI物品及描述
       item-name: "<red>材料不足"
       lore:
         - "<!i><gray>解锁这个槽位您需要:"
@@ -64,7 +70,6 @@ custom-strategy:
         - "<!i><red>→ 无法进行附魔"
       custom-model-data: 31001
       item-model: "minecraft:paper"
-
 
   third-slot:
     enchantment-pool:

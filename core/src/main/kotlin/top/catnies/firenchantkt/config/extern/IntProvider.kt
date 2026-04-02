@@ -30,6 +30,24 @@ object IntProviderFactory {
                 if (min == null || max == null) null
                 else UniformRandomIntProvider(min, max)
             }
+            "normal" -> {
+                val mean = mapLike.get("mean") as? Double
+                val stdDev = mapLike.get("deviation") as? Double
+                if (mean == null || stdDev == null) null
+                else GaussianIntProvider(mean, stdDev)
+            }
+            "const" -> {
+                val value = mapLike.get("value") as? Int
+                if (value == null ) null
+                else ConstIntProvider(value)
+            }
+            // TODO
+//            "weighted"-> {
+//                val list =  mapLike.get("values") as? List<>
+//                if ()
+//                    elsse
+//                WeightedRandomIntProvider(list)
+//            }
             else -> null
         }
     }
@@ -39,6 +57,8 @@ object IntProviderFactory {
 interface IntProvider {
     fun value(randomSource: Random? = null): Int
 }
+
+
 
 // 常数提供器
 class ConstIntProvider(val value: Int): IntProvider {
