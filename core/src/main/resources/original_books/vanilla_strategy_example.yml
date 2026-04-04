@@ -28,6 +28,7 @@ vanilla-enchantments:
   import:
     - "iron_axe"
   # 导入指定的魔咒, 例如填写 "minecraft:mending" 代表导入经验修补, 这样这个附魔书就可以在附魔台中有概率抽到经验修补了!
+  # 你也可以填写 "!minecraft:unbreaking" 代表从列表中移除耐久
   enchantments:
     - "minecraft:mending"
 
