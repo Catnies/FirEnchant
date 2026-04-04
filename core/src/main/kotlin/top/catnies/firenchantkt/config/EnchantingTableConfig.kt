@@ -251,15 +251,22 @@ class EnchantingTableConfig private constructor():
                             return@fold acc
                         }
                         // 导入普通魔咒
+                        val removeEnchantments = mutableSetOf<Enchantment>()
                         val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments").fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
-                            val readEnchantment = enchantmentRegistry.get(Key.key(enchantment))
+                            val remove = enchantment[0] == '!'
+                            val readString = if (remove) enchantment.substring(1) else enchantment
+                            val readEnchantment = enchantmentRegistry.get(Key.key(readString))
                             if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
-                            else { acc.add(readEnchantment) }
+                            else {
+                                if (remove) removeEnchantments.add(readEnchantment)
+                                else acc.add(readEnchantment)
+                            }
                             return@fold acc
                         }
                         // 合并检查
                         enchantments.addAll(importEnchantments)
                         enchantments.addAll(commonEnchantments)
+                        enchantments.removeAll(removeEnchantments)
                         if (enchantments.isEmpty()) {
                             sendMissingKeyWarn(file.name, "vanilla-enchantments")
                             return@mapNotNull null
