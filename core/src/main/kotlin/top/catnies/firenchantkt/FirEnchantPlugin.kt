@@ -1,12 +1,11 @@
 package top.catnies.firenchantkt
 
+import PluginInit
 import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.command.CommandManager
@@ -23,15 +22,9 @@ import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.item.brokengear.FirBrokenGear
-import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.language.TranslationManager
-import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
-import top.catnies.firenchantkt.lazyinit.ItemsAdderLoadListener
-import top.catnies.firenchantkt.lazyinit.NexoLoadListener
-import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.EnchantmentUtils
-import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils.plugin
 import xyz.xenondevs.invui.InvUI
 import kotlin.coroutines.CoroutineContext
@@ -63,7 +56,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
     override fun onEnable() {
         InvUI.getInstance().setPlugin(this) // GUI依赖库
-        this.registerLateInitListener()     // 延时初始化器
+        PluginInit.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器
         logger.info("FirEnchant Plugin Enabled!")
@@ -86,35 +79,6 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         FirEnchantingTableRegistry.instance.reload() // 附魔台物品注册表
 
         EnchantmentUtils.ENCHANT_CACHE.clear() // 清除物品的可应用魔咒的缓存
-    }
-
-    // 延迟初始化注册表实现
-    private fun registerLateInitListener() {
-        when {
-            // CraftEngine
-            Bukkit.getPluginManager().getPlugin("CraftEngine") != null -> {
-                Bukkit.getPluginManager().registerEvents(CraftEngineLoadListener(this), this)
-                Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "CraftEngine")
-            }
-            // Nexo
-            Bukkit.getPluginManager().getPlugin("Nexo") != null -> {
-                Bukkit.getPluginManager().registerEvents(NexoLoadListener(this), this)
-                Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Nexo")
-            }
-            // Oraxen
-            Bukkit.getPluginManager().getPlugin("Oraxen") != null -> {
-                Bukkit.getPluginManager().registerEvents(OraxenLoadListener(this), this)
-                Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Oraxen")
-            }
-            // ItemsAdder
-            Bukkit.getPluginManager().getPlugin("ItemsAdder") != null -> {
-                Bukkit.getPluginManager().registerEvents(ItemsAdderLoadListener(this), this)
-                Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "ItemsAdder")
-            }
-            else -> {
-                initRegistry()
-            }
-        }
     }
 
     // 初始化注册表
