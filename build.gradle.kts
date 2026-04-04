@@ -90,8 +90,8 @@ tasks {
     }
 
     shadowJar {
-        dependsOn(":nms:v1_21_R1:reobfJar")
-        dependsOn(":nms:v1_21_R2:reobfJar")
+//        dependsOn(":nms:v1_21_R1:reobfJar")
+//        dependsOn(":nms:v1_21_R2:reobfJar")
         dependsOn(":nms:v1_21_R3:reobfJar")
         dependsOn(":nms:v1_21_R4:reobfJar")
         dependsOn(":nms:v1_21_R5:reobfJar")

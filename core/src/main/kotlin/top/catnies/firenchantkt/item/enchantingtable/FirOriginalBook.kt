@@ -86,16 +86,19 @@ class FirOriginalBook: OriginalBook {
             tableMenu.refreshLine()
             return
 
-        } else if (originalBookData.rollStrategy == RollStrategy.CUSTOM) {
+        } else if (originalBookData.rollStrategy == RollStrategy.CUSTOM) { // 如果此本起源书的抽取策略是自定义
 
+            // 获取抽取策略数据
             val data = originalBookData.rollStrategyData as CustomRollStrategyData
 
             val enchantingTableResults = data.slotData.mapIndexed { index, slotData ->
+                // 遍历3个附魔槽的配置
+
                 if (slotData == null) {
-                    TODO()
+                    TODO("错误的配置, 槽 $index 无法读取")
                 }
 
-                //
+                // 覆写菜单中的按钮数据
                 (tableMenu as FirEnchantingTableMenu).overrideSlot(
                     index,
                     slotData.afterEnchantAction,
@@ -107,9 +110,11 @@ class FirOriginalBook: OriginalBook {
                 val randomSource = Random(player.enchantmentSeed + index)
                 val eData = slotData.roll(randomSource)
                 val enchantment = eData.enchantment
-                val level = eData.rollLevel(randomSource)
-                val failure = eData.rollFailure(randomSource)
+                val level = eData.rollLevel(randomSource) // 使用随机数提供器抽取等级
+                val failure = eData.rollFailure(randomSource) // 使用随机数提供器抽取失败率
                 val enchantmentData = FirEnchantAPI.getEnchantmentData(enchantment.key)!!
+
+                // 返回最终附魔结果
                 FirEnchantmentSetting(enchantmentData, level, failure, 0)
             }
             if (enchantingTableResults.isEmpty()) return // 没有结果魔咒, 无法附魔

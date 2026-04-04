@@ -132,6 +132,7 @@ class MenuEnchantLineItem(
         }
     }
 
+    // 自定义策略覆写
     private var overrideActions: List<ConfigActionTemplate>? = null
     private var overrideActiveItem: ItemRender? = null
     private var overrideInactiveItem: ItemRender? = null

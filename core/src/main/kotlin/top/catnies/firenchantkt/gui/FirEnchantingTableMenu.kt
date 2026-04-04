@@ -25,7 +25,7 @@ import java.util.function.Consumer
 class FirEnchantingTableMenu(
     val player: Player,
     var bookShelves: Int = 0
-): EnchantingTableMenu {
+) : EnchantingTableMenu {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -69,6 +69,7 @@ class FirEnchantingTableMenu(
     var lineStatus: String = "222"
     private val enchantmentSettings = arrayOfNulls<EnchantmentSetting>(3)
     private val enchantingTableContext by lazy { EnchantingTableContext(player, bookShelves, this) }
+
     // 如果关闭菜单则返回输入框里的所有物品.
     private val closeHandlers: MutableList<Runnable> = mutableListOf(
         Runnable {
@@ -128,14 +129,62 @@ class FirEnchantingTableMenu(
     // 创建附魔栏物品
     private fun buildLineBottoms() {
         lineBottoms = listOf(
-            MenuEnchantLineItem(this, conditionLine1, actionLine1, 1, enchantmentLine1.onlineRender, enchantmentLine1.offlineRender, false),
-            MenuEnchantLineItem(this, conditionLine2, actionLine2, 2, enchantmentLine2.onlineRender, enchantmentLine2.offlineRender, false),
-            MenuEnchantLineItem(this, conditionLine3, actionLine3, 3, enchantmentLine3.onlineRender, enchantmentLine3.offlineRender, false)
+            MenuEnchantLineItem(
+                this,
+                conditionLine1,
+                actionLine1,
+                1,
+                enchantmentLine1.onlineRender,
+                enchantmentLine1.offlineRender,
+                false
+            ),
+            MenuEnchantLineItem(
+                this,
+                conditionLine2,
+                actionLine2,
+                2,
+                enchantmentLine2.onlineRender,
+                enchantmentLine2.offlineRender,
+                false
+            ),
+            MenuEnchantLineItem(
+                this,
+                conditionLine3,
+                actionLine3,
+                3,
+                enchantmentLine3.onlineRender,
+                enchantmentLine3.offlineRender,
+                false
+            )
         )
         bookBottoms = listOf(
-            MenuEnchantLineItem(this, conditionLine1, actionLine1, 1, enchantmentBook1.onlineRender, enchantmentBook1.offlineRender, true),
-            MenuEnchantLineItem(this, conditionLine2, actionLine2, 2, enchantmentBook2.onlineRender, enchantmentBook2.offlineRender, true),
-            MenuEnchantLineItem(this, conditionLine3, actionLine3, 3, enchantmentBook3.onlineRender, enchantmentBook3.offlineRender, true)
+            MenuEnchantLineItem(
+                this,
+                conditionLine1,
+                actionLine1,
+                1,
+                enchantmentBook1.onlineRender,
+                enchantmentBook1.offlineRender,
+                true
+            ),
+            MenuEnchantLineItem(
+                this,
+                conditionLine2,
+                actionLine2,
+                2,
+                enchantmentBook2.onlineRender,
+                enchantmentBook2.offlineRender,
+                true
+            ),
+            MenuEnchantLineItem(
+                this,
+                conditionLine3,
+                actionLine3,
+                3,
+                enchantmentBook3.onlineRender,
+                enchantmentBook3.offlineRender,
+                true
+            )
         )
     }
 
@@ -211,6 +260,7 @@ class FirEnchantingTableMenu(
                 2 -> "110"
                 else -> "111"
             }
+
             hasSettings.none { it } -> "222"
             !hasSettings[1] -> if (activeLine < 1) "022" else "122"
             !hasSettings[2] -> when {
@@ -218,6 +268,7 @@ class FirEnchantingTableMenu(
                 activeLine < 2 -> "102"
                 else -> "112"
             }
+
             else -> "000"
         }
     }
@@ -277,17 +328,36 @@ class FirEnchantingTableMenu(
         actions: List<ConfigActionTemplate>?,
         activeItem: ItemRender?,
         inactiveItem: ItemRender?,
-        overrideConditions: List<ConfigConditionTemplate>?,
-
-        ) {
+        overrideConditions: List<ConfigConditionTemplate>?
+    ) {
         require(slot in 0..2)
 
-        overrideConditions?.let{ this.overrideConditions[slot] = it }
+        overrideConditions?.let { this.overrideConditions[slot] = it }
 
+        // 行按钮覆写
         lineBottoms[slot].overrideItem(
             actions,
             activeItem,
             inactiveItem,
+        )
+
+        // 书按钮覆写
+        bookBottoms[slot].offlineRender
+        val newActiveItem = if (activeItem != null) {
+            bookBottoms[slot].onlineRender.lore = activeItem.lore
+            bookBottoms[slot].onlineRender
+        }
+        else activeItem
+
+        val newInactiveItem = if (inactiveItem != null) {
+            bookBottoms[slot].offlineRender.lore = inactiveItem.lore
+            bookBottoms[slot].offlineRender
+        } else inactiveItem
+
+        bookBottoms[slot].overrideItem(
+            actions,
+            newActiveItem,
+            newInactiveItem,
         )
     }
 }

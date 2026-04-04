@@ -15,7 +15,14 @@ import kotlin.collections.mapNotNull
 import kotlin.random.Random
 
 
+/**
+ * 自定义策略数据
+ */
 class CustomRollStrategyData(
+    /**
+     * 槽位自定义设置
+     * 通常是3个, 对应3行附魔槽
+     */
     val slotData: List<SlotData?>
 ) : RollStrategyData {
 
@@ -29,13 +36,26 @@ class CustomRollStrategyData(
         }
     }
 
-
-
     data class SlotData(
+        /**
+         * 附魔池
+         */
         val enchantmentPool: List<EnchantmentConfigData>,
+        /**
+         * 覆写, 可选, 可附魔结果展示
+         */
         val activeItem: ItemRender?,
+        /**
+         * 覆写, 可选, 不可附魔结果展示
+         */
         val inactiveItem: ItemRender?,
+        /**
+         * 覆写, 可选, 附魔后动作
+         */
         val afterEnchantAction: List<ConfigActionTemplate>?,
+        /**
+         * 覆写, 可选, 附魔前判断
+         */
         val conditions: List<ConfigConditionTemplate>?
     ) {
         companion object {
@@ -78,6 +98,9 @@ class CustomRollStrategyData(
             }
         }
 
+        /**
+         * 附魔池抽取附魔函数, 抽1
+         */
         fun roll(randomSource: Random): EnchantmentConfigData {
             // 累加权重
             val accumulatedWeights = enchantmentPool.runningFold(0) { acc, e ->
@@ -125,29 +148,33 @@ class CustomRollStrategyData(
             ) {
             companion object {
                 fun fromYaml(section: Map<*, *>): EnchantmentConfigData? {
+                    // 读取配置键
                     val id = section["id"] as? String
                         ?: run {
-                            TODO()
+                            TODO("缺键处理")
                         }
                     val weight = section["weight"] as? Int
                         ?: run {
-                            TODO()
+                            TODO("缺键处理")
                         }
                     val levelMap = section["level"] as? Map<*, *>
                         ?: run {
-                            TODO()
+                            TODO("缺键处理")
                         }
                     val failureMap = section["failure"] as? Map<*, *>
                         ?: run {
-                            TODO()
+                            TODO("缺键处理")
                         }
 
+                    // 读取服务器上的附魔大全
                     val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
+                    // 检测配置中读取的附魔id是否在其中
                     val enchantment = enchantmentRegistry.get(NamespacedKey.fromString(id)!!)
                         ?: run {
                             return null
                         }
 
+                    // 读取等级和失败率的配置, 构建为随机数提供器
                     val level = IntProviderFactory.fromMap(levelMap)
                     val failure = IntProviderFactory.fromMap(failureMap)
 

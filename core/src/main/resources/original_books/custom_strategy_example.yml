@@ -1,3 +1,4 @@
+# 这个文件不会被读取, 只是示例
 hooked-plugin: "vanilla"
 hooked-id: "book"
 roll-strategy: "CUSTOM"
@@ -49,6 +50,8 @@ custom-strategy:
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 1
+      - type: play_sound # 播放声音
+        sound: "minecraft:block.enchantment_table.use"
     active-slot-item: # [可空] 覆写默认的此栏附魔可进行时的UI物品及描述
       lore:
         - "{original_lore}" # 带有 {original_lore} 的行, 整一行会被替换成结果附魔书的lore;
