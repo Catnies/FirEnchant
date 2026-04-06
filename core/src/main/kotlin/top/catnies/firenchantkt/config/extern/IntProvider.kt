@@ -41,13 +41,28 @@ object IntProviderFactory {
                 if (value == null ) null
                 else ConstIntProvider(value)
             }
-            // TODO
-//            "weighted"-> {
-//                val list =  mapLike.get("values") as? List<>
-//                if ()
-//                    elsse
-//                WeightedRandomIntProvider(list)
-//            }
+            "weighted"-> {
+                val entries = MapLike.adapt(mapLike.get("entries"))
+                val list = mutableListOf<WeightedValue>()
+                entries?.keySet()?.forEach { v->
+                    val value = v.toInt()
+                    val weight = entries.get(v) as Int
+                    list += WeightedValue(
+                        weight = weight,
+                        value = value
+                    )
+                }
+//                val entries =  mapLike.get("entries") as?  Map<*, *>
+//                val list = entries?.map { entry ->
+//                    val weight = (entry.key as String).toInt()
+//                    val value = entry.value as Int
+//                    WeightedValue(
+//                        weight = weight,
+//                        value = value
+//                    )
+//                } ?: return null
+                WeightedRandomIntProvider(list)
+            }
             else -> null
         }
     }
@@ -67,19 +82,24 @@ class ConstIntProvider(val value: Int): IntProvider {
     override fun toString(): String = "Const($value)"
 }
 
+class WeightedValue(
+    val weight: Int,
+    val value: Int
+)
+
 // 加权随机数提供器
 class WeightedRandomIntProvider (
-    private val weightedValues: List<Pair<Int, Int>>,
+    private val weightedValues: List<WeightedValue>,
 ) : IntProvider {
     private val accumulatedWeights: List<Int>
     private val totalWeight: Int
 
     init {
-        require(weightedValues.isNotEmpty()) { "Weighted values list cannot be empty" }
-        require(weightedValues.all { it.second > 0 }) { "All weights must be positive" }
+        require(weightedValues.isNotEmpty()) { "加权数值不能为空" }
+        require(weightedValues.all { it.weight > 0 }) { "权重必须为正整数" }
 
-        accumulatedWeights = weightedValues.runningFold(0) { acc, (_, weight) ->
-            acc + weight
+        accumulatedWeights = weightedValues.runningFold(0) { acc, wv ->
+            acc + wv.weight
         }.drop(1)
         totalWeight = accumulatedWeights.last()
     }
@@ -88,11 +108,11 @@ class WeightedRandomIntProvider (
         requireNotNull(randomSource)
         val randomValue = randomSource.nextInt(totalWeight)
         val index = accumulatedWeights.indexOfFirst { it > randomValue }
-        return weightedValues[index].first
+        return weightedValues[index].value
     }
 
     override fun toString(): String =
-        "WeightedRandom${weightedValues.map { "${it.first}:${it.second}" }}"
+        "WeightedRandom${weightedValues.map { "${it.value}:${it.weight}" }}"
 }
 
 /**

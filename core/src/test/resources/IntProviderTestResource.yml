@@ -1,0 +1,9 @@
+map:
+  int-provider: weighted # 加权随机
+  entries:
+    # 左边是数值, 右边是权重
+    1: 54
+    2: 20
+    3: 10
+    4: 5
+    5: 1

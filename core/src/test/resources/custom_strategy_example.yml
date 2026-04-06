@@ -1,7 +1,9 @@
+#
+#
 # 这个文件不会被读取, 只是示例
 #
 #
-#
+
 hooked-plugin: "vanilla"
 hooked-id: "book"
 roll-strategy: "CUSTOM"
@@ -16,9 +18,18 @@ custom-strategy:
         # 允许你指定随机数的生成方式, 以满足不同的需求
         # 常数:    int-provider: const, value: 1, 每次结果都是value
         # 均匀分布: int-provider: uniform, min: 1, max: 4 , min和max之间(含)的每个整数出现概率相同
-        # 高斯分布: int-provider: normal, mean: 2.0, deviation: 1.0, mean代表平均值, deviation代表标准差,均为浮点数, 结果会四舍五入为整数
+        # 正态分布: int-provider: normal, mean: 2.0, deviation: 1.0, mean代表平均值, deviation代表标准差,均为浮点数, 结果会四舍五入为整数
         level: { int-provider: uniform, min: 1, max: 4 }
-        failure: { int-provider: uniform, min: 10, max: 70 }
+        failure:
+          int-provider: weighted # 加权随机
+          entries:
+            # 左边是数值, 右边是权重
+            1: 54
+            2: 20
+            3: 10
+            4: 5
+            5: 1
+
       - id: "minecraft:looting"
         weight: 50
         level: { int-provider: const, value: 1 }
