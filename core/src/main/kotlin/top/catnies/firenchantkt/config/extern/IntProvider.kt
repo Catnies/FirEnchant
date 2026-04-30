@@ -12,13 +12,7 @@ import kotlin.random.Random
  * 读取 yaml 转化为 IntProvider 实现类
  */
 object IntProviderFactory {
-    fun fromYaml(section: ConfigurationSection): IntProvider? {
-        return build(MapLike.adapt(section))
-    }
-
-    fun fromMap(map: Map<*, *>): IntProvider? {
-        return build(MapLike.adapt(map))
-    }
+    fun fromNode(node: Any): IntProvider? = build(MapLike.adapt(node))
 
     fun build(mapLike: MapLike?): IntProvider? {
         if (mapLike == null) return null
@@ -52,15 +46,6 @@ object IntProviderFactory {
                         value = value
                     )
                 }
-//                val entries =  mapLike.get("entries") as?  Map<*, *>
-//                val list = entries?.map { entry ->
-//                    val weight = (entry.key as String).toInt()
-//                    val value = entry.value as Int
-//                    WeightedValue(
-//                        weight = weight,
-//                        value = value
-//                    )
-//                } ?: return null
                 WeightedRandomIntProvider(list)
             }
             else -> null
@@ -124,7 +109,7 @@ class UniformRandomIntProvider (
     private val max: Int,
 ) : IntProvider {
     init {
-        require(min <= max) { "Min must be less than or equal to max" }
+        require(min <= max) { "最大值必须大于等于最小值" }
     }
 
     override fun value(randomSource: Random?) = requireNotNull(randomSource).nextInt(min, max + 1)
