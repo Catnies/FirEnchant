@@ -175,8 +175,8 @@ class CustomRollStrategyData(
                         }
 
                     // 读取等级和失败率的配置, 构建为随机数提供器
-                    val level = IntProviderFactory.fromMap(levelMap)
-                    val failure = IntProviderFactory.fromMap(failureMap)
+                    val level = IntProviderFactory.fromNode(levelMap)
+                    val failure = IntProviderFactory.fromNode(failureMap)
 
                     if (level == null || failure == null) return null
 
