@@ -12,6 +12,8 @@ import org.jetbrains.annotations.Nullable;
 import top.catnies.firenchantkt.api.FirEnchantAPI;
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class CustomFishingProvider implements ItemProvider {
 
     // 魔咒|等级|成功率
@@ -21,19 +23,23 @@ public class CustomFishingProvider implements ItemProvider {
     @Override
     public ItemStack buildItem(@NotNull Context<Player> context, @NotNull String builderString) {
         String[] split = builderString.split("\\|");
-        String enchantmentName = split[0].contains("minecraft:") ? "minecraft:" + split[0] : split[0];
+        String enchantmentName = split[0].contains("minecraft:") ? split[0] : "minecraft:" + split[0];
 
         // 等级和失败率
         int level;
-        if (split[1].contains("..")){
-            String[] levelString = split[1].split("..");
-            level = (int) (Math.random() * (Integer.parseInt(levelString[1]) - Integer.parseInt(levelString[0])) + Integer.parseInt(levelString[0]));
+        if (split[1].contains("~")){
+            String[] levelString = split[1].split("~");
+            int min = Integer.parseInt(levelString[0]);
+            int max = Integer.parseInt(levelString[1]);
+            level = ThreadLocalRandom.current().nextInt(max - min + 1) + min;
         } else { level = Integer.parseInt(split[1]); }
 
         int failure;
-        if (split[2].contains("..")){
-            String[] failureString = split[2].split("..");
-            failure = (int) (Math.random() * (Integer.parseInt(failureString[1]) - Integer.parseInt(failureString[0])) + Integer.parseInt(failureString[0]));
+        if (split[2].contains("~")){
+            String[] failureString = split[2].split("~");
+            int min = Integer.parseInt(failureString[0]);
+            int max = Integer.parseInt(failureString[1]);
+            failure = ThreadLocalRandom.current().nextInt(max - min + 1) + min;
         } else { failure = Integer.parseInt(split[2]); }
 
         if (level <= 0 || failure <= 0)  return new ItemStack(Material.AIR);
