@@ -14,7 +14,11 @@ class CraftEngineItemProvider private constructor(
 
     @Nullable
     override fun getItemById(id: String): ItemStack? {
-        return CraftEngineItems.byId(Key.of(id))?.buildItemStack()
+//        return CraftEngineItems.byId(Key.of(id))?.buildItemStack()
+        val key = Key.of(id)
+        val ceItem = CraftEngineItems.byId(key)
+        val bukkitItem = ceItem?.buildBukkitItem()
+        return bukkitItem
     }
 
     @Nullable

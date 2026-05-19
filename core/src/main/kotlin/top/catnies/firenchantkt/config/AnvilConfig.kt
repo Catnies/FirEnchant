@@ -64,10 +64,10 @@ class AnvilConfig private constructor():
         /*附魔书设置*/
         EB_USE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_USE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
-        EB_FAILURE_CORRECTION_MINMAX_ENABLED = config().getBoolean("enchanted-book.failure-correction.min-max-limit.enable", false)
-        EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.failure-correction.min-max-limit.min-success", 15)
-        EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.failure-correction.min-max-limit.max-failure", 90)
-        EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.failure-correction.history-compensation.enable", false)
+        EB_FAILURE_CORRECTION_MINMAX_ENABLED = config().getBoolean("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.enable", false)
+        EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.min-success", 15)
+        EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.max-failure", 90)
+        EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.failure-correction.history-compensation.enable", false)
         EB_BREAK_FAILED_ITEM = config().getBoolean("enchanted-book.use-enchanted-book.break-failed-item", true)
         EB_FAIL_BACK_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.fail-back-item.enable", false)
         EB_FAIL_BACK_ITEM = EB_FAIL_BACK_ENABLE.takeIf { it }?.let {

@@ -38,9 +38,9 @@ object IntProviderFactory {
                 val obj = node.get("entries")
                 val weightedValueEntries = Node.adapt(obj)
                 val list = mutableListOf<WeightedValue>()
-                weightedValueEntries?.keySet()?.forEach { vk ->
+                weightedValueEntries.keySet().forEach { vk ->
                     val value = vk.toInt()
-                    val weight = weightedValueEntries.get(vk) as Int
+                    val weight = weightedValueEntries.get(vk).toString().toInt()
                     list += WeightedValue(
                         weight = weight,
                         value = value
