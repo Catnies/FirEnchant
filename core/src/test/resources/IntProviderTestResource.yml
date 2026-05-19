@@ -1,5 +1,6 @@
-map:
-  int-provider: weighted # 加权随机
+weighted-int-provider-for-test:
+  # 加权随机
+  int-provider: weighted
   entries:
     # 左边是数值, 右边是权重
     1: 54
@@ -7,3 +8,46 @@ map:
     3: 10
     4: 5
     5: 1
+
+const-int-provider-for-test:
+  # 常数, 每次结果都是value
+  int-provider: const
+  value: 1
+
+uniform-int-provider-for-test:
+  # 均匀分布, 10到70每个数字概率均等
+  int-provider: uniform
+  min: 10
+  max: 70
+
+normal-int-provider-for-test:
+  # 正态分布,  结果会四舍五入为整数
+  int-provider: normal
+  mean: 2.0 # 平均值
+  deviation: 1.0 # 标准差
+
+
+list:
+  # 加权随机
+  - int-provider: weighted
+    entries:
+      # 左边是数值, 右边是权重
+      1: 54
+      2: 20
+      3: 10
+      4: 5
+      5: 1
+
+  # 常数, 每次结果都是value
+  - int-provider: const
+    value: 1
+
+    # 均匀分布, 10到70每个数字概率均等
+  - int-provider: uniform
+    min: 10
+    max: 70
+
+  # 正态分布,  结果会四舍五入为整数
+  - int-provider: normal
+    mean: 2.0 # 平均值
+    deviation: 1.0 # 标准差

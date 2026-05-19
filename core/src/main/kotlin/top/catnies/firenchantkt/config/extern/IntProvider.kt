@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.config.extern
 
-import org.bukkit.configuration.ConfigurationSection
 import kotlin.math.cos
 import kotlin.math.ln
 import kotlin.math.roundToInt
@@ -12,58 +11,45 @@ import kotlin.random.Random
  * 读取 yaml 转化为 IntProvider 实现类
  */
 object IntProviderFactory {
-    fun fromYaml(section: ConfigurationSection): IntProvider? {
-        return build(MapLike.adapt(section))
-    }
-
-    fun fromMap(map: Map<*, *>): IntProvider? {
-        return build(MapLike.adapt(map))
-    }
-
-    fun build(mapLike: MapLike?): IntProvider? {
-        if (mapLike == null) return null
-        val type = mapLike.get("int-provider")
-        return when (type) {
+    fun fromNode(yamlValue: Any): IntProvider? {
+        val node = Node.adapt(yamlValue)
+        return when (val type = node.get("int-provider")) {
             "uniform" -> {
-                val min = mapLike.get("min") as? Int
-                val max = mapLike.get("max") as? Int
+                val min = node.get("min") as? Int
+                val max = node.get("max") as? Int
                 if (min == null || max == null) null
                 else UniformRandomIntProvider(min, max)
             }
+
             "normal" -> {
-                val mean = mapLike.get("mean") as? Double
-                val stdDev = mapLike.get("deviation") as? Double
+                val mean = node.get("mean") as? Double
+                val stdDev = node.get("deviation") as? Double
                 if (mean == null || stdDev == null) null
                 else GaussianIntProvider(mean, stdDev)
             }
+
             "const" -> {
-                val value = mapLike.get("value") as? Int
-                if (value == null ) null
+                val value = node.get("value") as? Int
+                if (value == null) null
                 else ConstIntProvider(value)
             }
-            "weighted"-> {
-                val entries = MapLike.adapt(mapLike.get("entries"))
+
+            "weighted" -> {
+                val obj = node.get("entries")
+                val weightedValueEntries = Node.adapt(obj)
                 val list = mutableListOf<WeightedValue>()
-                entries?.keySet()?.forEach { v->
-                    val value = v.toInt()
-                    val weight = entries.get(v) as Int
+                weightedValueEntries.keySet().forEach { vk ->
+                    val value = vk.toInt()
+                    val weight = weightedValueEntries.get(vk).toString().toInt()
                     list += WeightedValue(
                         weight = weight,
                         value = value
                     )
                 }
-//                val entries =  mapLike.get("entries") as?  Map<*, *>
-//                val list = entries?.map { entry ->
-//                    val weight = (entry.key as String).toInt()
-//                    val value = entry.value as Int
-//                    WeightedValue(
-//                        weight = weight,
-//                        value = value
-//                    )
-//                } ?: return null
                 WeightedRandomIntProvider(list)
             }
-            else -> null
+
+            else -> throw RuntimeException("未知的整型数字提供器类型: $type")
         }
     }
 }
@@ -74,9 +60,8 @@ interface IntProvider {
 }
 
 
-
 // 常数提供器
-class ConstIntProvider(val value: Int): IntProvider {
+class ConstIntProvider(val value: Int) : IntProvider {
     override fun value(randomSource: Random?) = value
 
     override fun toString(): String = "Const($value)"
@@ -88,7 +73,7 @@ class WeightedValue(
 )
 
 // 加权随机数提供器
-class WeightedRandomIntProvider (
+class WeightedRandomIntProvider(
     private val weightedValues: List<WeightedValue>,
 ) : IntProvider {
     private val accumulatedWeights: List<Int>
@@ -118,13 +103,13 @@ class WeightedRandomIntProvider (
 /**
  * 均匀随机数提供器
  * i -> [min, max]
-  */
-class UniformRandomIntProvider (
+ */
+class UniformRandomIntProvider(
     private val min: Int,
     private val max: Int,
 ) : IntProvider {
     init {
-        require(min <= max) { "Min must be less than or equal to max" }
+        require(min <= max) { "最大值必须大于等于最小值" }
     }
 
     override fun value(randomSource: Random?) = requireNotNull(randomSource).nextInt(min, max + 1)
