@@ -33,6 +33,7 @@ public class FirEnchantPluginLoader implements PluginLoader {
     // Library
     private static String RTAG;
     private static String INVUI;
+    private static String INVUI2;
 
 
     @Override
@@ -65,6 +66,9 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r24:" + INVUI), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r25:" + INVUI), null));
         resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r26:" + INVUI), null));
+        // InvUI2
+        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI2), null));
+        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI2), null));
 
         // MYSQL
         resolver.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-core:" + ORMLITE), null));
@@ -98,6 +102,7 @@ public class FirEnchantPluginLoader implements PluginLoader {
                     // Library
                     RTAG = versionProperties.getProperty("rtag.version");
                     INVUI = versionProperties.getProperty("invui.version");
+                    INVUI2 = versionProperties.getProperty("invui2.version");
                 }
             }
         }

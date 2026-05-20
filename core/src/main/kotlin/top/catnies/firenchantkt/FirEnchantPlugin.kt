@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt
 
+import PluginInit
 import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -21,16 +22,11 @@ import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.item.brokengear.FirBrokenGear
-import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.language.TranslationManager
-import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
-import top.catnies.firenchantkt.lazyinit.ItemsAdderLoadListener
-import top.catnies.firenchantkt.lazyinit.NexoLoadListener
-import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.EnchantmentUtils
-import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils.plugin
+import top.catnies.firenchantkt.util.VersionHelper
 import xyz.xenondevs.invui.InvUI
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -74,8 +70,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
     // 插件重载
     fun reload() {
-        TranslationManager.instance.reload() // 语言管理器
         FirEnchantmentManager.instance.reload() // 系统魔咒管理器
+        TranslationManager.instance.reload() // 语言管理器
         ConfigManager.instance.reload() // 配置文件管理器 (依赖: FirEnchantmentManager)
 
         IntegrationManager.instance.reload() // 关联插件集成管理器

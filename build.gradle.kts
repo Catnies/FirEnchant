@@ -13,11 +13,13 @@ dependencies {
     implementation(project(":core"))
     implementation(project(":api"))
     implementation(project(":compatibility"))
+    implementation(project(":menu-java-25"))
     implementation(project(path = ":nms:v1_21_R3"))
     implementation(project(path = ":nms:v1_21_R4"))
     implementation(project(path = ":nms:v1_21_R5"))
     implementation(project(path = ":nms:v1_21_R6"))
     implementation(project(path = ":nms:v1_21_R7"))
+    implementation(project(path = ":nms:v26_1_R0"))
 }
 
 
@@ -67,10 +69,18 @@ allprojects {
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
         compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
-        compileOnly(rootProject.libs.bundles.invui) { // InvUI
-            exclude("org.jetbrains.kotlin", "*")
-            exclude("org.jetbrains.kotlinx", "*")
+        if (name == "menu-java-25"){
+            compileOnly(rootProject.libs.bundles.invui2) {
+                exclude("org.jetbrains.kotlin", "*")
+                exclude("org.jetbrains.kotlinx", "*")
+            }
+        } else {
+            compileOnly(rootProject.libs.bundles.invui) { // InvUI
+                exclude("org.jetbrains.kotlin", "*")
+                exclude("org.jetbrains.kotlinx", "*")
+            }
         }
+
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
 
         // 兼容
@@ -95,6 +105,7 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
         dependsOn(":nms:v1_21_R6:reobfJar")
         dependsOn(":nms:v1_21_R7:reobfJar")
+        dependsOn(":nms:v26_1_R0:reobfJar")
         mergeServiceFiles()
 
         manifest.attributes("paperweight-mappings-namespace" to "mojang")
@@ -113,8 +124,13 @@ tasks {
     runServer {
         dependsOn(shadowJar)
         dependsOn(jar)
-        minecraftVersion("1.21.11")
+        minecraftVersion("26.1.2")
+        downloadPlugins {
+            hangar("PlaceholderAPI", "2.11.6")
+            modrinth("rtag", "1.5.13")
+        }
     }
+
 }
 
 // 调试测试环境
@@ -148,6 +164,7 @@ val generateVersionProperties by tasks.registering {
         versionProps.setProperty("hikaricp.version", libs.versions.hikaricp.get())
         versionProps.setProperty("rtag.version", libs.versions.rtag.get())
         versionProps.setProperty("invui.version", libs.versions.invui.get())
+        versionProps.setProperty("invui2.version", libs.versions.invui2.get())
 
         val outputFile = outputDir.get().asFile.resolve("dependency-version.properties")
         outputFile.parentFile.mkdirs()
