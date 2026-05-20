@@ -2,6 +2,7 @@ package top.catnies.firenchantkt
 
 import PluginInit
 import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
+import com.github.iamnot23.gui_v2.InvUIv2Setup
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +27,7 @@ import top.catnies.firenchantkt.language.TranslationManager
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.EnchantmentUtils
 import top.catnies.firenchantkt.util.TaskUtils.plugin
+import top.catnies.firenchantkt.util.VersionHelper
 import xyz.xenondevs.invui.InvUI
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -55,7 +57,15 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     }
 
     override fun onEnable() {
-        InvUI.getInstance().setPlugin(this) // GUI依赖库
+
+        if (VersionHelper.isOrAbove26_1()) {
+            InvUIv2Setup.setPlugin(this)
+        } else {
+            InvUI.getInstance().setPlugin(this) // GUI依赖库
+
+        }
+
+
         PluginInit.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器

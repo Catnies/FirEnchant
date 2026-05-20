@@ -1,5 +1,6 @@
 package top.catnies.firenchantkt.listener
 
+import com.github.iamnot23.gui_v2.SimpleMenu
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
@@ -9,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.gui.FirEnchantingTableMenu
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
+import top.catnies.firenchantkt.util.VersionHelper
 
 class EnchantingTableListener : Listener {
 
@@ -26,7 +28,12 @@ class EnchantingTableListener : Listener {
         event.isCancelled = true
         val nmsHandler = NMSHandlerHolder.getNMSHandler()
         val bookShelves = nmsHandler.getEnchantmentTableBookShelf(event.clickedBlock!!.location)
-        FirEnchantingTableMenu(event.player, bookShelves).openMenu(emptyMap(), true)
+
+        if (VersionHelper.isOrAbove26_1()) {
+            SimpleMenu(player = event.player).open()
+        } else {
+            FirEnchantingTableMenu(event.player, bookShelves).openMenu(emptyMap(), true)
+        }
     }
 
 }
