@@ -69,8 +69,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
     // 插件重载
     fun reload() {
-        FirEnchantmentManager.instance.reload() // 系统魔咒管理器
         TranslationManager.instance.reload() // 语言管理器
+        FirEnchantmentManager.instance.reload() // 系统魔咒管理器
         ConfigManager.instance.reload() // 配置文件管理器 (依赖: FirEnchantmentManager)
 
         IntegrationManager.instance.reload() // 关联插件集成管理器

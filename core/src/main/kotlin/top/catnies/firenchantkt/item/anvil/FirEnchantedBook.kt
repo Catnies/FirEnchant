@@ -109,7 +109,7 @@ class FirEnchantedBook : EnchantedBook {
                 else getCost(setting, targetLevel, repairCost, repairCost2)
                 val resultItem = context.firstItem.clone().apply {
                     setData(DataComponentTypes.REPAIR_COST, repairCost * 2 + 1)
-                    addEnchantment(originEnchantment, targetLevel)
+                    addUnsafeEnchantment(originEnchantment, targetLevel)
                 }
 
                 // 触发事件
