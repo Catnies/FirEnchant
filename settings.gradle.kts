@@ -1,15 +1,16 @@
 rootProject.name = "FirEnchantKt"
 
 include(":api")
-include(":menu-java-25")
 include(":compatibility")
 include(":core")
+include(":core:invui_v1")
+include(":core:invui_v2")
 include("nms:v1_21_R3")
 include("nms:v1_21_R4")
 include("nms:v1_21_R5")
 include("nms:v1_21_R6")
 include("nms:v1_21_R7")
-include("nms:v26_1_R0")
+include("nms:v26_1")
 
 pluginManagement {
     repositories {
@@ -19,7 +20,6 @@ pluginManagement {
 }
 
 plugins {
-//    id("org.gradle.toolchains.foojay-resolver-convention") version "0.9.0"
     id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
 }
 
@@ -45,4 +45,3 @@ dependencyResolutionManagement {
         create("library") { from(files("gradle/libs.versions.toml")) }
     }
 }
-

@@ -45,9 +45,9 @@ menu-setting:
     custom-model-data: 31001
     item-name: "<yellow>确认修复"
     lore:
-      - "§7你可以将破损的物品寄存进行免费修复，"
-      - "§7但是需要花费 §e{cost_time}秒 §7的时间。"
-      - "§7 "
+      - "<gray>你可以将破损的物品寄存进行免费修复，"
+      - "<gray>但是需要花费 §e{cost_time}秒 <gray>的时间。"
+      - "<gray> "
       - "<#a5acb8>→ 点击进行修复"
     click-actions: # 点击后会进行装备修复, 你可以设置额外的行为, 但是修复行为不可取消.
       - type: play_sound      # 点击音效
@@ -90,7 +90,7 @@ menu-setting:
       hooked-id: PAPER
       item-name: "<yellow>提示"
       lore:
-        - "§7您可以把损坏的物品放入槽位内，然后选择修复方式。"
+        - "<gray>您可以把损坏的物品放入槽位内，然后选择修复方式。"
       custom-model-data: 31001
       item-model: "minecraft:paper"
       click-actions:
@@ -174,7 +174,7 @@ broken-item-model:
         - "netherite_pickaxe"
       wrapper-item:
         hooked-plugin: "CraftEngine"
-        hooked-id: "enchantment:broken_sword"
+        hooked-id: "enchantment:broken_pickaxe"
     - match-item:
         - "wooden_axe"
         - "stone_axe"

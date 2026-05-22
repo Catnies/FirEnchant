@@ -213,7 +213,7 @@ class EnchantingTableConfig private constructor():
         // 将文件夹下的内容加载到 ORIGINAL_BOOK_MATCHES 中.
         this.ORIGINAL_BOOK_MATCHES = originalBookDirectory.walkTopDown()
             .maxDepth(1)
-            .filter { it.isFile && it.extension == "yml" }
+            .filter { it.isFile && it.extension == "yml" && !it.name.startsWith('_')}
             .mapNotNull { file ->
                 val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
                 val yaml = YamlConfiguration.loadConfiguration(file)
