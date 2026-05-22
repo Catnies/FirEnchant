@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt
 
-import PluginInit
 import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -22,9 +21,15 @@ import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.item.FirEnchantingTableRegistry
 import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.item.brokengear.FirBrokenGear
+import top.catnies.firenchantkt.language.MessageConstants.PLUGIN_COMPATIBILITY_HOOK_SUCCESS
 import top.catnies.firenchantkt.language.TranslationManager
+import top.catnies.firenchantkt.lazyinit.CraftEngineLoadListener
+import top.catnies.firenchantkt.lazyinit.ItemsAdderLoadListener
+import top.catnies.firenchantkt.lazyinit.NexoLoadListener
+import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.EnchantmentUtils
+import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.TaskUtils.plugin
 import xyz.xenondevs.invui.InvUI
 import kotlin.coroutines.CoroutineContext
@@ -56,7 +61,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
 
     override fun onEnable() {
         InvUI.getInstance().setPlugin(this) // GUI依赖库
-        PluginInit.registerLateInitListener(this)     // 延时初始化器
+        this.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器
         logger.info("FirEnchant Plugin Enabled!")
@@ -107,5 +112,40 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         FirBrokenGear.instance                  // 破损物品注册表
     }
 
-
+    // 延迟初始化注册表实现
+    fun registerLateInitListener(plugin: FirEnchantPlugin) {
+        when {
+            // CraftEngine
+            Bukkit.getPluginManager().getPlugin("CraftEngine") != null -> {
+                runCatching {
+                    Bukkit.getPluginManager().registerEvents(CraftEngineLoadListener(plugin), plugin)
+                    Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "CraftEngine")
+                }
+            }
+            // Nexo
+            Bukkit.getPluginManager().getPlugin("Nexo") != null -> {
+                runCatching {
+                    Bukkit.getPluginManager().registerEvents(NexoLoadListener(plugin), plugin)
+                    Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Nexo")
+                }
+            }
+            // Oraxen
+            Bukkit.getPluginManager().getPlugin("Oraxen") != null -> {
+                runCatching {
+                    Bukkit.getPluginManager().registerEvents(OraxenLoadListener(plugin), plugin)
+                    Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "Oraxen")
+                }
+            }
+            // ItemsAdder
+            Bukkit.getPluginManager().getPlugin("ItemsAdder") != null -> {
+                runCatching {
+                    Bukkit.getPluginManager().registerEvents(ItemsAdderLoadListener(plugin), plugin)
+                    Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "ItemsAdder")
+                }
+            }
+            else -> {
+                plugin.initRegistry()
+            }
+        }
+    }
 }
