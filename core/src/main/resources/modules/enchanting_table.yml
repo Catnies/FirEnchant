@@ -160,7 +160,7 @@ menu-setting:
       offline:
         item-name: "<red>材料不足"
         lore:
-          - "解锁这个槽位您需要:"
+          - "<!i><gray>解锁这个槽位您需要:"
           - " "
           - "<!i><white><image:enchantment:exp_point> 20 等级"
           - "<!i><white><image:enchantment:lapis_lazuli> 3 青金石"

@@ -13,3 +13,4 @@ item-lore:
   - "<white>已使用灵魂: <red><firenchant:consumed_souls>"
   - "<gray>一本神秘的附魔书喵~"
   - "<gray>Ciallo～(∠・ω< )⌒★"
+  - "<gray>你可以在plugins/FirEnchantKt/enchantments修改 <firenchant:enchantment_key> 文件来修改这段描述哦!"

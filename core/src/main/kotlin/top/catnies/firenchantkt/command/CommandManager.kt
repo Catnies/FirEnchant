@@ -12,7 +12,6 @@ import top.catnies.firenchantkt.command.openmenu.EnchantingTableMenuCommand
 import top.catnies.firenchantkt.command.openmenu.ExtractSoulMenuCommand
 import top.catnies.firenchantkt.command.openmenu.RepairTableMenuCommand
 import top.catnies.firenchantkt.command.openmenu.ShowEnchantedBookMenuCommand
-import top.catnies.firenchantkt.gui.EnchantingTableMenu
 
 class CommandManager private constructor() {
     val plugin get() = FirEnchantPlugin.instance

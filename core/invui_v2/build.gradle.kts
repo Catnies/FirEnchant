@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    compileOnly(project(":api"))
     compileOnly(project(":core"))
     compileOnly(rootProject.libs.bundles.invui2) {
         exclude("org.jetbrains.kotlin", "*")

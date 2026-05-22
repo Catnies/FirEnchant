@@ -1,5 +1,4 @@
 # 这个文件主要负责配置将插件附魔书转换成魔咒之魂的功能。
-# 如果您发现了任何Bug/需要寻求帮助，您可以在我们的售后群联系 “那谁QQ1286071831” 进行反馈处理;
 
 # 这个菜单主要是用来展示服务器内所有附魔书的;
 # 你可以设置这个菜单的样式和排序方式
@@ -36,7 +35,7 @@ menu-setting:
     custom-model-data: 31003
     item-name: "<red>下一页"
     click-actions: # 点击后会进行翻页, 你可以设置额外的行为, 但是翻页行为不可取消.
-      - type: play_sound      # 点击音效
+      - type: play_sound    # 点击音效
         sound: "ui.button.click"
   # 其他自定义槽位, 请勿和上方的槽位冲突
   custom-items:
@@ -56,7 +55,7 @@ menu-setting:
       hooked-id: PAPER
       item-name: "<yellow>提示"
       lore:
-        - "§7你可以在这里查看服务器内所有的附魔书。"
+        - "<!i><gray>你可以在这里查看服务器内所有的附魔书。"
       custom-model-data: 31001
       item-model: "minecraft:paper"
       click-actions:
