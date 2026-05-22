@@ -7,7 +7,7 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import xyz.xenondevs.invui.item.ItemProvider
 import xyz.xenondevs.invui.item.impl.AbstractItem
 
-class MenuCustomItem(
+class MenuCustomItem (
     private val menuItemProvider: ItemProvider,
     val actionTemplates: List<ConfigActionTemplate>
 ): AbstractItem() {

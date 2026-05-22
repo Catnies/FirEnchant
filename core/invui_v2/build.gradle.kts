@@ -1,4 +1,3 @@
-
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
@@ -14,11 +13,14 @@ kotlin {
     }
 }
 
-dependencies {
-
+repositories {
+    mavenCentral()
 }
 
-//relocate("xyz.xenondevs.invui", "xyz.xenondevs.invui2") {
-//    include("xyz.xenondevs.invui:${libs.versions.invui2.get()}")
-//    include("xyz.xenondevs.invui-kotlin:${libs.versions.invui2.get()}")
-//}
+dependencies {
+    compileOnly(project(":core"))
+    compileOnly(rootProject.libs.bundles.invui2) {
+        exclude("org.jetbrains.kotlin", "*")
+        exclude("org.jetbrains.kotlinx", "*")
+    }
+}

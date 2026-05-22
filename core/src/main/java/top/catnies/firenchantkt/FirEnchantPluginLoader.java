@@ -7,6 +7,7 @@ import lombok.SneakyThrows;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.repository.RemoteRepository;
+import top.catnies.firenchantkt.util.VersionHelper;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -57,18 +58,20 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("com.saicone.rtag:rtag-item:" + RTAG), null));
 
         // InvUI
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-core:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r20:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r21:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r22:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r23:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r24:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r25:" + INVUI), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r26:" + INVUI), null));
-        // InvUI2
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI2), null));
-        resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI2), null));
+        if (VersionHelper.isOrAbove26_1()) {
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI2), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI2), null));
+        } else {
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-core:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r20:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r21:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r22:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r23:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r24:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r25:" + INVUI), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:inventory-access-r26:" + INVUI), null));
+        }
 
         // MYSQL
         resolver.addDependency(new Dependency(new DefaultArtifact("com.j256.ormlite:ormlite-core:" + ORMLITE), null));

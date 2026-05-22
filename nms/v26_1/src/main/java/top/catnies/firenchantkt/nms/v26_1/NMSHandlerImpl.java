@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.nms.v26_1_R0;
+package top.catnies.firenchantkt.nms.v26_1;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;

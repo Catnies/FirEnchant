@@ -2,12 +2,14 @@ package top.catnies.firenchantkt.listener
 
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.GameMode
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
@@ -42,7 +44,7 @@ class RecipeListener: Listener {
     }
 
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
     fun onCostEvent(event: InventoryClickEvent) {
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
@@ -60,15 +62,16 @@ class RecipeListener: Listener {
             val anvilApplicable = FirAnvilItemRegistry.instance.findApplicableItem(secondItem) ?: return
 
             // 等级需要超过铁砧的消耗等级, 否则不处理.
+            event.isCancelled = true
             if (player.gameMode != GameMode.CREATIVE) {
                 if (player.level < anvilView.repairCost || anvilView.repairCost >= 40) {
-                    event.isCancelled = true
                     return
                 }
             }
 
             val context = AnvilContext(firstItem, secondItem, resultItem, anvilView, player)
             anvilApplicable.onCost(event, context)
+            event.inventory.clear()
             return
         }
     }

@@ -1,4 +1,10 @@
-import java.util.Properties
+import org.gradle.api.attributes.Bundling
+import org.gradle.api.attributes.Category
+import org.gradle.api.attributes.LibraryElements
+import org.gradle.api.attributes.Usage
+import org.gradle.api.attributes.java.TargetJvmVersion
+import xyz.jpenilla.runpaper.task.RunServer
+import java.util.*
 
 // 插件
 plugins {
@@ -8,18 +14,33 @@ plugins {
     alias(libs.plugins.paperweight) apply false // Paper Weight
 }
 
+val v26_1Runtime by configurations.creating {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    attributes {
+        attribute(Category.CATEGORY_ATTRIBUTE, objects.named(Category.LIBRARY))
+        attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage.JAVA_RUNTIME))
+        attribute(LibraryElements.LIBRARY_ELEMENTS_ATTRIBUTE, objects.named(LibraryElements.JAR))
+        attribute(Bundling.BUNDLING_ATTRIBUTE, objects.named(Bundling.EXTERNAL))
+        attribute(TargetJvmVersion.TARGET_JVM_VERSION_ATTRIBUTE, libs.versions.java.get().toInt())
+    }
+}
+
 // 依赖所有子模块
 dependencies {
-    implementation(project(":core"))
     implementation(project(":api"))
     implementation(project(":compatibility"))
-    implementation(project(":menu-java-25"))
-    implementation(project(path = ":nms:v1_21_R3"))
-    implementation(project(path = ":nms:v1_21_R4"))
-    implementation(project(path = ":nms:v1_21_R5"))
-    implementation(project(path = ":nms:v1_21_R6"))
-    implementation(project(path = ":nms:v1_21_R7"))
-    implementation(project(path = ":nms:v26_1_R0"))
+    implementation(project(":core"))
+    implementation(project(":core:invui_v1"))
+    implementation(project(":core:invui_v2"))
+    implementation(project(":nms:v1_21_R3"))
+    implementation(project(":nms:v1_21_R4"))
+    implementation(project(":nms:v1_21_R5"))
+    implementation(project(":nms:v1_21_R6"))
+    implementation(project(":nms:v1_21_R7"))
+    add(v26_1Runtime.name, project(path = ":nms:v26_1", configuration = "runtimeElements")) {
+        isTransitive = false
+    }
 }
 
 
@@ -69,18 +90,10 @@ allprojects {
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
         compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
-        if (name == "menu-java-25"){
-            compileOnly(rootProject.libs.bundles.invui2) {
-                exclude("org.jetbrains.kotlin", "*")
-                exclude("org.jetbrains.kotlinx", "*")
-            }
-        } else {
-            compileOnly(rootProject.libs.bundles.invui) { // InvUI
-                exclude("org.jetbrains.kotlin", "*")
-                exclude("org.jetbrains.kotlinx", "*")
-            }
+        compileOnly(rootProject.libs.bundles.invui) { // InvUI
+            exclude("org.jetbrains.kotlin", "*")
+            exclude("org.jetbrains.kotlinx", "*")
         }
-
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
 
         // 兼容
@@ -105,7 +118,8 @@ tasks {
         dependsOn(":nms:v1_21_R5:reobfJar")
         dependsOn(":nms:v1_21_R6:reobfJar")
         dependsOn(":nms:v1_21_R7:reobfJar")
-        dependsOn(":nms:v26_1_R0:reobfJar")
+        dependsOn(":nms:v26_1:jar")
+        from({ v26_1Runtime.map { zipTree(it) } })
         mergeServiceFiles()
 
         manifest.attributes("paperweight-mappings-namespace" to "mojang")
@@ -125,25 +139,44 @@ tasks {
         dependsOn(shadowJar)
         dependsOn(jar)
         minecraftVersion("26.1.2")
-        downloadPlugins {
-            hangar("PlaceholderAPI", "2.11.6")
-            modrinth("rtag", "1.5.13")
-        }
     }
-
 }
 
-// 调试测试环境
-tasks.withType(xyz.jpenilla.runtask.task.AbstractRun::class) {
-    javaLauncher = javaToolchains.launcherFor {
-        vendor = JvmVendorSpec.JETBRAINS
-        languageVersion = JavaLanguageVersion.of(21)
+registerPaperTask("1.21.11", javaVersion = 21)
+registerPaperTask("26.1.2", javaVersion = 25)
+
+fun registerPaperTask(
+    version: String,
+    dirName: String = version,
+    javaVersion: Int,
+    serverJarFile: File? = null
+) {
+    fun RunServer.applyCommonConfig() {
+        description = "run dev server"
+        minecraftVersion(version)
+        serverJarFile?.let { serverJar(it) }
+        pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
+        javaLauncher = javaToolchains.launcherFor {
+            vendor = JvmVendorSpec.JETBRAINS
+            languageVersion = JavaLanguageVersion.of(javaVersion)
+        }
+        systemProperties["com.mojang.eula.agree"] = true
+        jvmArgs(
+            "-Dorg.bukkit.plugin.java.LibraryLoader.centralURL=https://maven.aliyun.com/repository/central",
+            "-Dsun.stdout.encoding=UTF-8",
+            "-Dsun.stderr.encoding=UTF-8",
+            "-Ddisable.watchdog=true",
+            "-Xlog:redefine+class*=info",
+            "-XX:+AllowEnhancedClassRedefinition"
+        )
     }
-    jvmArgs("-Dsun.stdout.encoding=UTF-8")
-    jvmArgs("-Dsun.stderr.encoding=UTF-8")
-    jvmArgs("-Ddisable.watchdog=true")
-    jvmArgs("-Xlog:redefine+class*=info")
-    jvmArgs("-XX:+AllowEnhancedClassRedefinition")
+
+    tasks.register<RunServer>("$version") {
+        description = "run dev server"
+        group = "run dev server"
+        runDirectory = rootProject.layout.projectDirectory.dir("runPaper/$dirName")
+        applyCommonConfig()
+    }
 }
 
 // 生成版本信息资源文件

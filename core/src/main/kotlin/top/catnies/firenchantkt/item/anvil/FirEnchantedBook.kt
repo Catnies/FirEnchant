@@ -171,37 +171,41 @@ class FirEnchantedBook : EnchantedBook {
                     timestamp = System.currentTimeMillis()
                 }.let { saveToDatabaseAndCache(it) }
 
-                // 成功直接返回
-                if (useEvent.isSuccess) return
-
+                // 成功直接设置物品, 然后取消物品
+                if (useEvent.isSuccess) {
+                    player.setItemOnCursor(context.result)
+                    event.isCancelled = true
+                }
                 // 失败逻辑
-                event.isCancelled = true
-                if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
-                anvilView.setItem(1, ItemStack.empty())
-                anvilView.setItem(2, ItemStack.empty())
+                else {
+                    event.isCancelled = true
+                    if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
+                    anvilView.setItem(1, ItemStack.empty())
+                    anvilView.setItem(2, ItemStack.empty())
 
-                // 返回失败补偿物品
-                if (enabled) anvilView.setCursor(failBackItem)
+                    // 返回失败补偿物品
+                    if (enabled) anvilView.setCursor(failBackItem)
 
-                // 没开启破坏装备
-                if (!config.EB_BREAK_FAILED_ITEM) {
+                    // 没开启破坏装备
+                    if (!config.EB_BREAK_FAILED_ITEM) {
+                        player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+                        player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
+                        return
+                    }
+
+                    // 开启了破坏装备 & 有保护符文
+                    if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
+                        FirEnchantAPI.removeProtectionRune(context.firstItem)
+                        player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
+                        player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
+                        return
+                    }
+
+                    // 开启了破坏装备 & 没有保护符文
+                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
-                    player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL)
-                    return
+                    player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                 }
-
-                // 开启了破坏装备 & 有保护符文
-                if (FirEnchantAPI.hasProtectionRune(context.firstItem)) {
-                    FirEnchantAPI.removeProtectionRune(context.firstItem)
-                    player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
-                    player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_PROTECT_FAIL)
-                    return
-                }
-
-                // 开启了破坏装备 & 没有保护符文
-                anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
-                player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
-                player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
             }
         }
     }
