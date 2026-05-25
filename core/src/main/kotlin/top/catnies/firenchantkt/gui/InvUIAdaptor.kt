@@ -4,6 +4,8 @@ import org.bukkit.entity.Player
 import top.catnies.firenchantkt.util.VersionHelper
 import java.lang.reflect.Constructor
 import kotlin.lazy
+import kotlin.reflect.KFunction
+import kotlin.reflect.full.primaryConstructor
 
 object InvUIAdaptor {
     val useV2 = VersionHelper.isOrAbove26_1()
@@ -17,52 +19,70 @@ object InvUIAdaptor {
         return setupConstructor.newInstance() as InvUISetup;
     }
 
-    val enchantingTableMenuConstructor: Constructor<out Any> by lazy {
-        if (!useV2)
-            Class.forName("top.catnies.firenchantkt.invui_v1.FirEnchantingTableMenu").getDeclaredConstructor()
-        else
-            Class.forName("top.catnies.firenchantkt.invui_v2.FirEnchantingTableMenu").getDeclaredConstructor()
+    val enchantingTableMenuConstructor: KFunction<Any> by lazy {
+
+        requireNotNull(
+            (
+                    if (!useV2) {
+                        Class.forName("top.catnies.firenchantkt.invui_v1.FirEnchantingTableMenu")
+                    } else
+                        Class.forName("top.catnies.firenchantkt.invui_v2.FirEnchantingTableMenu")
+                    ).kotlin.primaryConstructor
+        )
     }
 
     fun getEnchantingTableMenu(
         player: Player,
         bookShelves: Int = 0
     ): AbstractFirEnchantMenu {
-        return enchantingTableMenuConstructor.newInstance(player, bookShelves) as AbstractFirEnchantMenu;
+        return enchantingTableMenuConstructor.call(player, bookShelves) as AbstractFirEnchantMenu;
     }
 
-    val extractSoulMenuConstructor: Constructor<out Any> by lazy {
-        if (!useV2)
-            Class.forName("top.catnies.firenchantkt.invui_v1.ExtractSoulMenu").getDeclaredConstructor()
-        else
-            Class.forName("top.catnies.firenchantkt.invui_v2.ExtractSoulMenu").getDeclaredConstructor()
-    }
+    val extractSoulMenuConstructor: KFunction<Any> by lazy {
 
+        requireNotNull(
+            (
+                    if (!useV2) {
+                        Class.forName("top.catnies.firenchantkt.invui_v1.ExtractSoulMenu")
+                    } else
+                        Class.forName("top.catnies.firenchantkt.invui_v2.ExtractSoulMenu")
+                    ).kotlin.primaryConstructor
+        )
+    }
 
     fun getExtractSoulMenu(player: Player): ExtractSoulMenu {
-        return extractSoulMenuConstructor.newInstance(player) as ExtractSoulMenu
+        return extractSoulMenuConstructor.call(player) as ExtractSoulMenu
     }
 
-    val repairTableMenuConstructor: Constructor<out Any> by lazy {
-        if (!useV2)
-            Class.forName("top.catnies.firenchantkt.invui_v1.FirRepairTableMenu").getDeclaredConstructor()
-        else
-            Class.forName("top.catnies.firenchantkt.invui_v2.FirRepairTableMenu").getDeclaredConstructor()
-    }
+    val repairTableMenuConstructor: KFunction<Any> by lazy {
 
+        requireNotNull(
+            (
+                    if (!useV2) {
+                        Class.forName("top.catnies.firenchantkt.invui_v1.FirRepairTableMenu")
+                    } else
+                        Class.forName("top.catnies.firenchantkt.invui_v2.FirRepairTableMenu")
+                    ).kotlin.primaryConstructor
+        )
+    }
 
     fun getRepairTableMenu(player: Player): RepairTableMenu {
-        return repairTableMenuConstructor.newInstance(player) as RepairTableMenu
+        return repairTableMenuConstructor.call(player) as RepairTableMenu
     }
 
-    val showEnchantedBooksMenuConstructor: Constructor<out Any> by lazy {
-        if (!useV2)
-            Class.forName("top.catnies.firenchantkt.invui_v1.FirShowEnchantedBooksMenu").getDeclaredConstructor()
-        else
-            Class.forName("top.catnies.firenchantkt.invui_v2.FirShowEnchantedBooksMenu").getDeclaredConstructor()
+
+    val showEnchantedBooksMenuConstructor: KFunction<Any> by lazy {
+        requireNotNull(
+            (
+                    if (!useV2) {
+                        Class.forName("top.catnies.firenchantkt.invui_v1.FirShowEnchantedBooksMenu")
+                    } else
+                        Class.forName("top.catnies.firenchantkt.invui_v2.FirShowEnchantedBooksMenu")
+                    ).kotlin.primaryConstructor
+        )
     }
 
     fun getShowEnchantedBooksMenu(player: Player): RepairTableMenu {
-        return showEnchantedBooksMenuConstructor.newInstance(player) as RepairTableMenu
+        return showEnchantedBooksMenuConstructor.call(player) as RepairTableMenu
     }
 }

@@ -34,7 +34,7 @@ craftengine = "26.5.1"
 auraskills = "2.2.4"
 customcrops = "3.6.29"
 customfishing = "2.3.7"
-placeholderapi = "2.11.6"
+placeholderapi = "2.12.2"
 
 
 [plugins]
