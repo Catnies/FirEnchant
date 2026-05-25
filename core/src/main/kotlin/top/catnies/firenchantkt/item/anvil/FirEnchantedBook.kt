@@ -209,10 +209,9 @@ class FirEnchantedBook : EnchantedBook {
                     }
 
                     // 开启了破坏装备 & 没有保护符文
-                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)
-                    TaskUtils.runTaskLater(delay = 1L, task = {
-                        anvilView.setItem(0, brokenEquipment)
-                    })
+                    // context.firstItem 非空则 brokenEquipment 非空
+                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)!!
+                    anvilView.setItem(0, brokenEquipment)
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
                     player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                 }

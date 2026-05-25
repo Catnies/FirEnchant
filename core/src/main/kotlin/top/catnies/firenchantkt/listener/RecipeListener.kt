@@ -71,7 +71,6 @@ class RecipeListener: Listener {
 
             val context = AnvilContext(firstItem, secondItem, resultItem, anvilView, player)
             anvilApplicable.onCost(event, context)
-            event.inventory.clear()
             return
         }
     }
