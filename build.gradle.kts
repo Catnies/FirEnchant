@@ -138,12 +138,13 @@ tasks {
     }
 }
 
-registerPaperTask("1.21.11", javaVersion = 21)
-registerPaperTask("26.1.2", javaVersion = 25)
+registerPaperTask("1.21.10","1_21_10", javaVersion = 21)
+registerPaperTask("1.21.11","1_21_11", javaVersion = 21)
+registerPaperTask("26.1.2","26_1_2", javaVersion = 25)
 
 fun registerPaperTask(
     version: String,
-    dirName: String = version,
+    taskName: String = version,
     javaVersion: Int,
     serverJarFile: File? = null
 ) {
@@ -172,10 +173,10 @@ fun registerPaperTask(
 
     }
 
-    tasks.register<RunServer>(version) {
+    tasks.register<RunServer>(taskName) {
         description = "run dev server"
         group = "run dev server"
-        runDirectory = rootProject.layout.projectDirectory.dir("runPaper/$dirName")
+        runDirectory = rootProject.layout.projectDirectory.dir("runPaper/$taskName")
         applyCommonConfig()
     }
 }

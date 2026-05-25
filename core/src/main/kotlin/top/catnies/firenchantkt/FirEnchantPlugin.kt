@@ -32,6 +32,7 @@ import top.catnies.firenchantkt.lazyinit.OraxenLoadListener
 import top.catnies.firenchantkt.listener.ListenerManger
 import top.catnies.firenchantkt.util.EnchantmentUtils
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.TaskUtils
 import top.catnies.firenchantkt.util.TaskUtils.plugin
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
@@ -65,6 +66,10 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         this.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器
+        TaskUtils.runAsyncTasksLater(
+            tasks = arrayOf({ InvUIAdaptor.loadConstructors() }),
+            delay = 100L
+        )
         logger.info("FirEnchant Plugin Enabled!")
     }
 

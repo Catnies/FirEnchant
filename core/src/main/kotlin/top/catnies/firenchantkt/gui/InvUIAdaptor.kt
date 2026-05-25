@@ -20,7 +20,6 @@ object InvUIAdaptor {
     }
 
     val enchantingTableMenuConstructor: KFunction<Any> by lazy {
-
         requireNotNull(
             (
                     if (!useV2) {
@@ -39,7 +38,6 @@ object InvUIAdaptor {
     }
 
     val extractSoulMenuConstructor: KFunction<Any> by lazy {
-
         requireNotNull(
             (
                     if (!useV2) {
@@ -49,12 +47,12 @@ object InvUIAdaptor {
                     ).kotlin.primaryConstructor
         )
     }
+
     fun getExtractSoulMenu(player: Player): ExtractSoulMenu {
         return extractSoulMenuConstructor.call(player) as ExtractSoulMenu
     }
 
     val repairTableMenuConstructor: KFunction<Any> by lazy {
-
         requireNotNull(
             (
                     if (!useV2) {
@@ -83,5 +81,12 @@ object InvUIAdaptor {
 
     fun getShowEnchantedBooksMenu(player: Player): ShowEnchantedBooksMenu {
         return showEnchantedBooksMenuConstructor.call(player) as ShowEnchantedBooksMenu
+    }
+
+    fun loadConstructors() {
+        enchantingTableMenuConstructor
+        extractSoulMenuConstructor
+        repairTableMenuConstructor
+        showEnchantedBooksMenuConstructor
     }
 }
