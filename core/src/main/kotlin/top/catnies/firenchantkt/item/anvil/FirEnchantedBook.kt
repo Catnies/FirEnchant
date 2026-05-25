@@ -28,6 +28,7 @@ import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_U
 import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
+import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
@@ -202,7 +203,9 @@ class FirEnchantedBook : EnchantedBook {
                     }
 
                     // 开启了破坏装备 & 没有保护符文
-                    anvilView.setItem(0, FirEnchantAPI.toBrokenGear(context.firstItem))
+                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)
+                    // TODO: 修复破碎物品消失漏洞
+                    anvilView.setItem(0, brokenEquipment)
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
                     player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                 }

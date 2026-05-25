@@ -21,7 +21,6 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.gui.FirRepairCostHelper
 import top.catnies.firenchantkt.gui.RepairTableMenu
 import top.catnies.firenchantkt.invui_v2.item.MenuCustomItem
-import top.catnies.firenchantkt.invui_v2.item.MenuPageItem
 import top.catnies.firenchantkt.invui_v2.item.MenuRepairItem
 import top.catnies.firenchantkt.item.FirRepairTableItemRegistry
 import top.catnies.firenchantkt.item.brokengear.FirBrokenGear
@@ -81,7 +80,7 @@ class FirRepairTableMenu(
     lateinit var inputInventory: VirtualInventory
     lateinit var confirmBottom: Item
     lateinit var previousPageBottom: Item
-    lateinit var nextPageBottom: MenuPageItem
+    lateinit var nextPageBottom: Item
 
     var closeHandlers: MutableList<Consumer<InventoryCloseEvent.Reason>> = mutableListOf() // 关闭菜单时触发
     var showBottom: Boolean = false
@@ -223,21 +222,15 @@ class FirRepairTableMenu(
             .updateOnClick() // 刷新自己
             .build()
 
-//        (, clickHandler)
     }
 
-//    private fun itemAction() {
-//        action.forEach {
-//            // TODO event 没有了
-//            it.executeIfAllowed(mapOf("player" to player, "clickType" to click.clickType ))
-//        }
-//    }
 
     // 上一页 和 下一页
     private fun buildPageItem() {
         // 翻页旗标
         var canGoForward = false
-        var canGoNext: Boolean = gui.pageCount > 0 // 总页数为0代表目前没有正在修复的装备
+        var canGoNext = false
+        // 总页数为0代表目前没有正在修复的装备
 
         // 更新旗标
         fun updateFlagAndAct(action : List<ConfigActionTemplate>, click: Click) {
@@ -288,7 +281,7 @@ class FirRepairTableMenu(
         }
 
         nextPageItem?.let { data ->
-            nextPageBottom == BoundItem.pagedBuilder()
+            nextPageBottom = BoundItem.pagedBuilder()
                 .setItemProvider { player ->
                     if (canGoNext) {
                         val itemStack = getDisplayItem(data, player)

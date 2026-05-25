@@ -43,13 +43,12 @@ object InvUIAdaptor {
         requireNotNull(
             (
                     if (!useV2) {
-                        Class.forName("top.catnies.firenchantkt.invui_v1.ExtractSoulMenu")
+                        Class.forName("top.catnies.firenchantkt.invui_v1.FirExtractSoulMenu")
                     } else
-                        Class.forName("top.catnies.firenchantkt.invui_v2.ExtractSoulMenu")
+                        Class.forName("top.catnies.firenchantkt.invui_v2.FirExtractSoulMenu")
                     ).kotlin.primaryConstructor
         )
     }
-
     fun getExtractSoulMenu(player: Player): ExtractSoulMenu {
         return extractSoulMenuConstructor.call(player) as ExtractSoulMenu
     }
@@ -82,7 +81,7 @@ object InvUIAdaptor {
         )
     }
 
-    fun getShowEnchantedBooksMenu(player: Player): RepairTableMenu {
-        return showEnchantedBooksMenuConstructor.call(player) as RepairTableMenu
+    fun getShowEnchantedBooksMenu(player: Player): ShowEnchantedBooksMenu {
+        return showEnchantedBooksMenuConstructor.call(player) as ShowEnchantedBooksMenu
     }
 }

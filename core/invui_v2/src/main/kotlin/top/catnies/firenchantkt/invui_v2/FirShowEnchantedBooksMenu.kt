@@ -10,6 +10,7 @@ import top.catnies.firenchantkt.invui_v2.item.MenuPageItem
 import top.catnies.firenchantkt.util.ItemUtils.replacePlaceholder
 import top.catnies.firenchantkt.util.MessageUtils.parseTitleStringAsComponent
 import top.catnies.firenchantkt.util.TaskUtils
+import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 import xyz.xenondevs.invui.gui.Markers
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.gui.Structure
@@ -31,7 +32,7 @@ class FirShowEnchantedBooksMenu(
     val title = config.MENU_TITLE
     val structureArray = config.MENU_STRUCTURE_ARRAY
     val contentSlot = config.MENU_CONTENT_SLOT
-    val previousPageItem = config.PREVIOUS_PAGE_ITEM
+    val previousPageItem: MenuItemData? = config.PREVIOUS_PAGE_ITEM
     val nextPageItem = config.NEXT_PAGE_ITEM
     val customItems = config.MENU_CUSTOM_ITEMS
     val enchantedBooks = config.ENCHANTED_BOOKS
@@ -100,8 +101,8 @@ class FirShowEnchantedBooksMenu(
     private fun buildGuiAndWindow() {
         val builder = PagedGui.itemsBuilder().setStructure(Structure(*structureArray))
         // 翻页按钮
-        previousPageItem?.let { builder.addIngredient(it.slot, previousPageBottom) }
-        nextPageItem?.let { builder.addIngredient(it.slot, nextPageBottom) }
+        previousPageItem?.also { builder.addIngredient(it.slot, previousPageBottom) }
+        nextPageItem?.also { builder.addIngredient(it.slot, nextPageBottom) }
         // 菜单内容
         builder.addIngredient(contentSlot, Markers.CONTENT_LIST_SLOT_HORIZONTAL)
         builder.setContent(enchantedBooks.map { Item.simple(it.toItemStack()) })
