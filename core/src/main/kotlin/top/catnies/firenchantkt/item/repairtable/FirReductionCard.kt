@@ -2,20 +2,14 @@ package top.catnies.firenchantkt.item.repairtable
 
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.event.repairtable.ReductionCardUseEvent
 import top.catnies.firenchantkt.config.RepairTableConfig
 import top.catnies.firenchantkt.context.RepairTableContext
-import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.database.dao.ItemRepairData
-import top.catnies.firenchantkt.database.entity.EnchantingHistoryTable
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
-import top.catnies.firenchantkt.enchantment.EnchantmentSetting
-import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
-import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 
 class FirReductionCard: ReductionCard {
@@ -32,7 +26,8 @@ class FirReductionCard: ReductionCard {
         }
     }
 
-    override fun onUse(event: InventoryClickEvent, context: RepairTableContext) {
+    // TODO Click没有事件了 event?.click event: InventoryClickEvent?
+    override fun onUse(event: InventoryClickEvent?, context: RepairTableContext) {
         val tag = RtagItem.of(context.cursor)
         val typeStr = tag.get<String>("FirEnchant", "RepairType") ?: return
         val type = ReductionType.entries.find { it.name.equals(typeStr, true) } ?: return
@@ -44,25 +39,28 @@ class FirReductionCard: ReductionCard {
         }
 
         // 广播事件
-        val useEvent = ReductionCardUseEvent(
-            context.player,
-            event,
-            context.cursor,
-            context.itemRepairTable,
-            type, value
-        )
-        Bukkit.getPluginManager().callEvent(useEvent)
-        if (useEvent.isCancelled) return
+        event?.let {
+            val useEvent = ReductionCardUseEvent(
+                context.player,
+                event,
+                context.cursor,
+                context.itemRepairTable,
+                type,
+                value
+            )
+            Bukkit.getPluginManager().callEvent(useEvent)
+            if (useEvent.isCancelled) return@onUse
+        }
 
         // 根据类型减少修复时间
         when (type) {
             ReductionType.PERCENT -> {
                 val itemRepairTable = context.itemRepairTable
-                val lng = (context.itemRepairTable.remainingTime * useEvent.value).toLong()
+                val lng = (context.itemRepairTable.remainingTime * value).toLong()
                 context.itemRepairTable.duration -= lng
             }
             ReductionType.STATIC -> {
-                val remaining = context.itemRepairTable.remainingTime - (useEvent.value * 1000L)
+                val remaining = context.itemRepairTable.remainingTime - (value * 1000L)
                 context.itemRepairTable.duration = max(0L, remaining.toLong())
             }
         }
@@ -72,7 +70,7 @@ class FirReductionCard: ReductionCard {
             action.executeIfAllowed(
                 mapOf(
                     "player" to context.player,
-                    "clickType" to event.click,
+                    "clickType" to event?.click,
                     "event" to event
                 )
             )

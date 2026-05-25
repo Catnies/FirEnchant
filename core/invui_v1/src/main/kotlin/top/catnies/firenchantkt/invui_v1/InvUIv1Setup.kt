@@ -1,0 +1,13 @@
+package top.catnies.firenchantkt.invui_v1
+
+import org.bukkit.plugin.Plugin
+import top.catnies.firenchantkt.gui.InvUISetup
+import xyz.xenondevs.invui.InvUI
+
+class InvUIv1Setup : InvUISetup {
+
+    override fun setup(plugin: Plugin) {
+        InvUI.getInstance().setPlugin(plugin)
+    }
+
+}

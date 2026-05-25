@@ -14,6 +14,7 @@ import top.catnies.firenchantkt.database.FirConnectionManager
 import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.engine.FirActionRegistry
 import top.catnies.firenchantkt.engine.FirConditionRegistry
+import top.catnies.firenchantkt.gui.InvUIAdaptor
 import top.catnies.firenchantkt.gui.InvUISetup
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
@@ -60,7 +61,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     }
 
     override fun onEnable() {
-        InvUISetup.instance.setup(this) // GUI依赖库
+        InvUIAdaptor.getSetup().setup(this) // GUI依赖库
         this.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器

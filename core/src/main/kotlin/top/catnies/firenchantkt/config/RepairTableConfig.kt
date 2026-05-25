@@ -11,7 +11,6 @@ import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import xyz.xenondevs.invui.gui.structure.Structure
 
 class RepairTableConfig private constructor():
     AbstractConfigFile("modules/repair_table.yml")
@@ -89,7 +88,10 @@ class RepairTableConfig private constructor():
         MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
         MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+            .also {
+
+//                Structure(*it);
+                MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
         } catch (exception: Exception) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'

@@ -10,9 +10,9 @@ import top.catnies.firenchantkt.api.event.enchantingtable.RenewalBookUseEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
+import top.catnies.firenchantkt.gui.wrapper.InventoryPostEventWrapper
 import top.catnies.firenchantkt.integration.ItemProvider
-import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
-import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
+
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
@@ -54,10 +54,10 @@ class FirRenewalBook: RenewalBook {
         return itemProvider!!.getIdByItem(itemStack) == itemID
     }
 
-    override fun onPreInput(itemStack: ItemStack, event: ItemPreUpdateEvent, context: EnchantingTableContext) {
+    override fun onPreInput(itemStack: ItemStack, cancelEvent: ()->Unit, context: EnchantingTableContext) {
         val player = context.player
         if (cooldownCache.getIfPresent(player.uniqueId) != null) {
-            event.isCancelled = true
+            cancelEvent()
             return
         }
         cooldownCache.put(player.uniqueId, System.currentTimeMillis())
@@ -66,7 +66,7 @@ class FirRenewalBook: RenewalBook {
         val useEvent = RenewalBookUseEvent(player, (1..Int.MAX_VALUE).random())
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
-            event.isCancelled = true
+            cancelEvent()
             return
         }
 
@@ -77,7 +77,7 @@ class FirRenewalBook: RenewalBook {
         }
     }
 
-    override fun onPostInput(itemStack: ItemStack, event: ItemPostUpdateEvent, context: EnchantingTableContext) {
+    override fun onPostInput(itemStack: ItemStack, eventWrapper: InventoryPostEventWrapper, context: EnchantingTableContext) {
         context.menu.clearInputInventory()
     }
 }

@@ -11,9 +11,8 @@ import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.context.EnchantingTableContext
 import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
+import top.catnies.firenchantkt.gui.wrapper.InventoryPostEventWrapper
 import top.catnies.firenchantkt.integration.ItemProvider
-import xyz.xenondevs.invui.inventory.event.ItemPostUpdateEvent
-import xyz.xenondevs.invui.inventory.event.ItemPreUpdateEvent
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -55,10 +54,10 @@ class FirReversalBook: ReversalBook {
         return itemProvider!!.getIdByItem(itemStack) == itemID
     }
 
-    override fun onPreInput(itemStack: ItemStack, event: ItemPreUpdateEvent, context: EnchantingTableContext) {
+    override fun onPreInput(itemStack: ItemStack, cancelEvent: ()->Unit, context: EnchantingTableContext) {
         val player = context.player
         if (cooldownCache.getIfPresent(player.uniqueId) != null) {
-            event.isCancelled = true
+            cancelEvent()
             return
         }
         cooldownCache.put(player.uniqueId, System.currentTimeMillis())
@@ -66,7 +65,7 @@ class FirReversalBook: ReversalBook {
         // 检查是否有上次附魔的种子
         val lastEnchantingSeed = FirCacheManager.getInstance().getLastEnchantingTableSeed(player.uniqueId)
         if (lastEnchantingSeed == -1) {
-            event.isCancelled = true
+            cancelEvent()
             return
         }
 
@@ -74,7 +73,7 @@ class FirReversalBook: ReversalBook {
         val useEvent = ReversalBookUseEvent(player, lastEnchantingSeed)
         Bukkit.getPluginManager().callEvent(useEvent)
         if (useEvent.isCancelled) {
-            event.isCancelled = true
+            cancelEvent()
             return
         }
 
@@ -86,7 +85,7 @@ class FirReversalBook: ReversalBook {
         }
     }
 
-    override fun onPostInput(itemStack: ItemStack, event: ItemPostUpdateEvent, context: EnchantingTableContext) {
+    override fun onPostInput(itemStack: ItemStack, eventWrapper: InventoryPostEventWrapper, context: EnchantingTableContext) {
         context.menu.clearInputInventory()
     }
 }

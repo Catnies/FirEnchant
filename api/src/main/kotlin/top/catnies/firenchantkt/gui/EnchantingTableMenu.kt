@@ -28,4 +28,5 @@ interface EnchantingTableMenu {
 
     // 清空容器
     fun clearInputInventory()
+
 }

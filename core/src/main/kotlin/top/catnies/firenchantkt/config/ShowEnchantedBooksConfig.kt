@@ -9,7 +9,6 @@ import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import xyz.xenondevs.invui.gui.structure.Structure
 
 @Suppress("PropertyName")
 class ShowEnchantedBooksConfig private constructor():
@@ -44,7 +43,9 @@ class ShowEnchantedBooksConfig private constructor():
     override fun loadConfig() {
         MENU_TITLE = config().getString("menu-setting.title", "All EnchantedBook Menu")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+            .also {
+//                Structure(*it);
+                MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
         } catch (exception: Exception) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_CONTENT_SLOT = config().getString("menu-setting.content-slot", "I")?.first() ?: 'I'

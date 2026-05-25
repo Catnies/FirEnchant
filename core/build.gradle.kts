@@ -1,7 +1,6 @@
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
-    implementation(project(":menu-java-25"))
 
     // For test
     testImplementation("io.papermc.paper:paper-api:1.21.10-R0.1-SNAPSHOT")

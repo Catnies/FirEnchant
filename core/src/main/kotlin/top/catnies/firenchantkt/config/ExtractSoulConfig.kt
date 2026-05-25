@@ -1,17 +1,13 @@
 package top.catnies.firenchantkt.config
 
 import org.bukkit.Bukkit
-import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
 import top.catnies.firenchantkt.util.ConfigParser
-import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
-import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import xyz.xenondevs.invui.gui.structure.Structure
 
 class ExtractSoulConfig private constructor():
     AbstractConfigFile("modules/extract_soul.yml")
@@ -46,7 +42,11 @@ class ExtractSoulConfig private constructor():
         // 菜单信息
         MENU_TITLE = config().getString("menu-setting.title", "Extract Soul Menu")!!
         try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+            .also {
+                // 不测了
+//                Structure(*it);
+                MENU_STRUCTURE_ARRAY = it
+            } // 测试合法性然后再赋值
         } catch (exception: Exception) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'

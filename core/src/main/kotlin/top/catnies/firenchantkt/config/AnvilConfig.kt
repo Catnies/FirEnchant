@@ -1,7 +1,5 @@
 package top.catnies.firenchantkt.config
 
-import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
-import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 

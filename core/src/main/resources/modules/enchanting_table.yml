@@ -214,6 +214,8 @@ enchant-cost:
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 1
+      - type: play_sound # 播放声音
+        sound: "minecraft:block.enchantment_table.use"
     # 条件: 决定玩家放入可附魔物品到附魔台后, 达成哪些条件才可以亮起栏位, 并且可进行附魔
     conditions:
       - type: permission
@@ -237,6 +239,8 @@ enchant-cost:
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 2
+      - type: play_sound # 播放声音
+        sound: "minecraft:block.enchantment_table.use"
     conditions:
       - type: permission
         permission: "enchantingtable.use"
@@ -259,6 +263,8 @@ enchant-cost:
         hooked-plugin: "vanilla"
         hooked-id: lapis_lazuli
         count: 3
+      - type: play_sound # 播放声音
+        sound: "minecraft:block.enchantment_table.use"
     conditions:
       - type: permission
         permission: "enchantingtable.use"

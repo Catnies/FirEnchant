@@ -9,7 +9,7 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.gui.FirExtractSoulMenu
+import top.catnies.firenchantkt.gui.InvUIAdaptor
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
@@ -44,7 +44,7 @@ object ExtractSoulMenuCommand : AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
 
-        FirExtractSoulMenu(player).openMenu(mutableMapOf(), true)
+        InvUIAdaptor.getExtractSoulMenu(player).openMenu(mutableMapOf(), true)
         return Command.SINGLE_SUCCESS
     }
 

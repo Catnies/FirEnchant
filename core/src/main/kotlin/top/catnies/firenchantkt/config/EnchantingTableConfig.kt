@@ -30,7 +30,6 @@ import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ETMenuItemData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import xyz.xenondevs.invui.gui.structure.Structure
 import java.util.Locale
 
 class EnchantingTableConfig private constructor():
@@ -116,10 +115,17 @@ class EnchantingTableConfig private constructor():
         MENU_TITLE_022 = config().getString("menu-setting.title-022", "022")!!
         MENU_TITLE_002 = config().getString("menu-setting.title-002", "002")!!
         MENU_TITLE_102 = config().getString("menu-setting.title-102", "102")!!
-        try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also { Structure(*it); MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+
+        try {
+            config().getStringList("menu-setting.structure").toTypedArray()
+            .also {
+//                Structure(*it);
+                // 不测了
+                MENU_STRUCTURE_ARRAY = it
+            } // 测试合法性然后再赋值
         } catch (exception: Exception) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
+        }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
 
         MENU_SHOW_ENCHANTMENT_LINE_1 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1")!!, 'a', false, fileName)

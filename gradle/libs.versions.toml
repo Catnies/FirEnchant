@@ -10,8 +10,8 @@ paperweight = "2.0.0-beta.21"
 
 # Develop
 paper-api = "1.21.4-R0.1-SNAPSHOT"
-kotlin-stdlib = "2.1.21"
-kotlin-reflect = "2.1.21"
+#kotlin-stdlib = "2.1.21"
+#kotlin-reflect = "2.1.21"
 kotlinx-coroutines = "1.8.1"
 lombok = "1.18.38"
 
@@ -20,7 +20,7 @@ ormlite = "6.1"
 hikaricp = "6.1.0"
 
 # Library
-rtag = "1.5.11"
+rtag = "1.5.16"
 invui = "1.49"
 invui2 = "2.1.0"
 mhdf-scheduler = "1.0.1"
@@ -30,7 +30,7 @@ nexo = "1.1.0"
 oraxen = "1.181.0"
 mythicmobs = "5.6.1"
 itemsadder = "4.0.10"
-craftengine = "26.5"
+craftengine = "26.5.1"
 auraskills = "2.2.4"
 customcrops = "3.6.29"
 customfishing = "2.3.7"
@@ -47,8 +47,8 @@ paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweigh
 [libraries]
 # Develop
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin-stdlib" }
-kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin-reflect" }
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref = "kotlin" }
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-jdk9 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9", version.ref = "kotlinx-coroutines" }
 lombok = { module = "org.projectlombok:lombok",  version.ref = "lombok" }
@@ -62,6 +62,7 @@ hikaricp = { module = "com.zaxxer:HikariCP",  version.ref = "hikaricp" }
 rtag-core = { module = "com.saicone.rtag:rtag",  version.ref = "rtag" }
 rtag-item = { module = "com.saicone.rtag:rtag-item",  version.ref = "rtag" }
 mhdf-scheduler = { module = "cn.chengzhiya:MHDF-Scheduler", version.ref = "mhdf-scheduler" }
+
 invui-core = { module = "xyz.xenondevs.invui:invui-core",  version.ref = "invui" }
 invui-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui" }
 invui-access-r20 = { module = "xyz.xenondevs.invui:inventory-access-r20",  version.ref = "invui" }

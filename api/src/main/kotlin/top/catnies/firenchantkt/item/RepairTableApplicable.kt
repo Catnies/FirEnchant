@@ -23,7 +23,7 @@ interface RepairTableApplicable {
     }
 
     // 当光标持该物品点击正在修复中的物品时触发.
-    fun onUse(event: InventoryClickEvent, context: RepairTableContext) {
+    fun onUse(event: InventoryClickEvent?, context: RepairTableContext) {
         return
     }
 

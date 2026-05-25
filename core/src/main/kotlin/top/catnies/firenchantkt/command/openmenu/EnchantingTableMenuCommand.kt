@@ -10,10 +10,11 @@ import io.papermc.paper.command.brigadier.argument.ArgumentTypes
 import io.papermc.paper.command.brigadier.argument.resolvers.selector.PlayerSelectorArgumentResolver
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.command.AbstractCommand
-import top.catnies.firenchantkt.gui.FirEnchantingTableMenu
+import top.catnies.firenchantkt.gui.InvUIAdaptor
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
+@Suppress("UnstableApiUsage")
 object EnchantingTableMenuCommand: AbstractCommand() {
 
     private const val PERMISSION = "firenchant.command.openmenu.enchanting-table"
@@ -47,7 +48,8 @@ object EnchantingTableMenuCommand: AbstractCommand() {
         }
 
         val bookShelves = context.getArgument("bookShelfCount", Integer::class.java).toInt()
-        FirEnchantingTableMenu(player, bookShelves).openMenu(mutableMapOf(), true)
+
+        InvUIAdaptor.getEnchantingTableMenu(player, bookShelves).openMenu(mutableMapOf(), true)
         return Command.SINGLE_SUCCESS
     }
 }

@@ -90,10 +90,6 @@ allprojects {
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
         compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
-        compileOnly(rootProject.libs.bundles.invui) { // InvUI
-            exclude("org.jetbrains.kotlin", "*")
-            exclude("org.jetbrains.kotlinx", "*")
-        }
         implementation(rootProject.libs.mhdf.scheduler) // Scheduler
 
         // 兼容
@@ -153,11 +149,15 @@ fun registerPaperTask(
 ) {
     fun RunServer.applyCommonConfig() {
         description = "run dev server"
+        downloadPlugins {
+            hangar("PlaceholderAPI", libs.versions.placeholderapi.get())
+            modrinth("CraftEngine", libs.versions.craftengine.get())
+        }
         minecraftVersion(version)
         serverJarFile?.let { serverJar(it) }
         pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
         javaLauncher = javaToolchains.launcherFor {
-            vendor = JvmVendorSpec.JETBRAINS
+//            vendor = JvmVendorSpec.JETBRAINS
             languageVersion = JavaLanguageVersion.of(javaVersion)
         }
         systemProperties["com.mojang.eula.agree"] = true
@@ -166,12 +166,13 @@ fun registerPaperTask(
             "-Dsun.stdout.encoding=UTF-8",
             "-Dsun.stderr.encoding=UTF-8",
             "-Ddisable.watchdog=true",
-            "-Xlog:redefine+class*=info",
-            "-XX:+AllowEnhancedClassRedefinition"
+            "-Xlog:redefine+class*=info"
+//            "-XX:+AllowEnhancedClassRedefinition"
         )
+
     }
 
-    tasks.register<RunServer>("$version") {
+    tasks.register<RunServer>(version) {
         description = "run dev server"
         group = "run dev server"
         runDirectory = rootProject.layout.projectDirectory.dir("runPaper/$dirName")
@@ -191,7 +192,7 @@ val generateVersionProperties by tasks.registering {
         versionProps.setProperty("project.version", version.toString())
         versionProps.setProperty("repository.central", "https://maven.aliyun.com/repository/public")
 
-        versionProps.setProperty("kotlin.version", libs.versions.kotlin.stdlib.get())
+        versionProps.setProperty("kotlin.version", libs.versions.kotlin.get())
         versionProps.setProperty("kotlinx-coroutines.version", libs.versions.kotlinx.coroutines.get())
         versionProps.setProperty("ormlite.version", libs.versions.ormlite.get())
         versionProps.setProperty("hikaricp.version", libs.versions.hikaricp.get())
