@@ -38,8 +38,8 @@ class MenuRepairItem(
     }
 
     override fun unbind() {
-        super.unbind()
         if (gui.windows.isEmpty() && task != null) cancel()
+        super.unbind()
 
     }
 

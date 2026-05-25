@@ -157,7 +157,7 @@ fun registerPaperTask(
         serverJarFile?.let { serverJar(it) }
         pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
         javaLauncher = javaToolchains.launcherFor {
-//            vendor = JvmVendorSpec.JETBRAINS
+            vendor = JvmVendorSpec.JETBRAINS
             languageVersion = JavaLanguageVersion.of(javaVersion)
         }
         systemProperties["com.mojang.eula.agree"] = true
@@ -166,8 +166,8 @@ fun registerPaperTask(
             "-Dsun.stdout.encoding=UTF-8",
             "-Dsun.stderr.encoding=UTF-8",
             "-Ddisable.watchdog=true",
-            "-Xlog:redefine+class*=info"
-//            "-XX:+AllowEnhancedClassRedefinition"
+            "-Xlog:redefine+class*=info",
+            "-XX:+AllowEnhancedClassRedefinition"
         )
 
     }

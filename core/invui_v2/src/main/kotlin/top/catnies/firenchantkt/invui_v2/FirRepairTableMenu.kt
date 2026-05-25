@@ -33,8 +33,8 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.PlayerUtils.giveOrDropList
 import top.catnies.firenchantkt.util.TaskUtils
+import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import xyz.xenondevs.invui.Click
 import xyz.xenondevs.invui.gui.Markers
 import xyz.xenondevs.invui.gui.PagedGui
 import xyz.xenondevs.invui.gui.Structure
@@ -230,25 +230,19 @@ class FirRepairTableMenu(
         // 翻页旗标
         var canGoForward = false
         var canGoNext = false
-        // 总页数为0代表目前没有正在修复的装备
 
         // 更新旗标
-        fun updateFlagAndAct(action : List<ConfigActionTemplate>, click: Click) {
-            canGoForward = (gui.page <= 0)
-            canGoNext =(gui.pageCount > 0 && gui.page >= gui.pageCount - 1)
-
-            action.forEach {
-                // TODO event 没有了
-                it.executeIfAllowed(mapOf("player" to player, "clickType" to click.clickType ))
-            }
+        fun updateFlag(gui: PagedGui<*>) {
+            canGoForward = (gui.page > 0)
+            canGoNext = (gui.pageCount > 0 && gui.page < gui.pageCount - 1) // 总页数为0代表目前没有正在修复的装备
         }
 
-
         fun getDisplayItem(
-            data: MenuItemData,
+            data: ItemStackData,
+            gui: PagedGui<*>,
             player: Player?
         ): ItemStack {
-            val itemStack = data.item.renderItem(
+            val itemStack = data.renderItem(
                 player, mutableMapOf(
                     "currentPage" to "${gui.page}",
                     "pageAmount" to "${gui.pageCount}",
@@ -261,40 +255,46 @@ class FirRepairTableMenu(
 
         previousPageItemData?.let { data ->
             previousPageBottom = BoundItem.pagedBuilder()
-                .setItemProvider { player ->
+                .setItemProvider { player, gui ->
+                    updateFlag(gui)
                     if (canGoForward) {
-                        val itemStack = getDisplayItem(data, player)
+                        val itemStack = getDisplayItem(data.item, gui, player)
                         ItemBuilder(itemStack)
                     } else ItemBuilder.EMPTY
                 }
-                .addClickHandler { _, click ->
-
-                    if (click.clickType != ClickType.LEFT)
-                        return@addClickHandler
-                    if (!canGoForward)
-                        return@addClickHandler
-
-                    gui.page--
-                    updateFlagAndAct(data.action, click)
+                .addClickHandler { _, gui, click ->
+                    if (click.clickType != ClickType.LEFT) return@addClickHandler
+                    updateFlag(gui)
+                    if (canGoForward) {
+                        gui.page--
+                        updateFlag(gui)
+                        data.action.forEach { // TODO event 没有了
+                            it.executeIfAllowed(mapOf("player" to player, "clickType" to click.clickType))
+                        }
+                    }
                 }
                 .build()
         }
 
         nextPageItem?.let { data ->
             nextPageBottom = BoundItem.pagedBuilder()
-                .setItemProvider { player ->
+                .setItemProvider { player, gui ->
+                    updateFlag(gui)
                     if (canGoNext) {
-                        val itemStack = getDisplayItem(data, player)
+                        val itemStack = getDisplayItem(data.item, gui, player)
                         ItemBuilder(itemStack)
                     } else ItemBuilder.EMPTY
                 }
-                .addClickHandler { _, click ->
-                    if (click.clickType != ClickType.LEFT)
-                        return@addClickHandler
-                    if (!canGoNext)
-                        return@addClickHandler
-                    gui.page++
-                    updateFlagAndAct(data.action, click)
+                .addClickHandler { _, gui, click ->
+                    if (click.clickType != ClickType.LEFT) return@addClickHandler
+                    updateFlag(gui)
+                    if (canGoNext) {
+                        gui.page++
+                        updateFlag(gui)
+                        data.action.forEach { // TODO event 没有了
+                            it.executeIfAllowed(mapOf("player" to player, "clickType" to click.clickType))
+                        }
+                    }
                 }
                 .build()
         }

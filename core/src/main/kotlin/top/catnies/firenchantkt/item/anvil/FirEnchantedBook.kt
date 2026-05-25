@@ -138,7 +138,13 @@ class FirEnchantedBook : EnchantedBook {
             // 如果第一件物品也是附魔书, 触发合并逻辑.
             isEnchantedBookMerge(firstSetting, setting) -> {
                 // 触发事件
-                val mergeEvent = EnchantedBookMergeEvent(context.viewer, event, anvilView, firstSetting!!, setting, resultItem)
+                val mergeEvent = EnchantedBookMergeEvent(
+                    context.viewer,
+                    event, anvilView,
+                    firstSetting!!,
+                    setting,
+                    resultItem
+                )
                 Bukkit.getPluginManager().callEvent(mergeEvent)
                 if (mergeEvent.isCancelled) {
                     event.isCancelled = true
@@ -204,8 +210,9 @@ class FirEnchantedBook : EnchantedBook {
 
                     // 开启了破坏装备 & 没有保护符文
                     val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)
-                    // TODO: 修复破碎物品消失漏洞
-                    anvilView.setItem(0, brokenEquipment)
+                    TaskUtils.runTaskLater(delay = 1L, task = {
+                        anvilView.setItem(0, brokenEquipment)
+                    })
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
                     player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
                 }
