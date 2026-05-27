@@ -1,3 +1,25 @@
+import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
+import net.minecrell.pluginyml.paper.PaperPluginDescription
+
+//java {
+//    sourceCompatibility = JavaVersion.VERSION_25
+//    targetCompatibility = JavaVersion.VERSION_25
+//    toolchain {
+//        languageVersion = JavaLanguageVersion.of(25)
+//    }
+//}
+//
+//kotlin {
+//    jvmToolchain(25)
+//    compilerOptions {
+//        freeCompilerArgs.add("-Xjvm-default=all")
+//    }
+//}
+
+plugins {
+    alias(libs.plugins.pluginyml)
+}
+
 dependencies {
     implementation(project(":api"))
     implementation(project(":compatibility"))
@@ -23,4 +45,76 @@ tasks.test {
 // 确保 plugin.yml 被正确处理
 tasks.processResources {
     expand("version" to project.version)
+}
+
+paper {
+    main = "top.catnies.firenchantkt.FirEnchantPlugin"
+    bootstrapper = "top.catnies.firenchantkt.FirEnchantBootstrapper"
+    loader = "top.catnies.firenchantkt.FirEnchantPluginLoader"
+    hasOpenClassloader = false
+    name = "FirEnchantKt"
+    prefix = "杉云附魔"
+    apiVersion = "1.21.4"
+    foliaSupported = true
+    load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP  or POSTWORLD
+    authors = listOf("Catnies", "ChengZhiMeow")
+
+    generateLibrariesJson = false
+
+    serverDependencies {
+        register("PlaceholderAPI") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = true
+            joinClasspath = true
+        }
+
+        register("Nexo") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("Oraxen") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("Itemsadder") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("MythicMobs") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("CraftEngine") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+
+
+        register("EnchantmentSlots") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("MythicChanger") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("CustomFishing") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+        register("CustomCrops") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
+    }
+
 }

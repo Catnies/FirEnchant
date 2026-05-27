@@ -66,10 +66,10 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
         this.registerLateInitListener(this)     // 延时初始化器
         CommandManager.instance             // 命令管理器
         NMSHandlerHolder.instance           // NMS管理器
-        // 异步加载反射, 不知道为啥想优化下都会报错, 推荐谨慎修改
+        // 异步加载反射
         TaskUtils.runAsyncTasksLater(
             tasks = arrayOf({ InvUIAdaptor.loadConstructors() }),
-            delay = 100L
+            delay = 10L
         )
         logger.info("FirEnchant Plugin Enabled!")
     }

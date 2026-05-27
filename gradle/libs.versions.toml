@@ -1,6 +1,7 @@
 [versions]
 java = "25"
 
+pluginyml = "0.9.0"
 plugin-version = "3.2.0-SNAPSHOT-1"
 # Plugins
 kotlin = "2.3.0"
@@ -42,6 +43,7 @@ kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 runpaper = { id = "xyz.jpenilla.run-paper", version.ref = "runpaper" }
 paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }
+pluginyml = { id = "de.eldoria.plugin-yml.paper", version.ref = "pluginyml" }
 
 
 [libraries]
@@ -52,6 +54,7 @@ kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect", version.ref =
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 kotlinx-coroutines-jdk9 = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-jdk9", version.ref = "kotlinx-coroutines" }
 lombok = { module = "org.projectlombok:lombok",  version.ref = "lombok" }
+
 
 # Database
 ormlite-core = { module = "com.j256.ormlite:ormlite-core",  version.ref = "ormlite" }
@@ -73,7 +76,7 @@ invui-access-r24 = { module = "xyz.xenondevs.invui:inventory-access-r24",  versi
 invui-access-r25 = { module = "xyz.xenondevs.invui:inventory-access-r25",  version.ref = "invui" }
 invui-access-r26 = { module = "xyz.xenondevs.invui:inventory-access-r26",  version.ref = "invui" }
 
-invui2 = { module = "xyz.xenondevs.invui:invui",  version.ref = "invui2" }
+invui2-base = { module = "xyz.xenondevs.invui:invui",  version.ref = "invui2" }
 invui2-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui2" }
 
 # Compatibility
@@ -93,6 +96,6 @@ placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholder
 kotlin = ["kotlin-stdlib", "kotlin-reflect", "kotlinx-coroutines-core", "kotlinx-coroutines-jdk9"]
 mysql = ["ormlite-core", "ormlite-jdbc", "hikaricp"]
 rtag = ["rtag-core", "rtag-item"]
-invui2 = ["invui2", "invui2-kotlin"]
+invui2 = ["invui2-base", "invui2-kotlin"]
 invui = ["invui-core", "invui-kotlin", "invui-access-r20", "invui-access-r21", "invui-access-r22", "invui-access-r23", "invui-access-r24", "invui-access-r25", "invui-access-r26"]
 itemproviders = ["nexo", "oraxen", "mythicmobs", "itemsadder", "craftengine-core", "craftengine-bukkit"]

@@ -16,7 +16,7 @@ import java.util.Properties;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
 
-
+@SuppressWarnings({"UnstableApiUsage", "unused"})
 public class FirEnchantPluginLoader implements PluginLoader {
 
     private static final Properties versionProperties = new Properties();
