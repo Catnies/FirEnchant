@@ -153,6 +153,7 @@ fun registerPaperTask(
         downloadPlugins {
             hangar("PlaceholderAPI", libs.versions.placeholderapi.get())
             modrinth("CraftEngine", libs.versions.craftengine.get())
+            modrinth("packetevents", "2.12.1+spigot")
         }
         minecraftVersion(version)
         serverJarFile?.let { serverJar(it) }
@@ -163,6 +164,7 @@ fun registerPaperTask(
         }
         systemProperties["com.mojang.eula.agree"] = true
         jvmArgs(
+            "-Dnet.kyori.adventure.text.warnWhenLegacyFormattingDetected=false", // 关闭旧版格式的警告
             "-Dorg.bukkit.plugin.java.LibraryLoader.centralURL=https://maven.aliyun.com/repository/central",
             "-Dsun.stdout.encoding=UTF-8",
             "-Dsun.stderr.encoding=UTF-8",

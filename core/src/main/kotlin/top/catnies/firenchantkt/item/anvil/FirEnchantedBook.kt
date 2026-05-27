@@ -180,8 +180,10 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 成功直接设置物品, 然后取消物品
                 if (useEvent.isSuccess) {
-                    player.setItemOnCursor(context.result)
                     event.isCancelled = true
+                    player.setItemOnCursor(context.result)
+                    event.inventory.clear() // fixed: 将 RecipeListener 的 event.inventory.clear() 补偿到此处
+                    player.playSound(player.location, "block.anvil.use", 1f, 1f)
                 }
                 // 失败逻辑
                 else {
