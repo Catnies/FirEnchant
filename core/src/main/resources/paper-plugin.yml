@@ -3,7 +3,7 @@ name: FirEnchantKt
 version: ${version}
 main: top.catnies.firenchantkt.FirEnchantPlugin
 loader: top.catnies.firenchantkt.FirEnchantPluginLoader
-#bootstrapper:
+bootstrapper: top.catnies.firenchantkt.FirEnchantBootstrapper
 #load: POSTWORLD
 authors:
   - Catnies

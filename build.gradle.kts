@@ -164,7 +164,7 @@ fun registerPaperTask(
         }
         systemProperties["com.mojang.eula.agree"] = true
         jvmArgs(
-            "-Dnet.kyori.adventure.text.warnWhenLegacyFormattingDetected=false", // 关闭旧版格式的警告
+//            "-Dnet.kyori.adventure.text.warnWhenLegacyFormattingDetected=false", // 关闭旧版格式的警告
             "-Dorg.bukkit.plugin.java.LibraryLoader.centralURL=https://maven.aliyun.com/repository/central",
             "-Dsun.stdout.encoding=UTF-8",
             "-Dsun.stderr.encoding=UTF-8",
