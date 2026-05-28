@@ -1,0 +1,121 @@
+##
+## 分类
+##
+categories:
+  enchantment:brokengears:
+    name: "<!i><#FFD700>破损物品</#FFD700>"
+    icon: enchantment:broken_pickaxe
+    hidden: true
+    list:
+      - enchantment:broken_axe
+      - enchantment:broken_boots
+      - enchantment:broken_bow
+      - enchantment:broken_brush
+      - enchantment:broken_chestplate
+      - enchantment:broken_crossbow
+      - enchantment:broken_elytra
+      - enchantment:broken_fishing_rod
+      - enchantment:broken_helmet
+      - enchantment:broken_hoe
+      - enchantment:broken_leggings
+      - enchantment:broken_mace
+      - enchantment:broken_pickaxe
+      - enchantment:broken_shears
+      - enchantment:broken_shield
+      - enchantment:broken_shovel
+      - enchantment:broken_spear
+      - enchantment:broken_sword
+      - enchantment:broken_trident
+      - enchantment:broken_wolf_armor
+
+
+##
+## 语言
+##
+i18n#enchantment#brokengears:
+  zh: 
+    item.enchantment.brokengears.broken_axe: "损坏的斧头"
+    item.enchantment.brokengears.broken_boots: "损坏的靴子"
+    item.enchantment.brokengears.broken_bow: "损坏的弓"
+    item.enchantment.brokengears.broken_brush: "损坏的考古刷"
+    item.enchantment.brokengears.broken_chestplate: "损坏的胸甲"
+    item.enchantment.brokengears.broken_crossbow: "损坏的弩"
+    item.enchantment.brokengears.broken_elytra: "损坏的鞘翅"
+    item.enchantment.brokengears.broken_fishing_rod: "损坏的钓竿"
+    item.enchantment.brokengears.broken_helmet: "损坏的头盔"
+    item.enchantment.brokengears.broken_hoe: "损坏的锄头"
+    item.enchantment.brokengears.broken_leggings: "损坏的护腿"
+    item.enchantment.brokengears.broken_mace: "损坏的重锤"
+    item.enchantment.brokengears.broken_pickaxe: "损坏的镐"
+    item.enchantment.brokengears.broken_shears: "损坏的剪刀"
+    item.enchantment.brokengears.broken_shield: "损坏的盾牌"
+    item.enchantment.brokengears.broken_shovel: "损坏的铲"
+    item.enchantment.brokengears.broken_spear: "损坏的矛"
+    item.enchantment.brokengears.broken_sword: "损坏的剑"
+    item.enchantment.brokengears.broken_trident: "损坏的三叉戟"
+    item.enchantment.brokengears.broken_wolf_armor: "损坏的狼铠"
+
+
+##
+## 模板
+##
+templates#enchantment#brokengears:
+  # 配置模板 - 破损的装备
+  custom:special/enchantment/brokengears:
+    material: paper
+    item-model: "minecraft:firenchant/brokengears/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/brokengears/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/brokengears/${__ID__}"
+    data:
+      item-name: "<!i><#FFFFFF><i18n:item.enchantment.brokengears.${__ID__}>"
+
+
+##
+## 物品
+##
+items#misc#materials:
+  enchantment:broken_axe:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_boots:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_bow:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_brush:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_chestplate:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_crossbow:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_elytra:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_fishing_rod:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_helmet:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_hoe:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_leggings:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_mace:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_pickaxe:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_shears:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_shield:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_shovel:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_spear:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_sword:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_trident:
+    template: custom:special/enchantment/brokengears
+  enchantment:broken_wolf_armor:
+    template: custom:special/enchantment/brokengears
