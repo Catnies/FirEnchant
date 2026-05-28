@@ -1,0 +1,208 @@
+##
+## 分类
+##
+categories:
+  enchantment:enchantedbook:
+    name: "<!i><#FFD700>附魔书外观</#FFD700>"
+    icon: enchantment:enchantedbook_aqua_affinity
+    hidden: true
+    list:
+      - enchantment:enchantedbook_aqua_affinity
+      - enchantment:enchantedbook_bane_of_arthropods
+      - enchantment:enchantedbook_binding_curse
+      - enchantment:enchantedbook_blast_protection
+      - enchantment:enchantedbook_fire_aspect
+      - enchantment:enchantedbook_fire_protection
+      - enchantment:enchantedbook_flame
+      - enchantment:enchantedbook_fortune
+      - enchantment:enchantedbook_frost_walker
+      - enchantment:enchantedbook_lure
+      - enchantment:enchantedbook_mending
+      - enchantment:enchantedbook_multishot
+      - enchantment:enchantedbook_piercing
+      - enchantment:enchantedbook_power
+      - enchantment:enchantedbook_projectile_protection
+      - enchantment:enchantedbook_feather_falling
+      - enchantment:enchantedbook_efficiency
+      - enchantment:enchantedbook_depth_strider
+      - enchantment:enchantedbook_density
+      - enchantment:enchantedbook_channeling
+      - enchantment:enchantedbook_luck_of_the_sea
+      - enchantment:enchantedbook_loyalty
+      - enchantment:enchantedbook_looting
+      - enchantment:enchantedbook_knockback
+      - enchantment:enchantedbook_infinity
+      - enchantment:enchantedbook_riptide
+      - enchantment:enchantedbook_sharpness
+      - enchantment:enchantedbook_respiration
+      - enchantment:enchantedbook_quick_charge
+      - enchantment:enchantedbook_punch
+      - enchantment:enchantedbook_protection
+      - enchantment:enchantedbook_silk_touch
+      - enchantment:enchantedbook_smite
+      - enchantment:enchantedbook_sweeping_edge
+      - enchantment:enchantedbook_swift_sneak
+      - enchantment:enchantedbook_thorns
+      - enchantment:enchantedbook_unbreaking
+      - enchantment:enchantedbook_vanishing_curse
+      - enchantment:enchantedbook_wind_burst
+      - enchantment:enchantedbook_breach
+      - enchantment:enchantedbook_impaling
+      - enchantment:enchantedbook_soul_speed
+
+
+
+##
+## 语言
+##
+i18n#enchantment#enchantedbook:
+  zh: 
+    item.enchantment.enchantedbooks.enchantedbook_aqua_affinity: "水下速掘"
+    item.enchantment.enchantedbooks.enchantedbook_backstabbing: "背刺"
+    item.enchantment.enchantedbooks.enchantedbook_bane_of_arthropods: "节肢杀手"
+    item.enchantment.enchantedbooks.enchantedbook_binding_curse: "绑定诅咒"
+    item.enchantment.enchantedbooks.enchantedbook_blast_protection: "爆炸保护"
+    item.enchantment.enchantedbooks.enchantedbook_fire_aspect: "火焰附加"
+    item.enchantment.enchantedbooks.enchantedbook_fire_protection: "火焰保护"
+    item.enchantment.enchantedbooks.enchantedbook_flame: "火矢"
+    item.enchantment.enchantedbooks.enchantedbook_fortune: "时运"
+    item.enchantment.enchantedbooks.enchantedbook_frost_walker: "冰霜行者"
+    item.enchantment.enchantedbooks.enchantedbook_lure: "饵钓"
+    item.enchantment.enchantedbooks.enchantedbook_mending: "经验修补"
+    item.enchantment.enchantedbooks.enchantedbook_multishot: "多重射击"
+    item.enchantment.enchantedbooks.enchantedbook_piercing: "穿透"
+    item.enchantment.enchantedbooks.enchantedbook_power: "力量"
+    item.enchantment.enchantedbooks.enchantedbook_projectile_protection: "弹射物保护"
+    item.enchantment.enchantedbooks.enchantedbook_feather_falling: "摔落保护"
+    item.enchantment.enchantedbooks.enchantedbook_efficiency: "效率"
+    item.enchantment.enchantedbooks.enchantedbook_depth_strider: "深海探索者"
+    item.enchantment.enchantedbooks.enchantedbook_density: "致密"
+    item.enchantment.enchantedbooks.enchantedbook_channeling: "引雷"
+    item.enchantment.enchantedbooks.enchantedbook_calamity_killer: "灾厄杀手"
+    item.enchantment.enchantedbooks.enchantedbook_luck_of_the_sea: "海之眷顾"
+    item.enchantment.enchantedbooks.enchantedbook_loyalty: "忠诚"
+    item.enchantment.enchantedbooks.enchantedbook_looting: "抢夺"
+    item.enchantment.enchantedbooks.enchantedbook_knockback: "击退"
+    item.enchantment.enchantedbooks.enchantedbook_infinity: "无限"
+    item.enchantment.enchantedbooks.enchantedbook_riptide: "激流"
+    item.enchantment.enchantedbooks.enchantedbook_sharpness: "锋利"
+    item.enchantment.enchantedbooks.enchantedbook_respiration: "水下呼吸"
+    item.enchantment.enchantedbooks.enchantedbook_quick_charge: "快速装填"
+    item.enchantment.enchantedbooks.enchantedbook_punch: "冲击"
+    item.enchantment.enchantedbooks.enchantedbook_protection: "保护"
+    item.enchantment.enchantedbooks.enchantedbook_silk_touch: "精准采集"
+    item.enchantment.enchantedbooks.enchantedbook_smite: "亡灵杀手"
+    item.enchantment.enchantedbooks.enchantedbook_sweeping_edge: "横扫之刃"
+    item.enchantment.enchantedbooks.enchantedbook_swift_sneak: "迅捷潜行"
+    item.enchantment.enchantedbooks.enchantedbook_thorns: "荆棘"
+    item.enchantment.enchantedbooks.enchantedbook_unbreaking: "耐久"
+    item.enchantment.enchantedbooks.enchantedbook_vanishing_curse: "消失诅咒"
+    item.enchantment.enchantedbooks.enchantedbook_wind_burst: "风爆"
+    item.enchantment.enchantedbooks.enchantedbook_breach: "破甲"
+    item.enchantment.enchantedbooks.enchantedbook_impaling: "穿刺"
+    item.enchantment.enchantedbooks.enchantedbook_soul_speed: "灵魂疾行"
+
+
+
+templates#enchantment#enchantedbook:
+  custom:special/enchantment/enchantedbook:
+    material: paper
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/enchantedbooks/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/enchantedbooks/${__ID__}"
+    data:
+      item-name: "<!i><#fcfc54><i18n:item.enchantment.enchantedbooks.${__ID__}>"
+
+
+##
+## 物品
+##
+items#enchantment#enchantedbook:
+  enchantment:enchantedbook_aqua_affinity:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_bane_of_arthropods:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_binding_curse:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_blast_protection:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_fire_aspect:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_fire_protection:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_flame:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_fortune:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_frost_walker:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_lure:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_mending:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_multishot:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_piercing:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_power:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_projectile_protection:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_feather_falling:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_efficiency:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_depth_strider:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_density:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_channeling:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_luck_of_the_sea:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_loyalty:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_looting:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_knockback:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_infinity:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_riptide:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_sharpness:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_respiration:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_quick_charge:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_punch:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_protection:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_silk_touch:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_smite:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_sweeping_edge:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_swift_sneak:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_thorns:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_unbreaking:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_vanishing_curse:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_wind_burst:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_breach:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_impaling:
+    template: custom:special/enchantment/enchantedbook
+  enchantment:enchantedbook_soul_speed:
+    template: custom:special/enchantment/enchantedbook

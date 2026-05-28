@@ -1,0 +1,267 @@
+categories:
+  enchantment:ui:
+    name: "<!i><#FFD700>道具</#FFD700>"
+    icon: enchantment:bottom_left
+    hidden: true
+    list:
+      - enchantment:air
+      - enchantment:bottom_left
+      - enchantment:bottom_right
+
+
+
+##
+## 物品
+##
+items#misc#materials:
+  enchantment:air:
+    material: paper
+    custom-model-data: 31001
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/gui/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/gui/${__ID__}"
+    data:
+      item-name: "<!i><#FFFFFF>Empty"
+  enchantment:bottom_left:
+    material: paper
+    custom-model-data: 31002
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/gui/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/gui/${__ID__}"
+    data:
+      item-name: "<!i><#FFFFFF>Left"
+  enchantment:bottom_right:
+    material: paper
+    custom-model-data: 31003
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/gui/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/gui/${__ID__}"
+    data:
+      item-name: "<!i><#FFFFFF>Right"
+
+
+##
+## 图片信息
+##
+images:
+  # SoulDecompose
+  soul_decompose:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/${__ID__}.png
+    height: 256
+    ascent: 30
+    char: ꔹ
+  
+  # Equipment Fixer GUI
+  emcforge_crafting:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/${__ID__}.png
+    height: 256
+    ascent: 14
+    char: ꔺ
+  emcforge_crafting_bottom:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/${__ID__}.png
+    height: 256
+    ascent: 14
+    char: ꔻ
+
+  # Enchanting Table GUI
+  enchant_table_gui:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/${__ID__}.png
+    height: 256
+    ascent: 19
+    char: ꕋ
+  enchant_table_et1:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et1.png
+    height: 18
+    ascent: -22
+    char: ꕌ
+  enchant_table_et2:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et2.png
+    height: 18
+    ascent: -40
+    char: ꕍ
+  enchant_table_et3:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et3.png
+    height: 18
+    ascent: -58
+    char: ꕎ
+  enchant_table_et4:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et4.png
+    height: 18
+    ascent: -22
+    char: \ub060
+  enchant_table_et5:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et5.png
+    height: 18
+    ascent: -40
+    char: \ub061
+  enchant_table_et6:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/et6.png
+    height: 18
+    ascent: -58
+    char: \ub062
+
+  # EnchantedBook List
+  listview:
+    font: minecraft:guis
+    file: minecraft:firenchant/gui/listview.png
+    height: 256
+    ascent: 19
+    char: \ub063
+
+  # 图标
+  enchanted_book_inlore:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/enchanted_book_inlore.png
+    height: 28
+    ascent: 6
+    char: ꓲ
+  exp_point:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/exp_point.png
+    height: 8
+    ascent: 7
+    char: ꔂ 
+  lapis_lazuli:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/lapis_lazuli.png
+    height: 8
+    ascent: 7
+    char: ꔃ
+
+  # 物品类型图标
+  itemtype_sword:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/sword
+    height: 11
+    ascent: 8
+    char: ꔡ
+  itemtype_axe:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/axe
+    height: 11
+    ascent: 8
+    char: ꔢ
+  itemtype_shovel:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/shovel
+    height: 11
+    ascent: 8
+    char: ꔣ
+  itemtype_hoe:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/hoe
+    height: 11
+    ascent: 8
+    char: ꔤ
+  itemtype_pickaxe:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/pickaxe
+    height: 11
+    ascent: 8
+    char: ꔥ
+  itemtype_bow:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/bow
+    height: 11
+    ascent: 8
+    char: ꔦ
+  itemtype_crossbow:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/crossbow
+    height: 11
+    ascent: 8
+    char: ꔧ
+  itemtype_fishing_rod:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/fishing_rod
+    height: 11
+    ascent: 8
+    char: ꔨ
+  itemtype_trident:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/trident
+    height: 11
+    ascent: 8
+    char: ꔩ
+  itemtype_shield:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/shield
+    height: 11
+    ascent: 8
+    char: ꔪ
+  itemtype_helmet:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/helmet
+    height: 11
+    ascent: 8
+    char: ꔫ
+  itemtype_chestplate:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/chestplate
+    height: 11
+    ascent: 8
+    char: ꔬ
+  itemtype_leggings:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/leggings
+    height: 11
+    ascent: 8
+    char: ꔭ
+  itemtype_boots:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/boots
+    height: 11
+    ascent: 8
+    char: ꔮ
+  itemtype_elytra:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/elytra
+    height: 11
+    ascent: 8
+    char: ꔯ
+  itemtype_staff:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/staff
+    height: 11
+    ascent: 8
+    char: ꔰ
+  itemtype_mace:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/mace
+    height: 11
+    ascent: 8
+    char: ꔱ
+  itemtype_shear:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/shears
+    height: 11
+    ascent: 8
+    char: ꗖ
+  itemtype_wolf_armor:
+    font: minecraft:default
+    file: minecraft:firenchant/gui/type/wolf_armor
+    height: 11
+    ascent: 8
+    char: ꗗ

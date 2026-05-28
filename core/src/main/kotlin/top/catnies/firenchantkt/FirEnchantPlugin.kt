@@ -15,7 +15,6 @@ import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.engine.FirActionRegistry
 import top.catnies.firenchantkt.engine.FirConditionRegistry
 import top.catnies.firenchantkt.gui.InvUIAdaptor
-import top.catnies.firenchantkt.gui.InvUISetup
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
