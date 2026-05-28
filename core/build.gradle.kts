@@ -53,7 +53,7 @@ paper {
     loader = "top.catnies.firenchantkt.FirEnchantPluginLoader"
     hasOpenClassloader = false
     name = "FirEnchantKt"
-    prefix = "杉云附魔"
+    prefix = "FirEnchant"
     apiVersion = "1.21.4"
     foliaSupported = true
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD // STARTUP  or POSTWORLD
