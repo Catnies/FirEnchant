@@ -86,6 +86,9 @@ allprojects {
         compileOnly(rootProject.libs.bundles.kotlin) // Kotlin Bundles
         compileOnly(rootProject.libs.lombok) // Lombok
         annotationProcessor(rootProject.libs.lombok) // Lombok
+        // Koin
+        implementation("io.insert-koin:koin-core:4.1.1")
+        implementation("io.insert-koin:koin-annotations:2.3.1")
         // 数据库
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
