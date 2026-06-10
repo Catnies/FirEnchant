@@ -1,6 +1,6 @@
 package top.catnies.firenchantkt
 
-import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
+import cn.chengzhimeow.ccscheduler.scheduler.CCScheduler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +15,6 @@ import top.catnies.firenchantkt.enchantment.FirEnchantmentManager
 import top.catnies.firenchantkt.engine.FirActionRegistry
 import top.catnies.firenchantkt.engine.FirConditionRegistry
 import top.catnies.firenchantkt.gui.InvUIAdaptor
-import top.catnies.firenchantkt.gui.InvUISetup
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.IntegrationManager
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
@@ -49,7 +48,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     val mainDispatcher = object : CoroutineDispatcher() {
         override fun dispatch(context: CoroutineContext, block: Runnable) {
             if (Bukkit.isPrimaryThread()) block.run()
-            else MHDFScheduler.getGlobalRegionScheduler().runTask(plugin, block)
+            else CCScheduler.getInstance().globalRegionScheduler.runTask(plugin, block)
         }
     }
 

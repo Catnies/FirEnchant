@@ -1,6 +1,6 @@
 package top.catnies.firenchantkt.compatibility.enchantmentslots
 
-import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler
+import cn.chengzhimeow.ccscheduler.scheduler.CCScheduler
 import com.saicone.rtag.RtagItem
 import org.bukkit.Bukkit
 import org.bukkit.GameMode
@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
+import org.bukkit.plugin.java.JavaPlugin
 import top.catnies.firenchantkt.api.event.anvil.SlotRunePreUseEvent
 import top.catnies.firenchantkt.api.event.anvil.SlotRuneUseEvent
 import top.catnies.firenchantkt.context.AnvilContext
@@ -25,7 +26,7 @@ class FirSlotRune(
     var costExp = 18
     var itemProvider: ItemProvider? = null
     var id: String? = null
-    val plugin = Bukkit.getPluginManager().getPlugin("FirEnchantKt")!!
+    val plugin = Bukkit.getPluginManager().getPlugin("FirEnchantKt") as JavaPlugin
 
     init {
         load()
@@ -66,10 +67,10 @@ class FirSlotRune(
         injectContextData(resultItem, useAmount)
         setEnchantmentSlots(resultItem, preUseEvent.targetSlots)
 
-        MHDFScheduler.getGlobalRegionScheduler().runTaskLater(plugin, {
+        CCScheduler.getInstance().globalRegionScheduler.runTaskLater(plugin, 0L) { ->
             context.view.setItem(2, resultItem)
             context.view.repairCost = preUseEvent.costExp
-        }, 0)
+        }
     }
 
     override fun onCost(event: InventoryClickEvent, context: AnvilContext) {
