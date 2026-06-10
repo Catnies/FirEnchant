@@ -125,6 +125,18 @@ tasks {
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
+
+        // 排除kotlin, 不然跟aiya冲突
+        dependencies {
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8"))
+
+            exclude("META-INF/kotlin-stdlib.kotlin_module")
+            exclude("META-INF/kotlin-stdlib-common.kotlin_module")
+            exclude("kotlin/**")
+            exclude("kotlinx/**")
+        }
     }
 
     // 展开 gradle.properties 到 resources

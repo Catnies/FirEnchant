@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
+import top.catnies.firenchantkt.compatibility.aiyatsbus.getAvailableEnchantments
 import top.catnies.firenchantkt.config.SettingsConfig
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import java.util.concurrent.ConcurrentHashMap
@@ -18,7 +19,18 @@ object EnchantmentUtils {
         val enchantmentsCache = ENCHANT_CACHE[item.type]
         if (enchantmentsCache != null) return enchantmentsCache
 
-        val tableEnchantmentList = NMSHandlerHolder.getNMSHandler().getEnchantmentTableEnchantmentList(Bukkit.getWorlds().first(), SettingsConfig.instance.REGISTRY)
+        // 简单粗暴的方法
+        val tableEnchantmentList = if (Bukkit.getServer().pluginManager.isPluginEnabled("Aiyatsbus")) {
+            // 使用aiya的api获取物品可用附魔列表
+            getAvailableEnchantments(item).toSet()
+        } else {
+            NMSHandlerHolder.getNMSHandler()
+                .getEnchantmentTableEnchantmentList(
+                    Bukkit.getWorlds().first(),
+                    SettingsConfig.instance.REGISTRY
+                )
+        }
+
         if (item.type == Material.BOOK) {
             ENCHANT_CACHE[item.type] = tableEnchantmentList
             return tableEnchantmentList

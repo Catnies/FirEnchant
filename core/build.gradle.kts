@@ -100,6 +100,12 @@ paper {
             required = false
             joinClasspath = true
         }
+        // 声明插件依赖
+        register("Aiyatsbus") {
+            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
+            required = false
+            joinClasspath = true
+        }
         register("MythicChanger") {
             load = PaperPluginDescription.RelativeLoadOrder.BEFORE
             required = false
