@@ -11,16 +11,18 @@ import cc.polarastrum.aiyatsbus.core.*
 import cc.polarastrum.aiyatsbus.core.data.CheckType
 
 
+// aiya api引用转换函数
+fun getAvailableEnchantments(item: ItemStack, player: Player?): List<Enchantment> {
+    return item.etsAvailable(CheckType.ATTAIN, player) // 传入玩家检测权限
+        .filterNot { it.alternativeData.isTreasure } // 去除宝藏魔咒
+        .map { it.enchantment }
+}
+
+
 val kFunction by lazy {
     EnchantingTableSupport::class.declaredMemberFunctions.find { it.name == "doPrepareEnchant" }
 }
 
-// aiya api引用转换函数
-fun getAvailableEnchantments(item: ItemStack, player: Player?): List<Enchantment> {
-    return item.etsAvailable(CheckType.ATTAIN, player).filterNot { it.alternativeData.isTreasure }.map {
-        it.enchantment
-    }
-}
 
 // 他的这个函数会卡死
 fun getEnchantmentTableResult(player: Player, item: ItemStack, bonus: Int): List<Pair<Enchantment, Int>> {

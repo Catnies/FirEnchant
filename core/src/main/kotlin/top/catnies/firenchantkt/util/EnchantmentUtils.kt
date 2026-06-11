@@ -19,14 +19,11 @@ object EnchantmentUtils {
         val enchantmentsCache = ENCHANT_CACHE[item.type]
         if (enchantmentsCache != null) return enchantmentsCache
 
-        // 简单粗暴的方法
-        val tableEnchantmentList =
-            NMSHandlerHolder.getNMSHandler()
-                .getEnchantmentTableEnchantmentList(
-                    Bukkit.getWorlds().first(),
-                    SettingsConfig.instance.REGISTRY
-                )
-
+        val tableEnchantmentList = NMSHandlerHolder.getNMSHandler()
+            .getEnchantmentTableEnchantmentList(
+                Bukkit.getWorlds().first(),
+                SettingsConfig.instance.REGISTRY
+            )
 
         if (item.type == Material.BOOK) {
             ENCHANT_CACHE[item.type] = tableEnchantmentList
