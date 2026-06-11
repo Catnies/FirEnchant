@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.compatibility.provider
+package top.catnies.firenchantkt.compatibility.provider.item
 
 import io.lumine.mythic.bukkit.MythicBukkit
 import org.bukkit.Bukkit
