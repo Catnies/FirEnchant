@@ -7,6 +7,7 @@ import org.checkerframework.checker.index.qual.Positive
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.api.event.enchantingtable.OriginalBookInputEvent
+import top.catnies.firenchantkt.compatibility.aiyatsbus.getAvailableEnchantments
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.config.extern.CustomRollStrategyData
 import top.catnies.firenchantkt.context.EnchantingTableContext
@@ -22,7 +23,7 @@ import top.catnies.firenchantkt.item.enchantingtable.origin_book.VanillaRollStra
 import kotlin.random.Random
 
 @Suppress("UnstableApiUsage")
-class FirOriginalBook: OriginalBook {
+class FirOriginalBook : OriginalBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -42,7 +43,11 @@ class FirOriginalBook: OriginalBook {
     }
 
     // 当物品放入附魔台时
-    override fun onPostInput(itemStack: ItemStack, eventWrapper: InventoryPostEventWrapper, context: EnchantingTableContext) {
+    override fun onPostInput(
+        itemStack: ItemStack,
+        eventWrapper: InventoryPostEventWrapper,
+        context: EnchantingTableContext
+    ) {
 
         // 查找对应的配置类
         val originalBookData = config.ORIGINAL_BOOK_MATCHES.find {
@@ -117,8 +122,16 @@ class FirOriginalBook: OriginalBook {
         val player = context.player
         val tableMenu = context.menu as AbstractFirEnchantMenu
 
+        // 根据插件判断附魔大全
+        val data = if (Bukkit.getServer().pluginManager.isPluginEnabled("Aiyatsbus")) {
+            val temp = originalBookData.rollStrategyData as VanillaRollStrategyData
+            val aiyaEnchantments = getAvailableEnchantments(itemStack, player).toSet()
+            temp.copy(enchantmentList = aiyaEnchantments)
+        } else {
+            originalBookData.rollStrategyData as VanillaRollStrategyData
+        }
+
         // 获取这个配置的可附魔列表
-        val data = originalBookData.rollStrategyData as VanillaRollStrategyData
         val enchantments = data.enchantmentList
 
         // 计算附魔结果
@@ -152,7 +165,7 @@ class FirOriginalBook: OriginalBook {
 
     // 获取附魔书失败率的上下界
     private fun getEnchantBookFailureRange(line: Int): Pair<Int, Int> {
-        return when(line) {
+        return when (line) {
             1 -> config.ENCHANT_COST_LINE_1_MIN_FAILURE to config.ENCHANT_COST_LINE_1_MAX_FAILURE
             2 -> config.ENCHANT_COST_LINE_2_MIN_FAILURE to config.ENCHANT_COST_LINE_2_MAX_FAILURE
             3 -> config.ENCHANT_COST_LINE_3_MIN_FAILURE to config.ENCHANT_COST_LINE_3_MAX_FAILURE
