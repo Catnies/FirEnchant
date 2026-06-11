@@ -20,16 +20,13 @@ object EnchantmentUtils {
         if (enchantmentsCache != null) return enchantmentsCache
 
         // 简单粗暴的方法
-        val tableEnchantmentList = if (Bukkit.getServer().pluginManager.isPluginEnabled("Aiyatsbus")) {
-            // 使用aiya的api获取物品可用附魔列表
-            getAvailableEnchantments(item).toSet()
-        } else {
+        val tableEnchantmentList =
             NMSHandlerHolder.getNMSHandler()
                 .getEnchantmentTableEnchantmentList(
                     Bukkit.getWorlds().first(),
                     SettingsConfig.instance.REGISTRY
                 )
-        }
+
 
         if (item.type == Material.BOOK) {
             ENCHANT_CACHE[item.type] = tableEnchantmentList

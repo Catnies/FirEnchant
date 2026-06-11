@@ -1,6 +1,7 @@
 package top.catnies.firenchantkt.item.enchantingtable.origin_book
 
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.ItemStack
 
 /**
  * 记录可在附魔台使用的物品数据类
@@ -24,6 +25,7 @@ interface RollStrategyData
  * Vanilla 模式下, 附魔的配置
  */
 class VanillaRollStrategyData(
+    val importItems: List<ItemStack>,
     val enchantmentList: Set<Enchantment>
 ) : RollStrategyData
 

@@ -16,8 +16,8 @@ val kFunction by lazy {
 }
 
 // aiya api引用转换函数
-fun getAvailableEnchantments(item: ItemStack): List<Enchantment> {
-    return item.etsAvailable(CheckType.ATTAIN, null).filterNot { it.alternativeData.isTreasure }.map {
+fun getAvailableEnchantments(item: ItemStack, player: Player?): List<Enchantment> {
+    return item.etsAvailable(CheckType.ATTAIN, player).filterNot { it.alternativeData.isTreasure }.map {
         it.enchantment
     }
 }
