@@ -19,7 +19,7 @@ class FirVanillaEnchantedBook: VanillaEnchantedBook {
 
     override fun matches(itemStack: ItemStack): Boolean {
         // 功能开关
-        if (!config.VEB_DENY_USE) return false
+        if (config.VEB_DENY_USE) return false
         // 无效物品
         if (itemStack.type != Material.ENCHANTED_BOOK) return false
         return true
