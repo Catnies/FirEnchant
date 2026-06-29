@@ -105,7 +105,11 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
         val file = plugin.dataFolder.resolve("enchantments").resolve("$fileName.yml")
         if (!file.exists()) {
             file.parentFile?.mkdirs()
-            ResourceCopyUtils.copyFile(plugin, "templates/enchantment.yml", file)
+            // 如果插件里存在同namespacekey相同配置(原版的附魔配置), 则复制保存, 否则使用模板复制保存.
+            val copyFromJarSuccess = ResourceCopyUtils.copyFile(plugin, "enchantments/$fileName.yml", file)
+            if (!copyFromJarSuccess) {
+                ResourceCopyUtils.copyFile(plugin, "templates/enchantment.yml", file)
+            }
         }
         return YamlConfiguration.loadConfiguration(file)
     }
