@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "Craftengine"
+hooked-id: "enchantment:enchantedbook_channeling"
+item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+item-lore:
+  - "<!i><white><image:enchantment:enchanted_book_inlore><dark_gray>投掷时，在命中目标的地点召唤"
+  - "<!i><white>       <dark_gray>闪电。"
+  - "<!i><white>       <red>失败概率： <gray><firenchant:failure>%"
+  - "<!i><white><image:enchantment:itemtype_trident>"

@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "Craftengine"
+hooked-id: "enchantment:enchantedbook_lure"
+item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+item-lore:
+  - "<!i><white><image:enchantment:enchanted_book_inlore><dark_gray>钓鱼时，加快当前鱼儿的咬钩速度。"
+  - "<!i><white>       <dark_gray>"
+  - "<!i><white>       <red>失败概率： <gray><firenchant:failure>%"
+  - "<!i><white><image:enchantment:itemtype_fishing_rod>"

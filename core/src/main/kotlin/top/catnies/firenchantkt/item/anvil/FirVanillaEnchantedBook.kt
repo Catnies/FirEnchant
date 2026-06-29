@@ -6,6 +6,7 @@ import org.bukkit.Material
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
+import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
@@ -21,7 +22,7 @@ class FirVanillaEnchantedBook: VanillaEnchantedBook {
     }
 
     override fun matches(itemStack: ItemStack): Boolean {
-        if (!config.VEB_DENY_USE) { // 如果启用原版附魔书, 则禁用此处理器, 转为原版逻辑
+        if (!config.VEB_DENY_USE || FirEnchantAPI.getSettingsByItemStack(itemStack) != null) { // 如果启用原版附魔书, 则禁用此处理器, 转为原版逻辑
             return false
         }
         return itemStack.type == Material.ENCHANTED_BOOK // 类型不对是无效物品

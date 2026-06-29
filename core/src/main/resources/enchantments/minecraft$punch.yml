@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "Craftengine"
+hooked-id: "enchantment:enchantedbook_punch"
+item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+item-lore:
+  - "<!i><white><image:enchantment:enchanted_book_inlore><dark_gray>射箭命中对方时，增加击退距离。"
+  - "<!i><white>       <dark_gray>"
+  - "<!i><white>       <red>失败概率： <gray><firenchant:failure>%"
+  - "<!i><white><image:enchantment:itemtype_bow>"

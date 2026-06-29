@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "Craftengine"
+hooked-id: "enchantment:enchantedbook_breach"
+item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+item-lore:
+  - "<!i><white><image:enchantment:enchanted_book_inlore><dark_gray>攻击时，降低目标的护甲值和韧性。"
+  - "<!i><white>       <dark_gray>"
+  - "<!i><white>       <red>失败概率： <gray><firenchant:failure>%"
+  - "<!i><white><image:enchantment:itemtype_mace>"
