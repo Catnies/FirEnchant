@@ -3,7 +3,6 @@ package top.catnies.firenchantkt;
 import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.bootstrap.PluginBootstrap;
 import org.jspecify.annotations.NonNull;
-import top.catnies.firenchantkt.gui.InvUIAdaptor;
 
 @SuppressWarnings({"UnstableApiUsage", "unused"})
 public class FirEnchantBootstrapper implements PluginBootstrap {

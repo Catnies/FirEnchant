@@ -2,7 +2,7 @@
 java = "25"
 
 pluginyml = "0.9.0"
-plugin-version = "3.2.1"
+plugin-version = "3.2.2"
 # Plugins
 kotlin = "2.3.0"
 shadow = "9.0.0-beta6"
