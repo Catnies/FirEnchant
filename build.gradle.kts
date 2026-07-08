@@ -76,8 +76,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://repo.catnies.top/releases/") // Catnies
-        maven("https://repo-eo.catnies.top/mhdf") // ChengZhiMeow
+        maven("https://repo-eo.catnies.top/releases") // catnies
         maven("https://repo.nightexpressdev.com/releases") // CoinsEngine
     }
 
@@ -94,7 +93,7 @@ allprojects {
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
         compileOnly(rootProject.libs.bundles.rtag) // RTag Bundles
-        implementation(rootProject.libs.mhdf.scheduler) // Scheduler
+        implementation(rootProject.libs.cc.scheduler) // Scheduler
 
         // 兼容
         compileOnly(rootProject.libs.placeholderapi) // PlaceholderAPI

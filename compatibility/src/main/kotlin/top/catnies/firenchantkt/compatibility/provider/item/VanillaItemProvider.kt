@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.compatibility.provider
+package top.catnies.firenchantkt.compatibility.provider.item
 
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack

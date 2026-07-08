@@ -1,6 +1,6 @@
 package top.catnies.firenchantkt.database.dao;
 
-import cn.chengzhiya.mhdfscheduler.scheduler.MHDFScheduler;
+import cn.chengzhimeow.ccscheduler.scheduler.CCScheduler;
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.stmt.QueryBuilder;
@@ -135,7 +135,7 @@ public abstract class AbstractDao<V, K> {
     @SneakyThrows
     public void delete(V entity, boolean async) {
         if (async) {
-            MHDFScheduler.getAsyncScheduler().runTask(FirEnchantPlugin.getInstance(), () -> {
+            CCScheduler.getInstance().getAsyncScheduler().runTask(FirEnchantPlugin.getInstance(), () -> {
                 try {
                     this.getDao().delete(entity);
                 } catch (SQLException e) {
@@ -167,7 +167,7 @@ public abstract class AbstractDao<V, K> {
     @SneakyThrows
     public void update(V entity, boolean async) {
         if (async) {
-            MHDFScheduler.getAsyncScheduler().runTask(FirEnchantPlugin.getInstance(), () -> {
+            CCScheduler.getInstance().getAsyncScheduler().runTask(FirEnchantPlugin.getInstance(), () -> {
                 try {
                     this.getDao().createOrUpdate(entity);
                 } catch (SQLException e) {

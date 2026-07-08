@@ -1,27 +1,27 @@
-package top.catnies.firenchantkt.compatibility.provider
+package top.catnies.firenchantkt.compatibility.provider.item
 
-import dev.lone.itemsadder.api.CustomStack
+import com.nexomc.nexo.api.NexoItems
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.integration.ItemProvider
 import javax.annotation.Nullable
 
-class ItemsAdderItemProvider private constructor(
+class NexoItemProvider private constructor(
     override val enabled: Boolean
 ): ItemProvider {
-    constructor(): this(Bukkit.getPluginManager().getPlugin("ItemsAdder") != null)
+    constructor(): this(Bukkit.getPluginManager().getPlugin("Nexo") != null)
 
     @Nullable
     override fun getItemById(id: String): ItemStack? {
-        return CustomStack.getInstance(id)?.itemStack
+        return NexoItems.itemFromId(id)?.build()
     }
 
     @Nullable
     override fun getIdByItem(item: ItemStack): String? {
-        return CustomStack.byItemStack(item)?.id
+        return NexoItems.idFromItem(item)
     }
 
     override fun toString(): String {
-        return "ItemsAdder"
+        return "Nexo"
     }
 }

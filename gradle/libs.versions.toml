@@ -24,7 +24,8 @@ hikaricp = "6.1.0"
 rtag = "1.5.16"
 invui = "1.49"
 invui2 = "2.1.0"
-mhdf-scheduler = "1.0.1"
+
+cc-scheduler = "2.0.4"
 nyana-reflection = "1.0.2"
 
 # Compatibility
@@ -64,7 +65,8 @@ hikaricp = { module = "com.zaxxer:HikariCP",  version.ref = "hikaricp" }
 # Library
 rtag-core = { module = "com.saicone.rtag:rtag",  version.ref = "rtag" }
 rtag-item = { module = "com.saicone.rtag:rtag-item",  version.ref = "rtag" }
-mhdf-scheduler = { module = "cn.chengzhiya:MHDF-Scheduler", version.ref = "mhdf-scheduler" }
+
+cc-scheduler = { module = "cn.chengzhimeow:CC-Scheduler", version.ref = "cc-scheduler" }
 nyana-reflection = { module = "net.nyana:nyana-reflection", version.ref = "nyana-reflection" }
 
 invui-core = { module = "xyz.xenondevs.invui:invui-core",  version.ref = "invui" }

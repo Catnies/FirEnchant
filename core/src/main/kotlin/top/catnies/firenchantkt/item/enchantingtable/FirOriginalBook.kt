@@ -15,6 +15,7 @@ import top.catnies.firenchantkt.enchantment.FirEnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
 import top.catnies.firenchantkt.gui.AbstractFirEnchantMenu
 import top.catnies.firenchantkt.gui.wrapper.InventoryPostEventWrapper
+import top.catnies.firenchantkt.integration.FirEnchantmentProviderRegistry
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
@@ -127,11 +128,18 @@ class FirOriginalBook: OriginalBook {
             }.toSet()
         } else data.enchantmentList
 
-        // 计算附魔结果
+        val enchantmentProviders = FirEnchantmentProviderRegistry.instance.getEnchantmentProviders()
+
         var index = 0
-        val enchantingTableResults = nmsHandler.getPlayerNextEnchantmentTableResultByEnchantmentList(
-            player, context.bookShelves, enchantable, enchantments
-        ).map { entry ->
+        val enchantingTableResults = if (enchantmentProviders.isNotEmpty()) {
+            // 通过插件获取结果
+            enchantmentProviders.last().prepareEnchant(enchantable, player, itemStack)
+        }else {
+            // 计算附魔结果
+            nmsHandler.getPlayerNextEnchantmentTableResultByEnchantmentList(
+                player, context.bookShelves, enchantable, enchantments
+            )
+        }.map { entry ->
             index++
             val failureRange = getEnchantBookFailureRange(index)
             val failure = Random(player.enchantmentSeed + index).nextInt(failureRange.first, failureRange.second)

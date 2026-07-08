@@ -4,11 +4,11 @@ import org.bukkit.Bukkit
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ItemProviderRegisterEvent
-import top.catnies.firenchantkt.compatibility.provider.CraftEngineItemProvider
-import top.catnies.firenchantkt.compatibility.provider.ItemsAdderItemProvider
-import top.catnies.firenchantkt.compatibility.provider.MythicMobsItemProvider
-import top.catnies.firenchantkt.compatibility.provider.NexoItemProvider
-import top.catnies.firenchantkt.compatibility.provider.VanillaItemProvider
+import top.catnies.firenchantkt.compatibility.provider.item.CraftEngineItemProvider
+import top.catnies.firenchantkt.compatibility.provider.item.ItemsAdderItemProvider
+import top.catnies.firenchantkt.compatibility.provider.item.MythicMobsItemProvider
+import top.catnies.firenchantkt.compatibility.provider.item.NexoItemProvider
+import top.catnies.firenchantkt.compatibility.provider.item.VanillaItemProvider
 
 class FirItemProviderRegistry private constructor(): ItemProviderRegistry {
 

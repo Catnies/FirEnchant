@@ -1,4 +1,4 @@
-package top.catnies.firenchantkt.compatibility.provider
+package top.catnies.firenchantkt.compatibility.provider.item
 
 import net.momirealms.craftengine.bukkit.api.CraftEngineItems
 import net.momirealms.craftengine.core.util.Key
