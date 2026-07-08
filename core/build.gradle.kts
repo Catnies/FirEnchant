@@ -121,12 +121,6 @@ paper {
             required = false
             joinClasspath = true
         }
-
-        register("Aiyatsbus") {
-            load = PaperPluginDescription.RelativeLoadOrder.BEFORE
-            required = false
-            joinClasspath = true
-        }
     }
 
 }
