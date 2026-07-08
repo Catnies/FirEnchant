@@ -2,7 +2,7 @@
 java = "25"
 
 pluginyml = "0.9.0"
-plugin-version = "3.2.0-SNAPSHOT-1"
+plugin-version = "3.2.2"
 # Plugins
 kotlin = "2.3.0"
 shadow = "9.0.0-beta6"
@@ -24,7 +24,9 @@ hikaricp = "6.1.0"
 rtag = "1.5.16"
 invui = "1.49"
 invui2 = "2.1.0"
+
 cc-scheduler = "2.0.4"
+nyana-reflection = "1.0.2"
 
 # Compatibility
 nexo = "1.1.0"
@@ -32,7 +34,6 @@ oraxen = "1.181.0"
 mythicmobs = "5.6.1"
 itemsadder = "4.0.10"
 craftengine = "26.5.1"
-auraskills = "2.2.4"
 customcrops = "3.6.29"
 customfishing = "2.3.7"
 placeholderapi = "2.12.2"
@@ -64,7 +65,9 @@ hikaricp = { module = "com.zaxxer:HikariCP",  version.ref = "hikaricp" }
 # Library
 rtag-core = { module = "com.saicone.rtag:rtag",  version.ref = "rtag" }
 rtag-item = { module = "com.saicone.rtag:rtag-item",  version.ref = "rtag" }
+
 cc-scheduler = { module = "cn.chengzhimeow:CC-Scheduler", version.ref = "cc-scheduler" }
+nyana-reflection = { module = "net.nyana:nyana-reflection", version.ref = "nyana-reflection" }
 
 invui-core = { module = "xyz.xenondevs.invui:invui-core",  version.ref = "invui" }
 invui-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui" }
@@ -86,7 +89,6 @@ mythicmobs = { module = "io.lumine:Mythic-Dist", version.ref = "mythicmobs" }
 itemsadder = { module = "dev.lone:api-itemsadder", version.ref = "itemsadder" }
 craftengine-core = { module = "net.momirealms:craft-engine-core", version.ref = "craftengine" }
 craftengine-bukkit = { module = "net.momirealms:craft-engine-bukkit", version.ref = "craftengine" }
-auraskills = { module = "dev.aurelium:auraskills-api-bukkit", version.ref = "auraskills" }
 customcrops = { module = "net.momirealms:custom-crops", version.ref = "customcrops" }
 customfishing = { module = "net.momirealms:custom-fishing", version.ref = "customfishing" }
 placeholderapi = { module = "me.clip:placeholderapi", version.ref = "placeholderapi" }

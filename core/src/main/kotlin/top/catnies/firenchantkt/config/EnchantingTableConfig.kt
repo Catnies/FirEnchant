@@ -246,11 +246,14 @@ class EnchantingTableConfig private constructor():
                     VANILLA -> {
                         // 读取魔咒
                         val enchantments: MutableSet<Enchantment> = mutableSetOf()
+                        val importItems = mutableListOf<ItemStack>()
                         val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
                             // 导入列表
                             Material.getMaterial(vanillaID.uppercase(Locale.ROOT))?.let {
                                 // 获取物品对应的魔咒列表添加
-                                val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
+                                val item = ItemStack(it)
+                                importItems += item
+                                val applicableEnchants = EnchantmentUtils.getApplicableEnchants(item)
                                 acc.addAll(applicableEnchants)
                                 return@fold acc
                             }
@@ -278,7 +281,7 @@ class EnchantingTableConfig private constructor():
                             return@mapNotNull null
                         }
                         // 返回结果
-                        VanillaRollStrategyData(enchantments)
+                        VanillaRollStrategyData(importItems,enchantments)
                     }
                     // 读取自定义策略的配置
                     CUSTOM -> {

@@ -76,7 +76,7 @@ allprojects {
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
         maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-        maven("https://repo-eo.catnies.top/releases") // ChengZhiMeow
+        maven("https://repo-eo.catnies.top/releases") // catnies
         maven("https://repo.nightexpressdev.com/releases") // CoinsEngine
     }
 
@@ -86,6 +86,9 @@ allprojects {
         compileOnly(rootProject.libs.bundles.kotlin) // Kotlin Bundles
         compileOnly(rootProject.libs.lombok) // Lombok
         annotationProcessor(rootProject.libs.lombok) // Lombok
+        // Koin
+        implementation("io.insert-koin:koin-core:4.1.1")
+        implementation("io.insert-koin:koin-annotations:2.3.1")
         // 数据库
         compileOnly(rootProject.libs.bundles.mysql) // Mysql Bundles
         // 依赖库
@@ -122,6 +125,18 @@ tasks {
 
         archiveFileName.set("${project.name}-${project.version}.jar")
         destinationDirectory.set(file("$rootDir/target"))
+
+        // 排除kotlin, 不然跟aiya冲突
+        dependencies {
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-common"))
+            exclude(dependency("org.jetbrains.kotlin:kotlin-stdlib-jdk8"))
+
+            exclude("META-INF/kotlin-stdlib.kotlin_module")
+            exclude("META-INF/kotlin-stdlib-common.kotlin_module")
+            exclude("kotlin/**")
+            exclude("kotlinx/**")
+        }
     }
 
     // 展开 gradle.properties 到 resources

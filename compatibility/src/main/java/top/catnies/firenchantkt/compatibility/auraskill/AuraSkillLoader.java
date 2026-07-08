@@ -1,6 +1,5 @@
 package top.catnies.firenchantkt.compatibility.auraskill;
 
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import top.catnies.firenchantkt.integration.HookPluginLoader;
 
@@ -14,7 +13,7 @@ public class AuraSkillLoader implements HookPluginLoader {
 
     @Override
     public void load() {
-        Bukkit.getPluginManager().registerEvents(new AuraSkillListener(), plugin);
+//        Bukkit.getPluginManager().registerEvents(new AuraSkillListener(), plugin);
     }
 
 }

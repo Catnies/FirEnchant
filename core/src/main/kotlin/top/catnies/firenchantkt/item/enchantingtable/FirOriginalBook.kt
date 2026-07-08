@@ -7,6 +7,7 @@ import org.checkerframework.checker.index.qual.Positive
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.api.event.enchantingtable.OriginalBookInputEvent
+import top.catnies.firenchantkt.compatibility.aiyatsbus.getAvailableEnchantments
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.config.extern.CustomRollStrategyData
 import top.catnies.firenchantkt.context.EnchantingTableContext
@@ -120,7 +121,12 @@ class FirOriginalBook: OriginalBook {
 
         // 获取这个配置的可附魔列表
         val data = originalBookData.rollStrategyData as VanillaRollStrategyData
-        val enchantments = data.enchantmentList
+        val enchantments = if (Bukkit.getServer().pluginManager.isPluginEnabled("Aiyatsbus")) {
+            data.importItems.flatMap { enchantableItem ->
+                val availableEnchantments = getAvailableEnchantments(enchantableItem, player)
+                availableEnchantments
+            }.toSet()
+        } else data.enchantmentList
 
         val enchantmentProviders = FirEnchantmentProviderRegistry.instance.getEnchantmentProviders()
 

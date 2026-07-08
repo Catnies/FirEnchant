@@ -1,0 +1,12 @@
+# 勿动
+enchantment-version: 1
+
+# 附魔书物品设置
+hooked-plugin: "Craftengine"
+hooked-id: "enchantment:enchantedbook_silk_touch"
+item-name: "&e<firenchant:enchantment> <firenchant:level_roman>"
+item-lore:
+  - "<!i><white><image:enchantment:enchanted_book_inlore><dark_gray>挖掘方块时，掉落方块本身。"
+  - "<!i><white>       <dark_gray>"
+  - "<!i><white>       <red>失败概率： <gray><firenchant:failure>%"
+  - "<!i><white><image:enchantment:itemtype_pickaxe><image:enchantment:itemtype_axe><image:enchantment:itemtype_shovel><image:enchantment:itemtype_hoe>"

@@ -10,13 +10,16 @@ import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.ItemUtils.serializeToBytes
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 
-class FirBrokenGear: BrokenGear {
+@Suppress("UnstableApiUsage")
+class FirBrokenGear : BrokenGear {
 
     companion object {
         @JvmStatic
-        val instance: FirBrokenGear by lazy { FirBrokenGear().also {
-            ServiceContainer.register(BrokenGear::class.java, it)
-        } }
+        val instance: FirBrokenGear by lazy {
+            FirBrokenGear().also {
+                ServiceContainer.register(BrokenGear::class.java, it)
+            }
+        }
     }
 
     val config = RepairTableConfig.instance
@@ -38,8 +41,17 @@ class FirBrokenGear: BrokenGear {
         RtagItem.edit(wrapper) { it.set(bytes, "FirEnchant", "FixType") }
 
         // 迁移原物品的数据
+
         item.getData(DataComponentTypes.ITEM_NAME)?.let { wrapper.setData(DataComponentTypes.ITEM_NAME, it) }
-        item.getData(DataComponentTypes.LORE)?.let { wrapper.setData(DataComponentTypes.LORE, it) }
+//        // 旧版修改lore
+//        // 如果原来的物品没有lore, 跳过损坏物品的lore, 否则将损坏物品的lore设置为原来物品的lore
+//        item.getData(DataComponentTypes.LORE)?.let { wrapper.setData(DataComponentTypes.LORE, it) }
+        // 新版修改lore
+        val sourceItemLore = item.lore().orEmpty()
+        wrapper.editMeta { wrapperItemMeta ->
+            val brokenLore = wrapperItemMeta.lore().orEmpty()
+            wrapperItemMeta.lore(sourceItemLore + brokenLore)
+        }
         item.getData(DataComponentTypes.ENCHANTMENTS)?.let { wrapper.setData(DataComponentTypes.ENCHANTMENTS, it) }
 
         // 不可堆叠喵

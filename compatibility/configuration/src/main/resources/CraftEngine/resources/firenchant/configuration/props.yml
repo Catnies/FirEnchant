@@ -1,0 +1,269 @@
+categories:
+  enchantment:
+    name: "<!i><#FFD700>附魔相关</#FFD700>"
+    icon: enchantment:ashes_o_enchantment
+    list:
+      - "#enchantment:originbooks"
+      - "#enchantment:props"
+      - "#enchantment:brokengears"
+      - "#enchantment:enchantedbook"
+      - "#enchantment:ui"
+  enchantment:props:
+    name: "<!i><#FFD700>道具</#FFD700>"
+    icon: enchantment:ashes_o_enchantment
+    hidden: true
+    list:
+      - enchantment:rune_power_30
+      - enchantment:rune_power_50
+      - enchantment:rune_power_75
+      - enchantment:rune_power_100
+      - enchantment:rune_protection
+      - enchantment:rune_slot
+      - enchantment:ashes_o_enchantment
+      - enchantment:tome_of_renewal
+      - enchantment:tome_of_reversal
+      - enchantment:repair_material_50p
+      - enchantment:repair_material_600s
+      - enchantment:random_enchanted_book
+
+
+
+##
+## 语言
+##
+i18n#enchantment#brokengears:
+  zh: 
+    item.enchantment.props.rune_power_30: "升级符文（30%）"
+    item.enchantment.props.rune_power_50: "升级符文（50%）"
+    item.enchantment.props.rune_power_75: "升级符文（75%）"
+    item.enchantment.props.rune_power_100: "升级符文（100%）"
+    item.enchantment.props.rune_power.lore.1: '可以在铁砧中使用，将会随机给物品'
+    item.enchantment.props.rune_power.lore.2: '上的一个可升级魔咒进行升级。'
+
+    item.enchantment.props.rune_protection: "保护符文"
+    item.enchantment.props.rune_protection.lore.1: '可以在铁砧中使用，将会给物品增加'
+    item.enchantment.props.rune_protection.lore.2: '一个保护词条，附魔失败时将会消耗'
+    item.enchantment.props.rune_protection.lore.3: '词条并保护物品不被损坏。'
+
+    item.enchantment.props.rune_slot: "拓展符文"
+    item.enchantment.props.rune_slot.lore.1: '可以在铁砧中使用，将会给物品'
+    item.enchantment.props.rune_slot.lore.2: '额外增加一个可附魔槽位。'
+
+    item.enchantment.props.ashes_o_enchantment: "魔咒之尘"
+    item.enchantment.props.ashes_o_enchantment.lore.1: '可以在铁砧中使用，将会给附魔书'
+    item.enchantment.props.ashes_o_enchantment.lore.2: '减少 3% 的失败率。'
+
+    item.enchantment.props.tome_of_renewal: "重生之书"
+    item.enchantment.props.tome_of_renewal.lore.1: '可以在附魔台中使用，将刷新'
+    item.enchantment.props.tome_of_renewal.lore.2: '下次可选择的魔咒列表。'
+
+    item.enchantment.props.tome_of_reversal: "反转之书"
+    item.enchantment.props.tome_of_reversal.lore.1: '可以在附魔台中使用，将获得上一次'
+    item.enchantment.props.tome_of_reversal.lore.2: '附魔时获得的附魔书。'
+
+    item.enchantment.props.repair_material_50p: "修复材料（50%）"
+    item.enchantment.props.repair_material_600s: "修复材料（600秒）"
+    item.enchantment.props.repair_material.lore.1: '可以在修复桌中使用，光标持材料点击正在'
+    item.enchantment.props.repair_material.lore.2: '修复的物品，减少当前装备的修复时间。'
+
+
+##
+## 模板
+##
+templates#models#item:
+  # 模型 - 简单2D物品模型(自动生成)
+  enchantment:special/prop:
+    item-model: "${path}"
+    model:
+      type: "minecraft:model"
+      path: "${path}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "${path}"
+
+
+##
+## 物品
+##
+items#misc#materials:
+  enchantment:rune_power_30:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/rune_power"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>成功率: <red>30%"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.2>"
+      components:
+        minecraft:custom_data:
+          FirEnchant::PowerChance: 30
+  enchantment:rune_power_50:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/rune_power"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>成功率: <red>50%"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.2>"
+      components:
+        minecraft:custom_data:
+          FirEnchant::PowerChance: 50        
+  enchantment:rune_power_75:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/rune_power"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>成功率: <red>75%"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.2>"
+      components:
+        minecraft:custom_data:
+          FirEnchant::PowerChance: 75        
+  enchantment:rune_power_100:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/rune_power"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>成功率: <red>100%"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.rune_power.lore.2>"
+      components:
+        minecraft:custom_data:
+          FirEnchant::PowerChance: 100
+  enchantment:rune_protection:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.2>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.3>"
+  enchantment:rune_slot:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.2>"
+  enchantment:ashes_o_enchantment:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.2>"
+  enchantment:tome_of_renewal:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.2>"
+  enchantment:tome_of_reversal:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.${__ID__}.lore.2>"
+  enchantment:repair_material_50p:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/repair_material"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>减少时间: <red>50%"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.repair_material.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.repair_material.lore.2>"
+      components:
+        minecraft:custom_data:
+          FirEnchant:
+            RepairType: "percent"
+            RepairValue: 0.5
+  enchantment:repair_material_600s:
+    material: paper
+    item-model: "minecraft:firenchant/props/${__ID__}"
+    model:
+      type: "minecraft:model"
+      path: "minecraft:firenchant/props/${__ID__}"
+      generation:
+        parent: "minecraft:item/generated"
+        textures:
+          "layer0": "minecraft:firenchant/props/repair_material"
+    data:
+      item-name: "<!i><yellow><i18n:item.enchantment.props.${__ID__}>"
+      lore:
+        - "<!i><#a7a7a7>减少时间: <red>600秒"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.repair_material.lore.1>"
+        - "<!i><#a3aab6><i18n:item.enchantment.props.repair_material.lore.2>"
+      component:
+        minecraft:custom_data:
+          FirEnchant::RepairType: "static"
+          FirEnchant::RepairValue: 600
+
+
+  ##
+  ## 技术性材质
+  ##
+  enchantment:random_enchanted_book:
+    template: enchantment:special/prop
+    arguments:
+      path: minecraft:firenchant/props/${__ID__}
+    material: paper
+    data:
+      item-name: "<!i><yellow>薛定谔的附魔书(技术性材质)"

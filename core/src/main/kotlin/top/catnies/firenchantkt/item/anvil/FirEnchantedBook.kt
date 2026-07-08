@@ -134,6 +134,7 @@ class FirEnchantedBook : EnchantedBook {
         val resultItem = context.result!!
         val anvilView = event.view as AnvilView
 
+        event.isCancelled = true
         when {
             // 如果第一件物品也是附魔书, 触发合并逻辑.
             isEnchantedBookMerge(firstSetting, setting) -> {
@@ -146,10 +147,13 @@ class FirEnchantedBook : EnchantedBook {
                     resultItem
                 )
                 Bukkit.getPluginManager().callEvent(mergeEvent)
-                if (mergeEvent.isCancelled) {
-                    event.isCancelled = true
-                    return
-                }
+                if (mergeEvent.isCancelled) return
+
+                // 直接设置物品到光标
+                val player = context.viewer
+                player.setItemOnCursor(context.result)
+                event.inventory.clear() // fixed: 将 RecipeListener 的 event.inventory.clear() 补偿到此处
+                player.playSound(player.location, "block.anvil.use", 1f, 1f)
             }
 
             // 如果第一件物品是普通物品, 检查物品是否可以附魔.
@@ -162,10 +166,7 @@ class FirEnchantedBook : EnchantedBook {
                     isSuccess(player, setting, anvilView.repairCost)
                 )
                 Bukkit.getPluginManager().callEvent(useEvent)
-                if (useEvent.isCancelled) {
-                    event.isCancelled = true
-                    return
-                }
+                if (useEvent.isCancelled) return
 
                 // 记录数据
                 AnvilEnchantLogTable().apply {
@@ -180,14 +181,12 @@ class FirEnchantedBook : EnchantedBook {
 
                 // 成功直接设置物品, 然后取消物品
                 if (useEvent.isSuccess) {
-                    event.isCancelled = true
                     player.setItemOnCursor(context.result)
                     event.inventory.clear() // fixed: 将 RecipeListener 的 event.inventory.clear() 补偿到此处
                     player.playSound(player.location, "block.anvil.use", 1f, 1f)
                 }
                 // 失败逻辑
                 else {
-                    event.isCancelled = true
                     if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
                     anvilView.setItem(1, ItemStack.empty())
                     anvilView.setItem(2, ItemStack.empty())
@@ -211,8 +210,7 @@ class FirEnchantedBook : EnchantedBook {
                     }
 
                     // 开启了破坏装备 & 没有保护符文
-                    // context.firstItem 非空则 brokenEquipment 非空
-                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)!!
+                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)!! // context.firstItem 非空则 brokenEquipment 非空, 因此断言
                     anvilView.setItem(0, brokenEquipment)
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
                     player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)
