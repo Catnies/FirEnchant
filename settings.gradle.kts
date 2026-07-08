@@ -2,6 +2,7 @@ rootProject.name = "FirEnchantKt"
 
 include(":api")
 include(":compatibility")
+include(":compatibility:configuration")
 include(":core")
 include(":core:invui_v1")
 include(":core:invui_v2")
