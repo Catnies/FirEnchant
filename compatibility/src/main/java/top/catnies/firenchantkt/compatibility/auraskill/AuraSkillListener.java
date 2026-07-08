@@ -15,13 +15,13 @@ import static net.nyana.reflection.field.matcher.FieldMatchers.fNamed;
 import static net.nyana.reflection.method.matcher.MethodMatchers.mNamed;
 
 public class AuraSkillListener implements Listener {
+    private static boolean init;
+    private static AuraSkillsApi auraSkills;
+    private static AuraSkills auraSkillPlugin;
+    private static EnchantingLeveler enchantingLeveler;
+    private static MethodHandle enchantingLeveler$getSource;
 
-    private static final AuraSkillsApi auraSkills;
-    private static final AuraSkills auraSkillPlugin;
-    private static final EnchantingLeveler enchantingLeveler;
-    private static final MethodHandle enchantingLeveler$getSource;
-
-    static {
+    private static void init() {
         auraSkills = AuraSkillsApi.get();
         auraSkillPlugin = (AuraSkills) NyanaClass.of(ApiGlobalRegistry.class).getDeclaredNyanaField(fNamed("plugin")).mh().get(auraSkills.getGlobalRegistry());
         enchantingLeveler = auraSkillPlugin.getLevelManager().getLeveler(EnchantingLeveler.class);
@@ -31,6 +31,10 @@ public class AuraSkillListener implements Listener {
     @EventHandler
     @SuppressWarnings("unchecked")
     public void onEnchantingTableEnchant(EnchantItemEvent event) {
+        if (!init) {
+            init();
+            init = true;
+        }
 //        try {
 //            SkillSource<EnchantingXpSource> skillSource = (SkillSource<EnchantingXpSource>) enchantingLeveler$getSource.invoke(enchantingLeveler, event.getSetting().toItemStack());
 //            if (skillSource == null) return;
