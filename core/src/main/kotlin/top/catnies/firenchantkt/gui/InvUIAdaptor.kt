@@ -3,7 +3,6 @@ package top.catnies.firenchantkt.gui
 import org.bukkit.entity.Player
 import top.catnies.firenchantkt.util.VersionHelper
 import java.lang.reflect.Constructor
-import kotlin.lazy
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.primaryConstructor
 
@@ -16,7 +15,7 @@ object InvUIAdaptor {
         Class.forName("top.catnies.firenchantkt.invui_v2.InvUIv2Setup").getDeclaredConstructor()
 
     fun getSetup(): InvUISetup {
-        return setupConstructor.newInstance() as InvUISetup;
+        return setupConstructor.newInstance() as InvUISetup
     }
 
     val enchantingTableMenuConstructor: KFunction<Any> by lazy {
@@ -34,7 +33,7 @@ object InvUIAdaptor {
         player: Player,
         bookShelves: Int = 0
     ): AbstractFirEnchantMenu {
-        return enchantingTableMenuConstructor.call(player, bookShelves) as AbstractFirEnchantMenu;
+        return enchantingTableMenuConstructor.call(player, bookShelves) as AbstractFirEnchantMenu
     }
 
     val extractSoulMenuConstructor: KFunction<Any> by lazy {

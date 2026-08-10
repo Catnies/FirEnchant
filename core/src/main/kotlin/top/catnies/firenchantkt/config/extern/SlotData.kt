@@ -10,7 +10,6 @@ import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.util.ConfigParser
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
-import kotlin.collections.get
 import kotlin.random.Random
 
 data class SlotData(
@@ -56,9 +55,9 @@ data class SlotData(
             }
 
             val conditions = section.getConfigurationSectionList(KEY_PRECONDITIONS)
-            .mapNotNull {
-                ConfigParser.parseConditionTemplate(it, "TODO", KEY_PRECONDITIONS)
-            }.ifEmpty { null }
+                .mapNotNull {
+                    ConfigParser.parseConditionTemplate(it, "TODO", KEY_PRECONDITIONS)
+                }.ifEmpty { null }
 
             val enchantmentPool: List<EnchantmentConfigData> =
                 section.getMapList("enchantment-pool").mapNotNull {
@@ -71,7 +70,7 @@ data class SlotData(
                 inactiveItem,
                 actions,
                 conditions
-                )
+            )
         }
     }
 
@@ -99,7 +98,7 @@ data class SlotData(
         val weight: Int,
         private val failure: IntProvider,
         private val level: IntProvider,
-        ) {
+    ) {
         companion object {
             fun fromYaml(section: Map<*, *>): EnchantmentConfigData? {
                 // 读取配置键
@@ -144,7 +143,7 @@ data class SlotData(
             }
         }
 
-        fun rollFailure(randomSource: Random) : Int {
+        fun rollFailure(randomSource: Random): Int {
             return failure.value(randomSource)
         }
 

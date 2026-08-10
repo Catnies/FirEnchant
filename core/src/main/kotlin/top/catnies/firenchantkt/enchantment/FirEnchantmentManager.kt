@@ -17,7 +17,7 @@ import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.ResourceCopyUtils
 
-class FirEnchantmentManager private constructor(): EnchantmentManager {
+class FirEnchantmentManager private constructor() : EnchantmentManager {
     val plugin = FirEnchantPlugin.instance
     val logger = plugin.logger
     val provider = FirItemProviderRegistry.instance
@@ -25,9 +25,11 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
     private val enchantments = mutableMapOf<NamespacedKey, EnchantmentData>()
 
     companion object {
-        val instance by lazy { FirEnchantmentManager().also {
-            it.load()
-        } }
+        val instance by lazy {
+            FirEnchantmentManager().also {
+                it.load()
+            }
+        }
     }
 
 
@@ -46,9 +48,11 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
     override fun getEnchantmentData(key: String): EnchantmentData? {
         return getEnchantmentData(Key.key(key))
     }
+
     override fun getEnchantmentData(key: Key): EnchantmentData? {
         return enchantments.keys.find { key.asString() == it.asString() }?.let { enchantments[it] }
     }
+
     override fun getAllEnchantmentData(): List<EnchantmentData> {
         return enchantments.values.toList()
     }
@@ -57,6 +61,7 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
     override fun hasEnchantment(key: String): Boolean {
         return hasEnchantment(Key.key(key))
     }
+
     override fun hasEnchantment(key: Key): Boolean {
         return enchantments.keys.find { it.key == key.toString() } != null
     }
@@ -77,12 +82,20 @@ class FirEnchantmentManager private constructor(): EnchantmentManager {
                 }
                 val itemProvider = provider.getItemProvider(hookedPlugin)
                 if (itemProvider == null) {
-                    Bukkit.getServer().sendTranslatableComponent(RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND, em.key.toString(), hookedPlugin)
+                    Bukkit.getServer().sendTranslatableComponent(
+                        RESOURCE_ENCHANTMENT_FILE_PROVIDER_NOT_FOUND,
+                        em.key.toString(),
+                        hookedPlugin
+                    )
                     return@forEach
                 }
                 val hookedItem = itemProvider.getItemById(hookedID)
                 if (hookedItem.nullOrAir()) {
-                    Bukkit.getServer().sendTranslatableComponent(RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND, em.key.toString(), hookedPlugin)
+                    Bukkit.getServer().sendTranslatableComponent(
+                        RESOURCE_ENCHANTMENT_FILE_ITEM_NOT_FOUND,
+                        em.key.toString(),
+                        hookedPlugin
+                    )
                     return@forEach
                 }
                 // 创建魔咒对象

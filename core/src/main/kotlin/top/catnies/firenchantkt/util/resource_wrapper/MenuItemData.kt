@@ -17,7 +17,11 @@ data class MenuItemData(
 ) {
     companion object {
         // 根据 ConfigurationSection 获取 MenuItemData, 其中Slot手动指定传入;
-        fun getMenuItemDataBySection(section: ConfigurationSection, slot: Char, fileName: String = "unknow"): MenuItemData {
+        fun getMenuItemDataBySection(
+            section: ConfigurationSection,
+            slot: Char,
+            fileName: String = "unknow"
+        ): MenuItemData {
             // 使用节点构建物品
             val item = ItemStackData(section).apply {
                 verifyItem(fileName, section.currentPath!!)

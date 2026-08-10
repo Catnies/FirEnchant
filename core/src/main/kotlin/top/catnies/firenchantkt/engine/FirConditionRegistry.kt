@@ -6,16 +6,7 @@ import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ConditionRegisterEvent
 import top.catnies.firenchantkt.engine.condition.HasItemCondition
 import top.catnies.firenchantkt.engine.condition.PermissionCondition
-import top.catnies.firenchantkt.engine.condition.logic.AndCondition
-import top.catnies.firenchantkt.engine.condition.logic.EqualCondition
-import top.catnies.firenchantkt.engine.condition.logic.GreaterThanCondition
-import top.catnies.firenchantkt.engine.condition.logic.GreaterThanOrEqualCondition
-import top.catnies.firenchantkt.engine.condition.logic.LessThenCondition
-import top.catnies.firenchantkt.engine.condition.logic.LessThenOrEqualCondition
-import top.catnies.firenchantkt.engine.condition.logic.OrCondition
-import top.catnies.firenchantkt.engine.condition.logic.ContainsCondition
-import top.catnies.firenchantkt.engine.condition.logic.EqualsIgnoreCaseCondition
-import top.catnies.firenchantkt.engine.condition.logic.EqualsCondition
+import top.catnies.firenchantkt.engine.condition.logic.*
 
 class FirConditionRegistry private constructor() : ConditionRegistry {
 

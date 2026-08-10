@@ -13,7 +13,7 @@ import top.catnies.firenchantkt.gui.InvUIAdaptor
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
-object RepairTableMenuCommand: AbstractCommand() {
+object RepairTableMenuCommand : AbstractCommand() {
 
     private const val PERMISSION = "firenchant.command.openmenu.repair-table"
     private const val PERMISSION_OTHER = "firenchant.command.openmenu.repair-table.other"
@@ -22,7 +22,8 @@ object RepairTableMenuCommand: AbstractCommand() {
         return Commands.literal("repair-table")
             .requires { requires(it) }
             .executes { execute(it) }
-            .then(Commands.argument("player", ArgumentTypes.player())
+            .then(
+                Commands.argument("player", ArgumentTypes.player())
                 .requires { requiresOther(it) }
                 .executes { execute(it) })
     }

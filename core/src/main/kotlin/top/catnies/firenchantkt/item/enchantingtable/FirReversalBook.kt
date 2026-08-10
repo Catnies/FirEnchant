@@ -16,7 +16,7 @@ import top.catnies.firenchantkt.integration.ItemProvider
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class FirReversalBook: ReversalBook {
+class FirReversalBook : ReversalBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -30,7 +30,8 @@ class FirReversalBook: ReversalBook {
     var actions: List<ConfigActionTemplate> = emptyList()
 
     // TODO(不知道为啥, SHIFT + LC 放入物品会触发多次, 导致扣除多个物品; 但是一打断点就无法复现, 堪称奇葩.推测是INVUI的问题, 暂时先挂个防抖缓存)
-    val cooldownCache: Cache<UUID, Long> = CacheBuilder.newBuilder().expireAfterWrite(500, TimeUnit.MILLISECONDS).build()
+    val cooldownCache: Cache<UUID, Long> =
+        CacheBuilder.newBuilder().expireAfterWrite(500, TimeUnit.MILLISECONDS).build()
 
     init {
         load()
@@ -54,7 +55,7 @@ class FirReversalBook: ReversalBook {
         return itemProvider!!.getIdByItem(itemStack) == itemID
     }
 
-    override fun onPreInput(itemStack: ItemStack, cancelEvent: ()->Unit, context: EnchantingTableContext) {
+    override fun onPreInput(itemStack: ItemStack, cancelEvent: () -> Unit, context: EnchantingTableContext) {
         val player = context.player
         if (cooldownCache.getIfPresent(player.uniqueId) != null) {
             cancelEvent()
@@ -85,7 +86,11 @@ class FirReversalBook: ReversalBook {
         }
     }
 
-    override fun onPostInput(itemStack: ItemStack, eventWrapper: InventoryPostEventWrapper, context: EnchantingTableContext) {
+    override fun onPostInput(
+        itemStack: ItemStack,
+        eventWrapper: InventoryPostEventWrapper,
+        context: EnchantingTableContext
+    ) {
         context.menu.clearInputInventory()
     }
 }

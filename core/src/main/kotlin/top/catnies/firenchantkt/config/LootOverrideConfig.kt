@@ -3,9 +3,8 @@ package top.catnies.firenchantkt.config
 import kotlin.math.max
 import kotlin.math.min
 
-class LootOverrideConfig private constructor():
-    AbstractConfigFile("modules/loot-override.yml")
-{
+class LootOverrideConfig private constructor() :
+    AbstractConfigFile("modules/loot-override.yml") {
 
     companion object {
         @JvmStatic

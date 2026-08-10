@@ -22,7 +22,8 @@ object ExtractSoulMenuCommand : AbstractCommand() {
         return Commands.literal("extract-soul")
             .requires { requires(it) }
             .executes { execute(it) }
-            .then(Commands.argument("player", ArgumentTypes.player())
+            .then(
+                Commands.argument("player", ArgumentTypes.player())
                 .requires { requiresOther(it) }
                 .executes { execute(it) })
     }

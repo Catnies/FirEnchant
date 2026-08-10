@@ -4,14 +4,9 @@ import com.google.common.collect.HashBiMap
 import org.bukkit.Bukkit
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.ActionRegisterEvent
-import top.catnies.firenchantkt.engine.actions.CloseInventoryAction
-import top.catnies.firenchantkt.engine.actions.CostLevelAction
-import top.catnies.firenchantkt.engine.actions.ExecuteCommandAction
-import top.catnies.firenchantkt.engine.actions.PlaySoundAction
-import top.catnies.firenchantkt.engine.actions.SendMessageAction
-import top.catnies.firenchantkt.engine.actions.TakeItemAction
+import top.catnies.firenchantkt.engine.actions.*
 
-class FirActionRegistry: ActionRegistry {
+class FirActionRegistry : ActionRegistry {
 
     companion object {
         val instance by lazy { FirActionRegistry().also { it.load() } }

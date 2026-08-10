@@ -18,7 +18,7 @@ class ItemRender(
     var damage: Int = 0
 ) {
 
-    constructor(section: ConfigurationSection) : this (
+    constructor(section: ConfigurationSection) : this(
         itemName = section.getString("item-name"),
         lore = section.getStringList("lore"),
         itemModel = section.getString("item-model"),
@@ -56,7 +56,10 @@ class ItemRender(
         }
         // 物品模型数据
         customModelData?.let {
-            item.editMeta { meta -> meta.setCustomModelData(it) }
+            item.editMeta { meta ->
+                @Suppress("UsePropertyAccessSyntax")
+                meta.setCustomModelData(it)
+            }
         }
         // 物品数量
         amount.takeIf { it > 0 }?.let { item.amount = it }

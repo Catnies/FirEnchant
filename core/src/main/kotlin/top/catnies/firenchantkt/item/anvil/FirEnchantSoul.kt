@@ -14,13 +14,11 @@ import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.enchantment.FirEnchantmentSettingFactory
-import top.catnies.firenchantkt.integration.FirItemProviderRegistry
-import top.catnies.firenchantkt.integration.ItemProvider
 import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
 
-class FirEnchantSoul: EnchantSoul {
+class FirEnchantSoul : EnchantSoul {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -68,12 +66,13 @@ class FirEnchantSoul: EnchantSoul {
         }
 
         // 触发事件
-        val useEvent = EnchantSoulPreUseEvent(context.viewer, event, canUseAmount, costExp, resultSetting, context.firstItem)
+        val useEvent =
+            EnchantSoulPreUseEvent(context.viewer, event, canUseAmount, costExp, resultSetting, context.firstItem)
         if (useEvent.isCancelled) return
 
         // 显示结果
         val resultItem = useEvent.resultSetting.toItemStack().also { injectContextData(it, useEvent.useAmount) }
-        TaskUtils.runTaskLater(delay = 0, task =  {
+        TaskUtils.runTaskLater(delay = 0, task = {
             context.view.setItem(2, resultItem)
             context.view.repairCost = useEvent.costExp
         })
@@ -105,6 +104,7 @@ class FirEnchantSoul: EnchantSoul {
         else context.secondItem.amount.apply { context.secondItem.amount = resultAmount }
 
         // 光标给物品
+        @Suppress("UsePropertyAccessSyntax")
         anvilView.setCursor(useEvent.resultItem)
         player.playSound(player.location, "block.anvil.use", 1f, 1f)
     }
@@ -115,6 +115,7 @@ class FirEnchantSoul: EnchantSoul {
             tag.set(useAmount, "FirEnchantTempData", "CostSoulsAmount")
         }
     }
+
     private fun readAndClearContextData(item: ItemStack): Int {
         return RtagItem.of(item).get<Int>("FirEnchantTempData", "CostSoulsAmount")?.also {
             RtagItem.edit(item) { tag ->
@@ -134,10 +135,11 @@ class FirEnchantSoul: EnchantSoul {
     }
 
     // 检查附魔书还能用多少个魔咒之魂
-    override fun getReamingCanUse(setting: EnchantmentSetting) = max((config.ENCHANT_SOUL_MAX_USE_SOULS - setting.consumedSouls), 0)
+    override fun getReamingCanUse(setting: EnchantmentSetting) =
+        max((config.ENCHANT_SOUL_MAX_USE_SOULS - setting.consumedSouls), 0)
 
     // 计算当前情况最多可以使用多少个魔咒之魂
-    private fun getCanUseAmount(setting: EnchantmentSetting, inputAmount: Int): Int{
+    private fun getCanUseAmount(setting: EnchantmentSetting, inputAmount: Int): Int {
         val failure = setting.failure
         val reaming = getReamingCanUse(setting).also { if (it <= 0) return 0 } // 如果没有剩余的使用次数则返回.
 

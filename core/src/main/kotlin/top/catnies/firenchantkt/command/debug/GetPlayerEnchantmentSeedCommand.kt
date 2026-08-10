@@ -18,8 +18,9 @@ object GetPlayerEnchantmentSeedCommand : AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("getPlayerEnchantmentSeed")
-            .then(Commands.argument("player", ArgumentTypes.player())
-                .executes { execute(it) }
+            .then(
+                Commands.argument("player", ArgumentTypes.player())
+                    .executes { execute(it) }
             )
     }
 
@@ -28,14 +29,20 @@ object GetPlayerEnchantmentSeedCommand : AbstractCommand() {
     override fun execute(context: CommandContext<CommandSourceStack>): Int {
         val player = if (context.nodes.last().node.name == "player")
             context.getArgument("player", PlayerSelectorArgumentResolver::class.java).resolve(context.source)[0]
-            else context.source.sender as? Player
+        else context.source.sender as? Player
         if (player == null) {
             context.source.sender.sendTranslatableComponent(COMMAND_CONSOLE_CANT_EXECUTE)
             return Command.SINGLE_SUCCESS
         }
 
         NMSHandlerHolder.getNMSHandler().getPlayerEnchantmentSeed(player)
-            .let { context.source.sender.sendTranslatableComponent(COMMAND_DEBUG_GET_PLAYER_ENCHANTMENT_SEED_EXECUTE, player.name, it) }
+            .let {
+                context.source.sender.sendTranslatableComponent(
+                    COMMAND_DEBUG_GET_PLAYER_ENCHANTMENT_SEED_EXECUTE,
+                    player.name,
+                    it
+                )
+            }
         return Command.SINGLE_SUCCESS
     }
 

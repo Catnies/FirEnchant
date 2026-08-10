@@ -9,7 +9,7 @@ import org.bukkit.event.world.LootGenerateEvent
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.config.LootOverrideConfig
 
-class LootOverrideListener: Listener {
+class LootOverrideListener : Listener {
 
     @EventHandler(ignoreCancelled = true)
     fun onEnchantmentBookLoot(event: LootGenerateEvent) {

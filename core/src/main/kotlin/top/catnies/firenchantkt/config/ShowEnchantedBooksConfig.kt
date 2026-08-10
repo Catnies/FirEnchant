@@ -3,7 +3,6 @@ package top.catnies.firenchantkt.config
 import io.papermc.paper.registry.RegistryAccess
 import io.papermc.paper.registry.RegistryKey
 import org.bukkit.Bukkit
-import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.enchantment.EnchantmentSetting
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
@@ -11,9 +10,8 @@ import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 
 @Suppress("PropertyName")
-class ShowEnchantedBooksConfig private constructor():
-    AbstractConfigFile("modules/show_enchantedbooks.yml")
-{
+class ShowEnchantedBooksConfig private constructor() :
+    AbstractConfigFile("modules/show_enchantedbooks.yml") {
 
     companion object {
         @JvmStatic
@@ -42,12 +40,15 @@ class ShowEnchantedBooksConfig private constructor():
     // 加载数据
     override fun loadConfig() {
         MENU_TITLE = config().getString("menu-setting.title", "All EnchantedBook Menu")!!
-        try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also {
+        try {
+            config().getStringList("menu-setting.structure").toTypedArray()
+                .also {
 //                Structure(*it);
-                MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+                    MENU_STRUCTURE_ARRAY = it
+                } // 测试合法性然后再赋值
         } catch (exception: Exception) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
+        }
         MENU_CONTENT_SLOT = config().getString("menu-setting.content-slot", "I")?.first() ?: 'I'
         // 上一页物品
         config().getConfigurationSection("menu-setting.previous-page")?.also { section ->

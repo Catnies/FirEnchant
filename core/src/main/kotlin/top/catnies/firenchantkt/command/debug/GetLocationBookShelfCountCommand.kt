@@ -20,9 +20,11 @@ object GetLocationBookShelfCountCommand : AbstractCommand() {
     // /firenchantkt debug getBookShelfCount <world> <X> <Y> <Z>
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> =
         Commands.literal("getLocationBookShelfCount")
-            .then(Commands.argument("world", ArgumentTypes.world())
-                    .then(Commands.argument("location", ArgumentTypes.blockPosition())
-                        .executes { execute(it) })
+            .then(
+                Commands.argument("world", ArgumentTypes.world())
+                    .then(
+                        Commands.argument("location", ArgumentTypes.blockPosition())
+                            .executes { execute(it) })
             )
 
     override fun requires(requirement: CommandSourceStack): Boolean = true

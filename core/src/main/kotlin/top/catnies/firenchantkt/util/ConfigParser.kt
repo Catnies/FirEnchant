@@ -15,10 +15,15 @@ import kotlin.reflect.full.findAnnotation
 object ConfigParser {
 
     // 解析Action模板
-    fun parseActionTemplate(config: ConfigurationSection, fileName: String = "none", node: String = "none"): ConfigActionTemplate? {
+    fun parseActionTemplate(
+        config: ConfigurationSection,
+        fileName: String = "none",
+        node: String = "none"
+    ): ConfigActionTemplate? {
         val type = config.getString("type") ?: return null
         val actionClass = FirEnchantAPI.actionRegistry().getAction(type) ?: run {
-            Bukkit.getConsoleSender().sendTranslatableComponent(MessageConstants.CONFIG_ACTION_TYPE_UNKNOWN, fileName, node, type)
+            Bukkit.getConsoleSender()
+                .sendTranslatableComponent(MessageConstants.CONFIG_ACTION_TYPE_UNKNOWN, fileName, node, type)
             return null
         }
 
@@ -46,10 +51,15 @@ object ConfigParser {
     }
 
     // 解析Condition模板
-    fun parseConditionTemplate(config: ConfigurationSection, fileName: String = "none", node: String = "none"): ConfigConditionTemplate? {
+    fun parseConditionTemplate(
+        config: ConfigurationSection,
+        fileName: String = "none",
+        node: String = "none"
+    ): ConfigConditionTemplate? {
         val type = config.getString("type") ?: return null
         val conditionClass = FirEnchantAPI.conditionRegistry().getCondition(type) ?: run {
-            Bukkit.getConsoleSender().sendTranslatableComponent(MessageConstants.CONFIG_CONDITION_TYPE_UNKNOWN, fileName, node, type)
+            Bukkit.getConsoleSender()
+                .sendTranslatableComponent(MessageConstants.CONFIG_CONDITION_TYPE_UNKNOWN, fileName, node, type)
             return null
         }
 
@@ -79,7 +89,12 @@ object ConfigParser {
     }
 
     // 验证必需参数
-    private fun validateRequiredArguments(clazz: Class<*>, args: Map<String, Any?>, fileName: String = "none", node: String = "none"): Boolean {
+    private fun validateRequiredArguments(
+        clazz: Class<*>,
+        args: Map<String, Any?>,
+        fileName: String = "none",
+        node: String = "none"
+    ): Boolean {
         var isValid = true
 
         try {
@@ -94,8 +109,10 @@ object ConfigParser {
                     if (!hasArg) {
                         isValid = false
                         val missingArgs = anno.args.joinToString(" or ")
-                        if (Action::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender().sendTranslatableComponent(CONFIG_ACTION_INVALID_ARGS, fileName, node, missingArgs)
-                        else if (Condition::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender().sendTranslatableComponent(CONFIG_CONDITION_INVALID_ARGS, fileName, node, missingArgs)
+                        if (Action::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender()
+                            .sendTranslatableComponent(CONFIG_ACTION_INVALID_ARGS, fileName, node, missingArgs)
+                        else if (Condition::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender()
+                            .sendTranslatableComponent(CONFIG_CONDITION_INVALID_ARGS, fileName, node, missingArgs)
                     }
                 }
             }
@@ -108,8 +125,10 @@ object ConfigParser {
                     if (!hasArg) {
                         isValid = false
                         val missingArgs = anno.args.joinToString(" or ")
-                        if (Action::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender().sendTranslatableComponent(CONFIG_ACTION_INVALID_ARGS, fileName, node, missingArgs)
-                        else if (Condition::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender().sendTranslatableComponent(CONFIG_CONDITION_INVALID_ARGS, fileName, node, missingArgs)
+                        if (Action::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender()
+                            .sendTranslatableComponent(CONFIG_ACTION_INVALID_ARGS, fileName, node, missingArgs)
+                        else if (Condition::class.java.isAssignableFrom(clazz)) Bukkit.getConsoleSender()
+                            .sendTranslatableComponent(CONFIG_CONDITION_INVALID_ARGS, fileName, node, missingArgs)
                     }
                 }
             }

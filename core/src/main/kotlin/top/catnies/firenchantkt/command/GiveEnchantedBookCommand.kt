@@ -26,14 +26,19 @@ object GiveEnchantedBookCommand : AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("giveenchantedbook").requires { VersionCommand.requires(it) }
-            .then(Commands.argument("player", ArgumentTypes.players())
-                .then(Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
-                    .then(Commands.argument("level", ArgumentTypes.integerRange())
-                        .then(Commands.argument("failure", ArgumentTypes.integerRange())
-                            .executes { execute(it) }
-                            .then(Commands.argument("consumedSouls", ArgumentTypes.integerRange())
+            .then(
+                Commands.argument("player", ArgumentTypes.players())
+                .then(
+                    Commands.argument("enchantment", ArgumentTypes.resource(RegistryKey.ENCHANTMENT))
+                    .then(
+                        Commands.argument("level", ArgumentTypes.integerRange())
+                        .then(
+                            Commands.argument("failure", ArgumentTypes.integerRange())
                                 .executes { execute(it) }
-                            )
+                                .then(
+                                    Commands.argument("consumedSouls", ArgumentTypes.integerRange())
+                                        .executes { execute(it) }
+                                )
                         )
                     )
                 )

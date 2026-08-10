@@ -10,7 +10,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
-object PlaceholderTag: TagResolver {
+object PlaceholderTag : TagResolver {
     val hasPlaceholderAPI = Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")
 
     override fun has(name: String) = "papi" == name
@@ -22,7 +22,9 @@ object PlaceholderTag: TagResolver {
         ctx: Context
     ): Tag? {
         // 判断是否是Papi解析标签.
-        if (!has(name) || !hasPlaceholderAPI) { return null }
+        if (!has(name) || !hasPlaceholderAPI) {
+            return null
+        }
         // 获取参数尝试解析
         val rawArgument = arguments.popOr("No argument relational placeholder provided").toString()
         val player = ctx.target() as? Player

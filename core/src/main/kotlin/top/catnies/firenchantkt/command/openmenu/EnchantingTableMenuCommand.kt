@@ -15,19 +15,22 @@ import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_E
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
 @Suppress("UnstableApiUsage")
-object EnchantingTableMenuCommand: AbstractCommand() {
+object EnchantingTableMenuCommand : AbstractCommand() {
 
     private const val PERMISSION = "firenchant.command.openmenu.enchanting-table"
     private const val PERMISSION_OTHER = "firenchant.command.openmenu.enchanting-table.other"
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> {
         return Commands.literal("enchanting-table")
-            .then(Commands.argument("bookShelfCount", IntegerArgumentType.integer(0, 15))
+            .then(
+                Commands.argument("bookShelfCount", IntegerArgumentType.integer(0, 15))
                 .requires { requires(it) }
                 .executes { execute(it) }
-                .then(Commands.argument("player", ArgumentTypes.player())
+                .then(
+                    Commands.argument("player", ArgumentTypes.player())
                     .requires { requiresOther(it) }
-                    .executes { execute(it) }))
+                    .executes { execute(it) })
+            )
     }
 
     override fun requires(requirement: CommandSourceStack): Boolean {

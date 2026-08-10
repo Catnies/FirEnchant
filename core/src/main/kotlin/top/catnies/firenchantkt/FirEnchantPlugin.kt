@@ -36,7 +36,7 @@ import top.catnies.firenchantkt.util.TaskUtils.plugin
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
-class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
+class FirEnchantPlugin : JavaPlugin(), FirEnchant, CoroutineScope {
 
     companion object {
         @JvmStatic
@@ -53,7 +53,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
     }
 
     private val job = SupervisorJob()
-        override val coroutineContext: CoroutineContext = job + Dispatchers.IO
+    override val coroutineContext: CoroutineContext = job + Dispatchers.IO
     override var isInitializedRegistry = false
 
     override fun onLoad() {
@@ -125,7 +125,8 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
             Bukkit.getPluginManager().getPlugin("CraftEngine") != null -> {
                 runCatching {
                     Bukkit.getPluginManager().registerEvents(CraftEngineLoadListener(plugin), plugin)
-                    Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "CraftEngine")
+                    Bukkit.getConsoleSender()
+                        .sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "CraftEngine")
                 }
             }
             // Nexo
@@ -149,6 +150,7 @@ class FirEnchantPlugin: JavaPlugin(), FirEnchant, CoroutineScope {
                     Bukkit.getConsoleSender().sendTranslatableComponent(PLUGIN_COMPATIBILITY_HOOK_SUCCESS, "ItemsAdder")
                 }
             }
+
             else -> {
                 plugin.initRegistry()
             }

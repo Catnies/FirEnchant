@@ -5,10 +5,10 @@ import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.language.MessageConstants.CONFIG_CONDITION_RUNTIME_ARGS_CAST_FAIL
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 import kotlin.reflect.KMutableProperty
+import kotlin.reflect.KType
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.KType
 
 abstract class AbstractCondition(
     open val args: Map<String, Any?>
@@ -29,7 +29,8 @@ abstract class AbstractCondition(
                     prop.setter.call(this, convertedValue)
                 } catch (e: Exception) {
                     // 如果转换失败，尝试直接注入原值
-                    try { prop.setter.call(this, value)
+                    try {
+                        prop.setter.call(this, value)
                     } catch (innerE: Exception) {
                         // 记录错误信息
                         val conditionName = FirEnchantAPI.conditionRegistry().getConditionName(this::class.java)
@@ -49,10 +50,10 @@ abstract class AbstractCondition(
     private fun convertValue(value: Any?, targetType: KType): Any? {
         if (value == null) return null
         val targetClass = targetType.classifier as? kotlin.reflect.KClass<*> ?: return value
-        
+
         // 如果类型已经匹配，直接返回
         if (targetClass.isInstance(value)) return value
-        
+
         // 支持的类型转换
         return when (targetClass) {
             String::class -> value.toString()

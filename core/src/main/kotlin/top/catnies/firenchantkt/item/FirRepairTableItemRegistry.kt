@@ -7,15 +7,17 @@ import top.catnies.firenchantkt.api.event.repairtable.RepairTableApplicableItemR
 import top.catnies.firenchantkt.item.repairtable.FirReductionCard
 
 
-class FirRepairTableItemRegistry: RepairTableItemRegistry {
+class FirRepairTableItemRegistry : RepairTableItemRegistry {
 
     private val items = mutableListOf<RepairTableApplicable>()
 
     companion object {
         @JvmStatic
-        val instance: FirRepairTableItemRegistry by lazy { FirRepairTableItemRegistry().apply {
-            load()
-        } }
+        val instance: FirRepairTableItemRegistry by lazy {
+            FirRepairTableItemRegistry().apply {
+                load()
+            }
+        }
     }
 
     // 初始化注册物品

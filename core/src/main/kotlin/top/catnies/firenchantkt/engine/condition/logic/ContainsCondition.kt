@@ -2,8 +2,8 @@ package top.catnies.firenchantkt.engine.condition.logic
 
 import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.entity.Player
-import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
+import top.catnies.firenchantkt.engine.ArgumentKey
 
 class ContainsCondition(
     args: Map<String, Any>,

@@ -3,17 +3,14 @@ package top.catnies.firenchantkt.item.anvil
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.GameMode
 import org.bukkit.Material
-import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.api.FirEnchantAPI
 import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
-import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
-import top.catnies.firenchantkt.util.TaskUtils
 
 // 监听原版的附魔书应用事件, 然后根据配置取消.
-class FirVanillaEnchantedBook: VanillaEnchantedBook {
+class FirVanillaEnchantedBook : VanillaEnchantedBook {
 
     companion object {
         val plugin = FirEnchantPlugin.instance

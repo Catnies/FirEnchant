@@ -5,9 +5,8 @@ import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 
 
 @Suppress("PropertyName")
-class AnvilConfig private constructor():
-    AbstractConfigFile("modules/anvil.yml")
-{
+class AnvilConfig private constructor() :
+    AbstractConfigFile("modules/anvil.yml") {
 
     companion object {
         @JvmStatic
@@ -62,20 +61,30 @@ class AnvilConfig private constructor():
         /*附魔书设置*/
         EB_USE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_USE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
-        EB_FAILURE_CORRECTION_MINMAX_ENABLED = config().getBoolean("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.enable", false)
-        EB_FAILURE_CORRECTION_MINMAX_MIN = config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.min-success", 15)
-        EB_FAILURE_CORRECTION_MINMAX_MAX = config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.max-failure", 90)
-        EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.failure-correction.history-compensation.enable", false)
+        EB_FAILURE_CORRECTION_MINMAX_ENABLED =
+            config().getBoolean("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.enable", false)
+        EB_FAILURE_CORRECTION_MINMAX_MIN =
+            config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.min-success", 15)
+        EB_FAILURE_CORRECTION_MINMAX_MAX =
+            config().getInt("enchanted-book.use-enchanted-book.failure-correction.min-max-limit.max-failure", 90)
+        EB_FAILURE_CORRECTION_HISTORY_ENABLE = config().getBoolean(
+            "enchanted-book.use-enchanted-book.failure-correction.history-compensation.enable",
+            false
+        )
         EB_BREAK_FAILED_ITEM = config().getBoolean("enchanted-book.use-enchanted-book.break-failed-item", true)
         EB_FAIL_BACK_ENABLE = config().getBoolean("enchanted-book.use-enchanted-book.fail-back-item.enable", false)
         EB_FAIL_BACK_ITEM = EB_FAIL_BACK_ENABLE.takeIf { it }?.let {
-            ItemStackData(config().getConfigurationSection("enchanted-book.use-enchanted-book.fail-back-item")!!, ItemRender()).also { item ->
+            ItemStackData(
+                config().getConfigurationSection("enchanted-book.use-enchanted-book.fail-back-item")!!,
+                ItemRender()
+            ).also { item ->
                 if (!item.verifyItem(fileName, "enchanted-book.use-enchanted-book.fail-back-item")) {
                     EB_FAIL_BACK_ENABLE = false
                 }
             }
         }
-        EB_MERGE_FAILURE_INHERITANCE = config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
+        EB_MERGE_FAILURE_INHERITANCE =
+            config().getString("enchanted-book.use-enchanted-book.failure-inheritance", "DEFAULT")!!
         EB_MERGE_EXP_COST_MODE = config().getString("enchanted-book.use-enchanted-book.exp.cost-mode", "FIXED")!!
         EB_MERGE_EXP_FIXED_VALUE = config().getInt("enchanted-book.use-enchanted-book.exp.fixed-value", 18)
 
@@ -83,10 +92,10 @@ class AnvilConfig private constructor():
         ENCHANT_SOUL_ENABLE = config().getBoolean("enchant-soul.enable", false)
         if (ENCHANT_SOUL_ENABLE) {
             ENCHANT_SOUL_ITEM = ItemStackData(config().getConfigurationSection("enchant-soul")!!, ItemRender()).also {
-                    if (!it.verifyItem(fileName, "enchant-soul")) {
-                        ENCHANT_SOUL_ENABLE = false
-                    }
+                if (!it.verifyItem(fileName, "enchant-soul")) {
+                    ENCHANT_SOUL_ENABLE = false
                 }
+            }
             ENCHANT_SOUL_EXP = config().getInt("enchant-soul.exp", 3)
             ENCHANT_SOUL_REDUCE_FAILURE = config().getInt("enchant-soul.reduce-failure", 3)
             ENCHANT_SOUL_MIN_FAILURE = config().getInt("enchant-soul.min-failure", 5)
@@ -96,7 +105,8 @@ class AnvilConfig private constructor():
         /*保护符文*/
         PROTECTION_RUNE_ENABLE = config().getBoolean("protection-rune.enable", false)
         if (PROTECTION_RUNE_ENABLE) {
-            PROTECTION_RUNE_ITEM = ItemStackData(config().getConfigurationSection("protection-rune")!!, ItemRender()).also {
+            PROTECTION_RUNE_ITEM =
+                ItemStackData(config().getConfigurationSection("protection-rune")!!, ItemRender()).also {
                     if (!it.verifyItem(fileName, "protection-rune")) {
                         PROTECTION_RUNE_ENABLE = false
                     }

@@ -16,12 +16,13 @@ interface Node {
     companion object {
         @Suppress("UNCHECKED_CAST")
         fun adapt(obj: Any?): Node {
-             val mapLike = when(obj) {
+            val mapLike = when (obj) {
                 is ConfigurationSection -> SectionNode(obj)
                 is Map<*, *> -> {
                     val stringKeyMap = obj.entries.associate { it.key.toString() to it.value }
                     MapNode(stringKeyMap)
                 }
+
                 else -> throw IllegalArgumentException("不支持的类型!此节点应为ConfigurationSection或Map类")
             }
             return mapLike
@@ -32,7 +33,7 @@ interface Node {
 /**
  *
  */
-class SectionNode(private val node: ConfigurationSection): Node {
+class SectionNode(private val node: ConfigurationSection) : Node {
     override fun get(key: String): Any? {
         return node.get(key)
     }
@@ -47,7 +48,7 @@ class SectionNode(private val node: ConfigurationSection): Node {
 
 }
 
-class MapNode(private val node: Map<String, *>): Node {
+class MapNode(private val node: Map<String, *>) : Node {
     override fun get(key: String): Any? {
         return node[key]
     }

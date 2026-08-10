@@ -4,8 +4,8 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
-import top.catnies.firenchantkt.compatibility.aiyatsbus.getAvailableEnchantments
 import top.catnies.firenchantkt.config.SettingsConfig
+import top.catnies.firenchantkt.integration.FirEnchantmentProviderRegistry
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
 import java.util.concurrent.ConcurrentHashMap
 
@@ -19,11 +19,10 @@ object EnchantmentUtils {
         val enchantmentsCache = ENCHANT_CACHE[item.type]
         if (enchantmentsCache != null) return enchantmentsCache
 
-        val tableEnchantmentList = NMSHandlerHolder.getNMSHandler()
-            .getEnchantmentTableEnchantmentList(
-                Bukkit.getWorlds().first(),
-                SettingsConfig.instance.REGISTRY
-            )
+        val enchantmentProviders = FirEnchantmentProviderRegistry.instance.getEnchantmentProviders()
+        val tableEnchantmentList = if (enchantmentProviders.isEmpty())
+            NMSHandlerHolder.getNMSHandler().getEnchantmentTableEnchantmentList(Bukkit.getWorlds().first(), SettingsConfig.instance.REGISTRY)
+        else enchantmentProviders.last().getEnchantList(item)
 
         if (item.type == Material.BOOK) {
             ENCHANT_CACHE[item.type] = tableEnchantmentList

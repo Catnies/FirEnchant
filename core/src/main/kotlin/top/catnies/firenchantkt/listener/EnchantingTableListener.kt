@@ -9,7 +9,6 @@ import org.bukkit.event.player.PlayerInteractEvent
 import top.catnies.firenchantkt.config.EnchantingTableConfig
 import top.catnies.firenchantkt.gui.InvUIAdaptor
 import top.catnies.firenchantkt.integration.NMSHandlerHolder
-import top.catnies.firenchantkt.util.VersionHelper
 
 class EnchantingTableListener : Listener {
 

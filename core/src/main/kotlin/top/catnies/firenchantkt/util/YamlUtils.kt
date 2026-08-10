@@ -15,7 +15,7 @@ import java.io.StringReader
 object YamlUtils {
 
     // 将 ListMap 转换成 List<YamlConfiguration>
-    fun ConfigurationSection?.getConfigurationSectionList(key: String) : List<YamlConfiguration> {
+    fun ConfigurationSection?.getConfigurationSectionList(key: String): List<YamlConfiguration> {
         val data: List<*> = this?.getList(key) ?: return ArrayList()
         return data.map { Yaml().dump(it) }
             .map { StringReader(it) }
@@ -25,12 +25,14 @@ object YamlUtils {
     // 尝试构建物品
     fun tryBuildItem(provider: String?, id: String?, fileName: String, path: String): ItemStack? {
         if (provider == null) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, "null")
+            Bukkit.getConsoleSender()
+                .sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, "null")
             return null
         }
         val itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(provider)
         if (itemProvider == null) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, provider)
+            Bukkit.getConsoleSender()
+                .sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, provider)
             return null
         }
         if (id == null) {

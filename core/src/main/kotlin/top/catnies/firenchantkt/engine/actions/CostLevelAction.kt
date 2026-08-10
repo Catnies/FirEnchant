@@ -5,7 +5,7 @@ import top.catnies.firenchantkt.engine.AbstractAction
 import top.catnies.firenchantkt.engine.ArgumentKey
 import kotlin.math.max
 
-class CostLevelAction (
+class CostLevelAction(
     args: Map<String, Any?>
 ) : AbstractAction(args) {
 

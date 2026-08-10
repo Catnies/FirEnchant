@@ -17,9 +17,11 @@ class IntegrationManager private constructor() {
 
     companion object {
         @JvmStatic
-        val instance by lazy { IntegrationManager().apply {
-            load()
-        }}
+        val instance by lazy {
+            IntegrationManager().apply {
+                load()
+            }
+        }
 
         @JvmStatic
         val hookPlugins = mutableMapOf<String, HookPluginLoader>()

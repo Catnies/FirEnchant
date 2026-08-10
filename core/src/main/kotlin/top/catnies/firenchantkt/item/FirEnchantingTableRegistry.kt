@@ -8,15 +8,17 @@ import top.catnies.firenchantkt.item.enchantingtable.FirOriginalBook
 import top.catnies.firenchantkt.item.enchantingtable.FirRenewalBook
 import top.catnies.firenchantkt.item.enchantingtable.FirReversalBook
 
-class FirEnchantingTableRegistry: EnchantingTableItemRegistry {
+class FirEnchantingTableRegistry : EnchantingTableItemRegistry {
 
     private val items = mutableListOf<EnchantingTableApplicable>()
 
     companion object {
         @JvmStatic
-        val instance: FirEnchantingTableRegistry by lazy { FirEnchantingTableRegistry().apply {
-            load()
-        } }
+        val instance: FirEnchantingTableRegistry by lazy {
+            FirEnchantingTableRegistry().apply {
+                load()
+            }
+        }
     }
 
     fun load() {

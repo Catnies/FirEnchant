@@ -2,9 +2,8 @@ package top.catnies.firenchantkt.config
 
 import top.catnies.firenchantkt.nms.EnchantmentRegistryType
 
-class SettingsConfig private constructor():
-    AbstractConfigFile("settings.yml")
-{
+class SettingsConfig private constructor() :
+    AbstractConfigFile("settings.yml") {
 
     companion object {
         @JvmStatic
@@ -33,7 +32,8 @@ class SettingsConfig private constructor():
 
         DATABASE_TYPE = config().getString("database.type", "h2")!!
         DATABASE_SQLITE_FILE = config().getString("database.sqlite.file", "database.db")!!
-        DATABASE_MYSQL_JDBC_URL = config().getString("database.mysql.jdbc-url", "jdbc:mysql://127.0.0.1:3306/minecraft")!!
+        DATABASE_MYSQL_JDBC_URL =
+            config().getString("database.mysql.jdbc-url", "jdbc:mysql://127.0.0.1:3306/minecraft")!!
         DATABASE_MYSQL_JDBC_CLASS = config().getString("database.mysql.jdbc-class", "com.mysql.cj.jdbc.Driver")!!
         DATABASE_MYSQL_USER = config().getString("database.mysql.properties.user", "root")!!
         DATABASE_MYSQL_PASSWORD = config().getString("database.mysql.properties.password", "root")!!

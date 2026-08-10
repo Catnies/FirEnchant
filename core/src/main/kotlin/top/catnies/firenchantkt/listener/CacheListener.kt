@@ -9,7 +9,7 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.database.FirCacheManager
 import top.catnies.firenchantkt.database.FirConnectionManager
 
-class CacheListener: Listener {
+class CacheListener : Listener {
 
     val plugin = FirEnchantPlugin.instance
 
@@ -23,7 +23,8 @@ class CacheListener: Listener {
                 FirCacheManager.getInstance().addEnchantLog(it)
             }
             // 附魔台历史记录
-            val tableLogCache = FirConnectionManager.getInstance().enchantingHistoryData.getByPlayerRecent(player.uniqueId, 20)
+            val tableLogCache =
+                FirConnectionManager.getInstance().enchantingHistoryData.getByPlayerRecent(player.uniqueId, 20)
             tableLogCache.forEach {
                 FirCacheManager.getInstance().addEnchantingHistory(it)
             }

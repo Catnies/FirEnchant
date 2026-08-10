@@ -9,6 +9,7 @@ object PlayerUtils {
     fun Player.giveOrDrop(vararg items: ItemStack) {
         this.giveOrDropList(items.toList())
     }
+
     fun Player.giveOrDropList(items: List<ItemStack>) {
         val drop = this.inventory.addItem(*items.toTypedArray())
         if (drop.isNotEmpty()) {

@@ -14,15 +14,15 @@ import top.catnies.firenchantkt.language.MessageConstants.COMMAND_BROKEN_GEAR_FI
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_SUCCESS
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
-import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 
-object FixMainHandItemCommand: AbstractCommand() {
+object FixMainHandItemCommand : AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> =
         Commands.literal("fixMianHandItem")
             .executes { execute(it) }
-            .then(Commands.argument("player", ArgumentTypes.player())
-                .executes { execute(it) }
+            .then(
+                Commands.argument("player", ArgumentTypes.player())
+                    .executes { execute(it) }
             )
 
     override fun requires(requirement: CommandSourceStack): Boolean {
@@ -44,6 +44,7 @@ object FixMainHandItemCommand: AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
         context.source.sender.sendTranslatableComponent(COMMAND_BROKEN_GEAR_FIX_MAIN_HAND_SUCCESS, player.name)
+        @Suppress("UsePropertyAccessSyntax")
         player.inventory.setItemInMainHand(repairBrokenGear)
         return Command.SINGLE_SUCCESS
     }

@@ -17,7 +17,7 @@ class BrokenMatchRule(
             val itemProviderID = if (split.size >= 2) split[0] else "Vanilla"
             val itemProvider = FirItemProviderRegistry.instance.getItemProvider(itemProviderID) ?: return@forEach
             val itemID = if (split.size >= 2) split[1] else it
-            if (itemProvider.getIdByItem(item).equals(itemID, true) ) return true
+            if (itemProvider.getIdByItem(item).equals(itemID, true)) return true
         }
         return false
     }

@@ -16,11 +16,12 @@ import top.catnies.firenchantkt.language.tags.PlaceholderTag
 object MessageUtils {
 
     val miniMessage = MiniMessage.builder()
-        .tags(TagResolver.builder()
-            .resolver(TagResolver.standard())
-            .resolver(PlaceholderTag) // Papi标签解析器
-            .build()
-    ).build()
+        .tags(
+            TagResolver.builder()
+                .resolver(TagResolver.standard())
+                .resolver(PlaceholderTag) // Papi标签解析器
+                .build()
+        ).build()
 
     /**
      * 发送一个可翻译组件给目标.
@@ -55,11 +56,13 @@ object MessageUtils {
      * @param ptr PAPI 解析者
      * @return 文本组件.
      */
-    fun String.renderToComponent(ptr: Pointered? = null, args: Map<String, String> = mutableMapOf()): Component{
+    fun String.renderToComponent(ptr: Pointered? = null, args: Map<String, String> = mutableMapOf()): Component {
         val parsedRuntimePlaceholders = if (args.isEmpty()) this else this.replacePlaceholders(args)
         val parsedPlaceholderAPI = parsedRuntimePlaceholders.parsePlaceholderAPI(ptr as? Player)
         val miniMessageText = parsedPlaceholderAPI.convertLegacyColorToMiniMessage()
-        return if (ptr != null) miniMessage.deserialize(miniMessageText, ptr) else miniMessage.deserialize(miniMessageText)
+        return if (ptr != null) miniMessage.deserialize(miniMessageText, ptr) else miniMessage.deserialize(
+            miniMessageText
+        )
     }
 
     // 解析 PlaceholderAPI
@@ -91,6 +94,7 @@ object MessageUtils {
                     .style(this.style()) // 保留原有样式
                     .children(this.children().map { it.replacePlaceholders(args) }) // 递归处理子组件
             }
+
             else -> {
                 // 对于其他类型的组件，只处理子组件
                 this.children(this.children().map { it.replacePlaceholders(args) })
@@ -101,7 +105,7 @@ object MessageUtils {
     // 替换String中的占位符
     fun String.replacePlaceholders(args: Map<String, String>): String {
         // 依次对args的每个entry进行处理.
-        return args.entries.fold(this) {acc, (key, value) -> acc.replace("{$key}", value) }
+        return args.entries.fold(this) { acc, (key, value) -> acc.replace("{$key}", value) }
     }
 
     fun List<String>.replacePlaceholders(list: List<String>, args: Map<String, String>): List<String> {
@@ -114,6 +118,6 @@ object MessageUtils {
 //        val component =
 //        return AdventureComponentWrapper(component)
 //    }
-    fun String.parseTitleStringAsComponent(player: Player?)= this.renderToComponent(player)
+    fun String.parseTitleStringAsComponent(player: Player?) = this.renderToComponent(player)
 
 }

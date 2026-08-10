@@ -1,8 +1,9 @@
 package top.catnies.firenchantkt.util
 
-import java.io.*
-import java.util.jar.JarFile
 import org.bukkit.plugin.java.JavaPlugin
+import java.io.File
+import java.io.FileOutputStream
+import java.util.jar.JarFile
 
 // 从插件JAR包里复制文件夹或文件到插件目录.
 object ResourceCopyUtils {
@@ -37,7 +38,7 @@ object ResourceCopyUtils {
             val normalizedPath = resourcePath.replace("\\", "/")
             jar.entries().asSequence()
                 .filter { it.name.startsWith(normalizedPath) && !it.isDirectory }
-                .forEach { it ->
+                .forEach {
                     // 保持完整的文件夹结构
                     // 比如：languages/subfolder/file.yml -> targetDir/languages/subfolder/file.yml
                     // println(File(targetDir, it.name).absolutePath)

@@ -14,7 +14,7 @@ import top.catnies.firenchantkt.config.AnvilConfig
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.util.TaskUtils
 
-class FirProtectionRune(): ProtectionRune {
+class FirProtectionRune : ProtectionRune {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -90,7 +90,7 @@ class FirProtectionRune(): ProtectionRune {
         if (protectionRunePreUseEvent.isCancelled) return
 
         // 显示结果
-        TaskUtils.runTaskLater(delay = 0, task =  {
+        TaskUtils.runTaskLater(delay = 0, task = {
             context.view.setItem(2, context.firstItem.clone().also { addProtectionRune(it) })
             context.view.repairCost = costExp
         })
@@ -104,7 +104,8 @@ class FirProtectionRune(): ProtectionRune {
         val player = context.viewer
 
         // 触发事件
-        val protectionRuneUseEvent = ProtectionRuneUseEvent(player, event, event.view as AnvilView, context.firstItem, context.result!!)
+        val protectionRuneUseEvent =
+            ProtectionRuneUseEvent(player, event, event.view as AnvilView, context.firstItem, context.result!!)
         Bukkit.getPluginManager().callEvent(protectionRuneUseEvent)
         if (protectionRuneUseEvent.isCancelled) {
             event.isCancelled = true
@@ -121,7 +122,7 @@ class FirProtectionRune(): ProtectionRune {
         else anvilView.setItem(1, ItemStack.empty())
 
         // 设置结果
-        anvilView.setCursor(context.result!!)
+        anvilView.setCursor(context.result)
         player.playSound(player.location, "block.anvil.use", 1f, 1f)
     }
 

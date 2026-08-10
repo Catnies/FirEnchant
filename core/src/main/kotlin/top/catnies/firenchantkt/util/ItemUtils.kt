@@ -39,6 +39,7 @@ object ItemUtils {
     fun ItemStack.serializeToBytes(): ByteArray {
         return ItemTagStream.INSTANCE.toBytes(this)
     }
+
     fun ByteArray.deserializeFromBytes(): ItemStack {
         return ItemTagStream.INSTANCE.fromBytes(this)
     }
@@ -48,6 +49,7 @@ object ItemUtils {
         val cost = this.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
         this.setData(DataComponentTypes.REPAIR_COST, cost * 2 + 1)
     }
+
     fun ItemStack.addRepairCost(count: Int) {
         val cost = this.getDataOrDefault(DataComponentTypes.REPAIR_COST, 0)!!
         this.setData(DataComponentTypes.REPAIR_COST, cost + count)

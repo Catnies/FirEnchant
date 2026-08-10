@@ -28,7 +28,6 @@ import top.catnies.firenchantkt.language.MessageConstants.ANVIL_ENCHANTED_BOOK_U
 import top.catnies.firenchantkt.util.ItemUtils.addRepairCost
 import top.catnies.firenchantkt.util.ItemUtils.isCompatibleWithEnchantment
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
-import top.catnies.firenchantkt.util.PlayerUtils.giveOrDrop
 import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.math.max
 import kotlin.math.min
@@ -92,7 +91,7 @@ class FirEnchantedBook : EnchantedBook {
                 if (mergeEvent.isCancelled) return
 
                 // 显示结果, 添加 RepairCost.
-                TaskUtils.runTaskLater(delay = 0, task =  {
+                TaskUtils.runTaskLater(delay = 0, task = {
                     context.view.setItem(2, resultSetting.toItemStack().apply { this.addRepairCost() })
                     context.view.repairCost = mergeEvent.costExp
                 })
@@ -114,12 +113,13 @@ class FirEnchantedBook : EnchantedBook {
                 }
 
                 // 触发事件
-                val useEvent = EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
+                val useEvent =
+                    EnchantedBookPreUseEvent(context.viewer, event, costExp, context.firstItem, setting, resultItem)
                 Bukkit.getPluginManager().callEvent(useEvent)
                 if (useEvent.isCancelled) return
 
                 // 显示结果
-                TaskUtils.runTaskLater(delay = 0, task =  {
+                TaskUtils.runTaskLater(delay = 0, task = {
                     context.view.setItem(2, useEvent.resultItem.apply { this.addRepairCost() })
                     context.view.repairCost = useEvent.costExp
                 })
@@ -210,7 +210,8 @@ class FirEnchantedBook : EnchantedBook {
                     }
 
                     // 开启了破坏装备 & 没有保护符文
-                    val brokenEquipment = FirEnchantAPI.toBrokenGear(context.firstItem)!! // context.firstItem 非空则 brokenEquipment 非空, 因此断言
+                    val brokenEquipment =
+                        FirEnchantAPI.toBrokenGear(context.firstItem)!! // context.firstItem 非空则 brokenEquipment 非空, 因此断言
                     anvilView.setItem(0, brokenEquipment)
                     player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
                     player.sendTranslatableComponent(ANVIL_ENCHANTED_BOOK_USE_FAIL_BREAK)

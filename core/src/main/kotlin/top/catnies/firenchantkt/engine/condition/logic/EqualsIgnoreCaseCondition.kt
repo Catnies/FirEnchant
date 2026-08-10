@@ -2,8 +2,8 @@ package top.catnies.firenchantkt.engine.condition.logic
 
 import me.clip.placeholderapi.PlaceholderAPI
 import org.bukkit.entity.Player
-import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.engine.AbstractCondition
+import top.catnies.firenchantkt.engine.ArgumentKey
 
 class EqualsIgnoreCaseCondition(
     args: Map<String, Any>,
@@ -18,7 +18,7 @@ class EqualsIgnoreCaseCondition(
     @ArgumentKey(["v", "value"])
     private lateinit var value: String
 
-    override fun check(): Boolean{
+    override fun check(): Boolean {
         val rawString = PlaceholderAPI.setPlaceholders(player, string)
         val valueString = PlaceholderAPI.setPlaceholders(player, value)
         return rawString.equals(valueString, true)

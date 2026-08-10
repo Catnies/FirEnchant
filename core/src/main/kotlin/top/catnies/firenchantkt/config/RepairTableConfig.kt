@@ -12,13 +12,13 @@ import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 
-class RepairTableConfig private constructor():
-    AbstractConfigFile("modules/repair_table.yml")
-{
+class RepairTableConfig private constructor() :
+    AbstractConfigFile("modules/repair_table.yml") {
     companion object {
         @JvmStatic
         val instance by lazy { RepairTableConfig().apply { loadConfig() } }
     }
+
     val fallbackMenuStructure = arrayOf(
         "X.......?",
         "....I....",
@@ -64,20 +64,24 @@ class RepairTableConfig private constructor():
     override fun loadConfig() {
         /*修复规则*/
         REPAIR_TIMERULE_RULE = config().getString("repair-rule.time-rule.rule", "static")!!.lowercase()
-        when(REPAIR_TIMERULE_RULE) {
+        when (REPAIR_TIMERULE_RULE) {
             "static" -> {
                 REPAIR_TIMERULE_STATIC_TIME = config().getLong("repair-rule.time-rule.rules.static.time", 600L)
             }
+
             "level" -> {
                 REPAIR_TIMERULE_LEVEL_TIME = config().getLong("repair-rule.time-rule.rules.level.time", 600L)
                 REPAIR_TIMERULE_LEVEL_FALLBACK = config().getLong("repair-rule.time-rule.rules.level.fallback", 450L)
             }
+
             "count" -> {
                 REPAIR_TIMERULE_COUNT_TIME = config().getLong("repair-rule.time-rule.rules.count.time", 600L)
                 REPAIR_TIMERULE_COUNT_FALLBACK = config().getLong("repair-rule.time-rule.rules.count.fallback", 450L)
             }
+
             else -> {
-                Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_VALUE_INVALID_ERROR, fileName, "repair-rule.time-rule.rule")
+                Bukkit.getConsoleSender()
+                    .sendTranslatableComponent(RESOURCE_VALUE_INVALID_ERROR, fileName, "repair-rule.time-rule.rule")
             }
         }
 
@@ -87,13 +91,16 @@ class RepairTableConfig private constructor():
         /*菜单设置*/
         MENU_TITLE_DENY = config().getString("menu-setting.title-deny", "Repair DENY Menu")!!
         MENU_TITLE_ACCEPT = config().getString("menu-setting.title-accept", "Repair ACCEPT Menu")!!
-        try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also {
+        try {
+            config().getStringList("menu-setting.structure").toTypedArray()
+                .also {
 
 //                Structure(*it);
-                MENU_STRUCTURE_ARRAY = it } // 测试合法性然后再赋值
+                    MENU_STRUCTURE_ARRAY = it
+                } // 测试合法性然后再赋值
         } catch (exception: Exception) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
+        }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
         MENU_OUTPUT_SLOT = config().getString("menu-setting.output-array.slot", "O")?.first() ?: 'O'
         MENU_OUTPUT_ARRAY_SIZE = config().getInt("menu-setting.output-array.array-max-size", 5)
@@ -101,7 +108,8 @@ class RepairTableConfig private constructor():
             .associateTo(LinkedHashMap()) { (it["permission"] as String) to (it["size"] as Int) }
         MENU_OUTPUT_UPDATE_TIME = config().getInt("menu-setting.output-array.update-time", 20)
         MENU_OUTPUT_ACTIVE_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-active-lore")
-        MENU_OUTPUT_COMPLETED_ADDITION_LORE = config().getStringList("menu-setting.output-array.addition-completed-lore")
+        MENU_OUTPUT_COMPLETED_ADDITION_LORE =
+            config().getStringList("menu-setting.output-array.addition-completed-lore")
 
         // 修复物品
         config().getConfigurationSection("menu-setting.repair-bottom")?.also { section ->
@@ -111,7 +119,7 @@ class RepairTableConfig private constructor():
         // 上一页物品
         config().getConfigurationSection("menu-setting.previous-page")?.also { section ->
             val slot = section.getString("slot")?.first() ?: 'P'
-            MENU_PREVIOUS_PAGE_ITEM= MenuItemData.getMenuItemDataBySection(section, slot, fileName)
+            MENU_PREVIOUS_PAGE_ITEM = MenuItemData.getMenuItemDataBySection(section, slot, fileName)
         }
         // 下一页物品
         config().getConfigurationSection("menu-setting.next-page")?.let { section ->
@@ -142,8 +150,9 @@ class RepairTableConfig private constructor():
         } ?: emptyList()
 
         /*破损物品*/
-        BROKEN_FALLBACK_WRAPPER_ITEM = ItemStackData(config().getConfigurationSection("broken-item-model.fallback-item")!!, ItemRender())
-            .also { item -> item.verifyItem(fileName, "broken-item-model.fallback-item") }
+        BROKEN_FALLBACK_WRAPPER_ITEM =
+            ItemStackData(config().getConfigurationSection("broken-item-model.fallback-item")!!, ItemRender())
+                .also { item -> item.verifyItem(fileName, "broken-item-model.fallback-item") }
 
         // 构建捕捉规则
         val map = config().getConfigurationSectionList("broken-item-model.matches").map {

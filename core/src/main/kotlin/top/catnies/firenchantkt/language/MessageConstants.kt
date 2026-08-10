@@ -8,7 +8,8 @@ object MessageConstants {
     const val COMMAND_RELOAD_SUCCESS = "command_reload_success"
     const val COMMAND_VERSION_SUCCESS = "command_version_success"
     const val COMMAND_CONSOLE_CANT_EXECUTE = "command_console_cant_execute"
-    const val COMMAND_DEBUG_GET_LOCATION_BOOK_SHELF_COUNT_EXECUTE = "command_debug_get_location_book_shelf_count_execute"
+    const val COMMAND_DEBUG_GET_LOCATION_BOOK_SHELF_COUNT_EXECUTE =
+        "command_debug_get_location_book_shelf_count_execute"
     const val COMMAND_DEBUG_GET_PLAYER_ENCHANTMENT_SEED_EXECUTE = "command_debug_get_player_enchantment_seed_execute"
     const val COMMAND_BROKEN_GEAR_BREAK_MAIN_HAND_SUCCESS = "command_broken_gear_break_main_hand_success"
     const val COMMAND_BROKEN_GEAR_BREAK_MAIN_HAND_FAIL = "command_broken_gear_break_main_hand_fail"

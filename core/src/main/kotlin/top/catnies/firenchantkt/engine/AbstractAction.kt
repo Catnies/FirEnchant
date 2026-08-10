@@ -12,7 +12,7 @@ import kotlin.reflect.jvm.isAccessible
 
 abstract class AbstractAction(
     open val args: Map<String, Any?>
-): Action {
+) : Action {
 
     init {
         this::class.declaredMemberProperties.forEach { prop ->
@@ -29,7 +29,8 @@ abstract class AbstractAction(
                     prop.setter.call(this, convertedValue)
                 } catch (e: Exception) {
                     // 如果转换失败，尝试直接注入原值
-                    try { prop.setter.call(this, value)
+                    try {
+                        prop.setter.call(this, value)
                     } catch (innerE: Exception) {
                         // 记录错误信息
                         val conditionName = FirEnchantAPI.actionRegistry().getActionName(this::class.java)

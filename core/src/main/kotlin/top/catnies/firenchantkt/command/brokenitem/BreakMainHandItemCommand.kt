@@ -15,13 +15,14 @@ import top.catnies.firenchantkt.language.MessageConstants.COMMAND_BROKEN_GEAR_BR
 import top.catnies.firenchantkt.language.MessageConstants.COMMAND_CONSOLE_CANT_EXECUTE
 import top.catnies.firenchantkt.util.MessageUtils.sendTranslatableComponent
 
-object BreakMainHandItemCommand: AbstractCommand() {
+object BreakMainHandItemCommand : AbstractCommand() {
 
     override fun create(): LiteralArgumentBuilder<CommandSourceStack> =
         Commands.literal("breakMianHandItem")
             .executes { execute(it) }
-            .then(Commands.argument("player", ArgumentTypes.player())
-                .executes { execute(it) }
+            .then(
+                Commands.argument("player", ArgumentTypes.player())
+                    .executes { execute(it) }
             )
 
     override fun requires(requirement: CommandSourceStack): Boolean {
@@ -43,6 +44,7 @@ object BreakMainHandItemCommand: AbstractCommand() {
             return Command.SINGLE_SUCCESS
         }
         context.source.sender.sendTranslatableComponent(COMMAND_BROKEN_GEAR_BREAK_MAIN_HAND_SUCCESS, player.name)
+        @Suppress("UsePropertyAccessSyntax")
         player.inventory.setItemInMainHand(brokenGear)
         return Command.SINGLE_SUCCESS
     }

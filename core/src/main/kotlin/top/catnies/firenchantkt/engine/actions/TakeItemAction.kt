@@ -5,9 +5,9 @@ import top.catnies.firenchantkt.engine.AbstractAction
 import top.catnies.firenchantkt.engine.ArgumentKey
 import top.catnies.firenchantkt.integration.FirItemProviderRegistry
 
-class TakeItemAction (
+class TakeItemAction(
     args: Map<String, Any?>
-) : AbstractAction(args)  {
+) : AbstractAction(args) {
 
     @ArgumentKey(["player"], autoInject = true)
     private var player: Player? = null

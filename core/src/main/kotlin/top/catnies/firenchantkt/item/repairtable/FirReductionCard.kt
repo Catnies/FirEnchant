@@ -12,7 +12,7 @@ import top.catnies.firenchantkt.database.dao.ItemRepairData
 import top.catnies.firenchantkt.database.entity.ItemRepairTable
 import kotlin.math.max
 
-class FirReductionCard: ReductionCard {
+class FirReductionCard : ReductionCard {
 
     override fun matches(itemStack: ItemStack): Boolean {
         val tag = RtagItem.of(itemStack)
@@ -59,6 +59,7 @@ class FirReductionCard: ReductionCard {
                 val lng = (context.itemRepairTable.remainingTime * value).toLong()
                 context.itemRepairTable.duration -= lng
             }
+
             ReductionType.STATIC -> {
                 val remaining = context.itemRepairTable.remainingTime - (value * 1000L)
                 context.itemRepairTable.duration = max(0L, remaining.toLong())

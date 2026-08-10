@@ -15,7 +15,8 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.OriginalBookData
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy
-import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy.*
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy.CUSTOM
+import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategy.VANILLA
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.RollStrategyData
 import top.catnies.firenchantkt.item.enchantingtable.origin_book.VanillaRollStrategyData
 import top.catnies.firenchantkt.language.MessageConstants.RESOURCE_MENU_STRUCTURE_ERROR
@@ -30,11 +31,10 @@ import top.catnies.firenchantkt.util.YamlUtils
 import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ETMenuItemData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
-import java.util.Locale
+import java.util.*
 
-class EnchantingTableConfig private constructor():
-    AbstractConfigFile("modules/enchanting_table.yml")
-{
+class EnchantingTableConfig private constructor() :
+    AbstractConfigFile("modules/enchanting_table.yml") {
     companion object {
         @JvmStatic
         val instance by lazy { EnchantingTableConfig().apply { loadConfig() } }
@@ -118,22 +118,52 @@ class EnchantingTableConfig private constructor():
 
         try {
             config().getStringList("menu-setting.structure").toTypedArray()
-            .also {
+                .also {
 //                Structure(*it);
-                // 不测了
-                MENU_STRUCTURE_ARRAY = it
-            } // 测试合法性然后再赋值
+                    // 不测了
+                    MENU_STRUCTURE_ARRAY = it
+                } // 测试合法性然后再赋值
         } catch (exception: Exception) {
             Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
         }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
 
-        MENU_SHOW_ENCHANTMENT_LINE_1 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1")!!, 'a', false, fileName)
-        MENU_SHOW_ENCHANTMENT_LINE_2 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2")!!, 'b', false, fileName)
-        MENU_SHOW_ENCHANTMENT_LINE_3 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3")!!, 'c', false, fileName)
-        MENU_SHOW_ENCHANTMENT_BOOK_1 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1-book")!!, 'A', true, fileName)
-        MENU_SHOW_ENCHANTMENT_BOOK_2 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2-book")!!, 'B', true, fileName)
-        MENU_SHOW_ENCHANTMENT_BOOK_3 = ETMenuItemData.getETMenuItemDataBySection(config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3-book")!!, 'C', true, fileName)
+        MENU_SHOW_ENCHANTMENT_LINE_1 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1")!!,
+            'a',
+            false,
+            fileName
+        )
+        MENU_SHOW_ENCHANTMENT_LINE_2 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2")!!,
+            'b',
+            false,
+            fileName
+        )
+        MENU_SHOW_ENCHANTMENT_LINE_3 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3")!!,
+            'c',
+            false,
+            fileName
+        )
+        MENU_SHOW_ENCHANTMENT_BOOK_1 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-1-book")!!,
+            'A',
+            true,
+            fileName
+        )
+        MENU_SHOW_ENCHANTMENT_BOOK_2 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-2-book")!!,
+            'B',
+            true,
+            fileName
+        )
+        MENU_SHOW_ENCHANTMENT_BOOK_3 = ETMenuItemData.getETMenuItemDataBySection(
+            config().getConfigurationSection("menu-setting.show-enchantment-slot.line-3-book")!!,
+            'C',
+            true,
+            fileName
+        )
 
         ENCHANT_COST_LINE_1_MIN_FAILURE = config().getInt("enchant-cost.line-1.min-failure", 0)
         ENCHANT_COST_LINE_2_MIN_FAILURE = config().getInt("enchant-cost.line-2.min-failure", 0)
@@ -195,7 +225,8 @@ class EnchantingTableConfig private constructor():
             RENEWAL_BOOK_ACTIONS = config().getConfigurationSectionList("renewal-book.actions")
                 .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "renewal-book.actions") }
 
-            val testItem = YamlUtils.tryBuildItem(REVERSAL_BOOK_ITEM_PROVIDER, REVERSAL_BOOK_ITEM_ID, fileName, "enchant-soul")
+            val testItem =
+                YamlUtils.tryBuildItem(REVERSAL_BOOK_ITEM_PROVIDER, REVERSAL_BOOK_ITEM_ID, fileName, "enchant-soul")
             if (testItem.nullOrAir()) REVERSAL_BOOK_ENABLE = false
         }
 
@@ -204,7 +235,8 @@ class EnchantingTableConfig private constructor():
             REVERSAL_BOOK_ACTIONS = config().getConfigurationSectionList("reversal-book.actions")
                 .mapNotNull { ConfigParser.parseActionTemplate(it, fileName, "reversal-book.actions") }
 
-            val testItem = YamlUtils.tryBuildItem(RENEWAL_BOOK_ITEM_PROVIDER, RENEWAL_BOOK_ITEM_ID, fileName, "enchant-renewal")
+            val testItem =
+                YamlUtils.tryBuildItem(RENEWAL_BOOK_ITEM_PROVIDER, RENEWAL_BOOK_ITEM_ID, fileName, "enchant-renewal")
             if (testItem.nullOrAir()) RENEWAL_BOOK_ENABLE = false
         }
     }
@@ -219,7 +251,7 @@ class EnchantingTableConfig private constructor():
         // 将文件夹下的内容加载到 ORIGINAL_BOOK_MATCHES 中.
         this.ORIGINAL_BOOK_MATCHES = originalBookDirectory.walkTopDown()
             .maxDepth(1)
-            .filter { it.isFile && it.extension == "yml" && !it.name.startsWith('_')}
+            .filter { it.isFile && it.extension == "yml" && !it.name.startsWith('_') }
             .mapNotNull { file ->
                 val enchantmentRegistry = RegistryAccess.registryAccess().getRegistry(RegistryKey.ENCHANTMENT)
                 val yaml = YamlConfiguration.loadConfiguration(file)
@@ -241,37 +273,37 @@ class EnchantingTableConfig private constructor():
                 }
 
                 // 读取策略
-                val rollStrategyData: RollStrategyData = when(rollStrategy) {
+                val rollStrategyData: RollStrategyData = when (rollStrategy) {
                     // 读取原版策略的配置
                     VANILLA -> {
                         // 读取魔咒
                         val enchantments: MutableSet<Enchantment> = mutableSetOf()
-                        val importItems = mutableListOf<ItemStack>()
-                        val importEnchantments = yaml.getStringList("vanilla-enchantments.import").fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
-                            // 导入列表
-                            Material.getMaterial(vanillaID.uppercase(Locale.ROOT))?.let {
-                                // 获取物品对应的魔咒列表添加
-                                val item = ItemStack(it)
-                                importItems += item
-                                val applicableEnchants = EnchantmentUtils.getApplicableEnchants(item)
-                                acc.addAll(applicableEnchants)
+                        val importEnchantments = yaml.getStringList("vanilla-enchantments.import")
+                            .fold(mutableSetOf<Enchantment>()) { acc, vanillaID ->
+                                // 导入列表
+                                Material.getMaterial(vanillaID.uppercase(Locale.ROOT))?.let {
+                                    // 获取物品对应的魔咒列表添加
+                                    val applicableEnchants = EnchantmentUtils.getApplicableEnchants(ItemStack(it))
+                                    acc.addAll(applicableEnchants)
+                                    return@fold acc
+                                }
                                 return@fold acc
                             }
-                            return@fold acc
-                        }
                         // 导入普通魔咒
                         val removeEnchantments = mutableSetOf<Enchantment>()
-                        val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments").fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
-                            val remove = enchantment[0] == '!'
-                            val readString = if (remove) enchantment.substring(1) else enchantment
-                            val readEnchantment = enchantmentRegistry.get(Key.key(readString))
-                            if (readEnchantment == null) { sendInvalidEnchantment(file.name, enchantment); acc }
-                            else {
-                                if (remove) removeEnchantments.add(readEnchantment)
-                                else acc.add(readEnchantment)
+                        val commonEnchantments = yaml.getStringList("vanilla-enchantments.enchantments")
+                            .fold(mutableSetOf<Enchantment>()) { acc, enchantment ->
+                                val remove = enchantment[0] == '!'
+                                val readString = if (remove) enchantment.substring(1) else enchantment
+                                val readEnchantment = enchantmentRegistry.get(Key.key(readString))
+                                if (readEnchantment == null) {
+                                    sendInvalidEnchantment(file.name, enchantment); acc
+                                } else {
+                                    if (remove) removeEnchantments.add(readEnchantment)
+                                    else acc.add(readEnchantment)
+                                }
+                                return@fold acc
                             }
-                            return@fold acc
-                        }
                         // 合并检查
                         enchantments.addAll(importEnchantments)
                         enchantments.addAll(commonEnchantments)
@@ -281,7 +313,7 @@ class EnchantingTableConfig private constructor():
                             return@mapNotNull null
                         }
                         // 返回结果
-                        VanillaRollStrategyData(importItems,enchantments)
+                        VanillaRollStrategyData(enchantments)
                     }
                     // 读取自定义策略的配置
                     CUSTOM -> {

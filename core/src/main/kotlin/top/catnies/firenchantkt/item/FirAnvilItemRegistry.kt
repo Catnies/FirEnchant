@@ -4,22 +4,20 @@ import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import top.catnies.firenchantkt.api.ServiceContainer
 import top.catnies.firenchantkt.api.event.anvil.AnvilApplicableItemRegisterEvent
-import top.catnies.firenchantkt.item.anvil.FirEnchantSoul
-import top.catnies.firenchantkt.item.anvil.FirEnchantedBook
-import top.catnies.firenchantkt.item.anvil.FirPowerRune
-import top.catnies.firenchantkt.item.anvil.FirProtectionRune
-import top.catnies.firenchantkt.item.anvil.FirVanillaEnchantedBook
+import top.catnies.firenchantkt.item.anvil.*
 
 
-class FirAnvilItemRegistry: AnvilItemRegistry {
+class FirAnvilItemRegistry : AnvilItemRegistry {
 
     private val items = mutableListOf<AnvilApplicable>()
 
     companion object {
         @JvmStatic
-        val instance: FirAnvilItemRegistry by lazy { FirAnvilItemRegistry().apply {
-            load()
-        } }
+        val instance: FirAnvilItemRegistry by lazy {
+            FirAnvilItemRegistry().apply {
+                load()
+            }
+        }
     }
 
     // 初始化注册物品

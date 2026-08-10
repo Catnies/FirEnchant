@@ -17,7 +17,7 @@ import top.catnies.firenchantkt.util.TaskUtils
 import kotlin.random.Random
 
 
-class FirPowerRune: PowerRune {
+class FirPowerRune : PowerRune {
 
     companion object {
         val plugin = FirEnchantPlugin.instance
@@ -26,8 +26,7 @@ class FirPowerRune: PowerRune {
     }
 
     override fun matches(itemStack: ItemStack): Boolean {
-        if (!config.POWER_RUNE_ENABLE) return false
-        return getChance(itemStack).takeIf { it > 0 && it <= 100 } != null
+        return config.POWER_RUNE_ENABLE && getChance(itemStack).takeIf { it > 0 && it <= 100 } != null
     }
 
     override fun onPrepare(event: PrepareAnvilEvent, context: AnvilContext) {
@@ -42,7 +41,7 @@ class FirPowerRune: PowerRune {
         if (preUseEvent.isCancelled) return
 
         // 显示结果
-        TaskUtils.runTaskLater(delay = 0, task =  {
+        TaskUtils.runTaskLater(delay = 0, task = {
             context.view.setItem(2, context.firstItem.also { injectContextData(it, preUseEvent.successChance) })
             context.view.repairCost = preUseEvent.costExp
         })
@@ -82,12 +81,14 @@ class FirPowerRune: PowerRune {
         when {
             // 成功了
             useEvent.isSuccess -> {
+                @Suppress("UsePropertyAccessSyntax")
                 anvilView.setCursor(resultItem)
                 player.playSound(player.location, "block.anvil.use", 1f, 1f)
             }
 
             // 失败了, 但是没开失败破损
             (!config.POWER_RUNE_BREAK_FAILED_ITEM) -> {
+                @Suppress("UsePropertyAccessSyntax")
                 anvilView.setCursor(context.firstItem)
                 player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
             }
@@ -95,6 +96,7 @@ class FirPowerRune: PowerRune {
             // 失败了, 但是有保护符文
             FirEnchantAPI.hasProtectionRune(resultItem) -> {
                 FirEnchantAPI.removeProtectionRune(context.firstItem)
+                @Suppress("UsePropertyAccessSyntax")
                 anvilView.setCursor(context.firstItem)
                 player.playSound(player.location, "block.anvil.destroy", 1f, 1f)
             }
@@ -114,7 +116,8 @@ class FirPowerRune: PowerRune {
         }
     }
 
-    override fun canUpgrade(item: ItemStack) = item.enchantments.any { (enchantment, level) -> level < enchantment.maxLevel }
+    override fun canUpgrade(item: ItemStack) =
+        item.enchantments.any { (enchantment, level) -> level < enchantment.maxLevel }
 
     override fun upgrade(item: ItemStack): Boolean {
         val canUpgradeMap = item.enchantments.filter { (enchantment, level) -> level < enchantment.maxLevel }
@@ -131,6 +134,7 @@ class FirPowerRune: PowerRune {
             tag.set(successChance, "FirEnchantTempData", "PowerSuccessChance")
         }
     }
+
     private fun readAndClearContextData(item: ItemStack): Int {
         return RtagItem.of(item).get<Int>("FirEnchantTempData", "PowerSuccessChance")?.also {
             RtagItem.edit(item) { tag ->

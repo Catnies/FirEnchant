@@ -32,7 +32,7 @@ object EngineHelper {
     }
 
     // 检查一组条件
-    fun CommandSender.checkCondition(configList: List<ConfigurationSection>) = configList.all { checkCondition( it) }
+    fun CommandSender.checkCondition(configList: List<ConfigurationSection>) = configList.all { checkCondition(it) }
 
 
     // 执行动作

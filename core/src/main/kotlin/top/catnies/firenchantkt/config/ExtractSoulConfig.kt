@@ -9,9 +9,8 @@ import top.catnies.firenchantkt.util.YamlUtils.getConfigurationSectionList
 import top.catnies.firenchantkt.util.resource_wrapper.ItemStackData
 import top.catnies.firenchantkt.util.resource_wrapper.MenuItemData
 
-class ExtractSoulConfig private constructor():
-    AbstractConfigFile("modules/extract_soul.yml")
-{
+class ExtractSoulConfig private constructor() :
+    AbstractConfigFile("modules/extract_soul.yml") {
 
     companion object {
         @JvmStatic
@@ -41,14 +40,16 @@ class ExtractSoulConfig private constructor():
     override fun loadConfig() {
         // 菜单信息
         MENU_TITLE = config().getString("menu-setting.title", "Extract Soul Menu")!!
-        try { config().getStringList("menu-setting.structure").toTypedArray()
-            .also {
-                // 不测了
+        try {
+            config().getStringList("menu-setting.structure").toTypedArray()
+                .also {
+                    // 不测了
 //                Structure(*it);
-                MENU_STRUCTURE_ARRAY = it
-            } // 测试合法性然后再赋值
+                    MENU_STRUCTURE_ARRAY = it
+                } // 测试合法性然后再赋值
         } catch (exception: Exception) {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName) }
+            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_MENU_STRUCTURE_ERROR, fileName)
+        }
         MENU_INPUT_SLOT = config().getString("menu-setting.input-slot", "I")?.first() ?: 'I'
         MENU_OUTPUT_SLOT = config().getString("menu-setting.output-slot", "O")?.first() ?: 'O'
         // 自定义物品

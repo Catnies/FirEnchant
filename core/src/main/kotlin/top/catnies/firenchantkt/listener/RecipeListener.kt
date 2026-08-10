@@ -2,23 +2,21 @@ package top.catnies.firenchantkt.listener
 
 import com.destroystokyo.paper.event.inventory.PrepareResultEvent
 import org.bukkit.GameMode
-import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.PrepareAnvilEvent
-import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.view.AnvilView
 import top.catnies.firenchantkt.context.AnvilContext
 import top.catnies.firenchantkt.item.FirAnvilItemRegistry
 import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 
-class RecipeListener: Listener {
+class RecipeListener : Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
-    fun onPrepareAnvilEvent(event: PrepareAnvilEvent){
+    fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return
         val (firstItem, secondItem) = event.inventory.getItem(0) to event.inventory.getItem(1)

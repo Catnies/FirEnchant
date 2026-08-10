@@ -23,7 +23,9 @@ object GetNextEnchantingTableResultCommand : AbstractCommand() {
                         Commands.argument("bookShelfCount", IntegerArgumentType.integer(0, 15))
                             .then(
                                 Commands.argument("item", ArgumentTypes.itemStack())
-                                    .executes { execute(it) })))
+                                    .executes { execute(it) })
+                    )
+            )
 
 
     override fun requires(requirement: CommandSourceStack): Boolean = true
@@ -35,7 +37,12 @@ object GetNextEnchantingTableResultCommand : AbstractCommand() {
         val item = context.getArgument("item", ItemStack::class.java)
 
         val result = NMSHandlerHolder.getNMSHandler()
-                .getPlayerNextEnchantmentTableResultByItemStack(player, count.toInt(), item, SettingsConfig.instance.REGISTRY)
+            .getPlayerNextEnchantmentTableResultByItemStack(
+                player,
+                count.toInt(),
+                item,
+                SettingsConfig.instance.REGISTRY
+            )
         println(result)
 
         return Command.SINGLE_SUCCESS

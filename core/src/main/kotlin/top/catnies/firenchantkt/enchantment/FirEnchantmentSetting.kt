@@ -15,7 +15,7 @@ class FirEnchantmentSetting(
     override var level: Int,
     override var failure: Int,
     override var consumedSouls: Int = 0
-): EnchantmentSetting {
+) : EnchantmentSetting {
 
     // 转换成 ItemStack
     override fun toItemStack(): ItemStack {
@@ -36,7 +36,7 @@ class FirEnchantmentSetting(
     @Suppress("UnstableApiUsage")
     private fun injectCustomData(item: ItemStack): ItemStack {
         item.setData(DataComponentTypes.MAX_STACK_SIZE, 1)
-        RtagItem.of(item). let { tag ->
+        RtagItem.of(item).let { tag ->
             tag.set(data.key.asString(), "FirEnchant", "Enchantment")
             tag.set(level, "FirEnchant", "Level")
             tag.set(failure, "FirEnchant", "Failure")
@@ -47,13 +47,16 @@ class FirEnchantmentSetting(
 
     // 渲染物品
     private fun renderItem(item: ItemStack): ItemStack {
-        val itemName = data.itemName.parsePlaceholderAPI().convertLegacyColorToMiniMessage().let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        val itemName = data.itemName.parsePlaceholderAPI().convertLegacyColorToMiniMessage()
+            .let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
         item.setData(DataComponentTypes.ITEM_NAME, itemName)
 
-        val itemLore = data.itemLore?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()?.map { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        val itemLore = data.itemLore?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()
+            ?.map { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
         itemLore?.let { item.setData(DataComponentTypes.LORE, ItemLore.lore(it)) }
 
-        val customName = data.customName?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()?.let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
+        val customName = data.customName?.parsePlaceholderAPI()?.convertLegacyColorToMiniMessage()
+            ?.let { MiniMessage.miniMessage().deserialize(it, FirEnchantTag(this)) }
         customName?.let { item.setData(DataComponentTypes.CUSTOM_NAME, it) }
 
         item.setData(DataComponentTypes.ENCHANTMENT_GLINT_OVERRIDE, data.glint)

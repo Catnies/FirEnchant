@@ -22,13 +22,13 @@ class ItemStackData(
     lateinit var itemProvider: ItemProvider
     lateinit var baseItem: ItemStack
 
-    constructor(section: ConfigurationSection, render: ItemRender) : this (
+    constructor(section: ConfigurationSection, render: ItemRender) : this(
         section.getString("hooked-plugin") ?: "null",
         section.getString("hooked-id") ?: "null",
         render
     )
 
-    constructor(section: ConfigurationSection) : this (
+    constructor(section: ConfigurationSection) : this(
         section.getString("hooked-plugin") ?: "null",
         section.getString("hooked-id") ?: "null",
         ItemRender(section)
@@ -37,7 +37,8 @@ class ItemStackData(
     // 验证物品是否存在, 并生成基础物品缓存;
     fun verifyItem(fileName: String, path: String): Boolean {
         itemProvider = FirEnchantAPI.itemProviderRegistry().getItemProvider(plugin) ?: run {
-            Bukkit.getConsoleSender().sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, plugin)
+            Bukkit.getConsoleSender()
+                .sendTranslatableComponent(RESOURCE_HOOK_ITEM_PROVIDER_NOT_FOUND, fileName, path, plugin)
             return false
         }
         baseItem = itemProvider.getItemById(id)

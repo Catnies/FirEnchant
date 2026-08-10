@@ -11,7 +11,7 @@ import top.catnies.firenchantkt.util.NumberUtils.toRoman
 
 class FirEnchantTag(
     val setting: FirEnchantmentSetting
-): TagResolver {
+) : TagResolver {
 
     override fun has(name: String) = "firenchant" == name
 
@@ -21,7 +21,9 @@ class FirEnchantTag(
         ctx: Context
     ): Tag? {
         // 判断是否是解析标签
-        if (!has(name)) { return null }
+        if (!has(name)) {
+            return null
+        }
         // 获取参数尝试解析
         val rawArgument = arguments.popOr("No argument provided").toString()
 

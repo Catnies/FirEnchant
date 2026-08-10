@@ -6,7 +6,7 @@ import top.catnies.firenchantkt.FirEnchantPlugin
 import top.catnies.firenchantkt.util.ResourceCopyUtils
 import java.util.*
 
-class TranslationManager private constructor(){
+class TranslationManager private constructor() {
     val plugin get() = FirEnchantPlugin.instance
     val logger get() = plugin.logger
 

@@ -14,7 +14,7 @@ object TaskUtils {
     }
 
     // 运行异步任务并同步执行回调
-    fun runAsyncTaskWithSyncCallback(async:() -> Unit, callback: () -> Unit, delay: Long = 0) {
+    fun runAsyncTaskWithSyncCallback(async: () -> Unit, callback: () -> Unit, delay: Long = 0) {
         CCScheduler.getInstance().asyncScheduler.runTaskLater(plugin, delay) { ->
             async()
             CCScheduler.getInstance().globalRegionScheduler.runTask(plugin, callback)
@@ -44,8 +44,7 @@ object TaskUtils {
             CCScheduler.getInstance().asyncScheduler.runTaskLater(plugin, delay) { ->
                 try {
                     task()
-                }
-                finally {
+                } finally {
                     // 计数器减一并检查是否所有任务完成
                     if (counter.decrementAndGet() == 0) {
                         CCScheduler.getInstance().globalRegionScheduler.runTask(plugin, callback)

@@ -2,7 +2,7 @@ package top.catnies.firenchantkt.listener
 
 import org.bukkit.event.Listener
 
-class BrokenItemListener: Listener {
+class BrokenItemListener : Listener {
 
     // TODO
     // 禁止破损的物品交互?

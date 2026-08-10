@@ -7,14 +7,14 @@ import top.catnies.firenchantkt.util.ItemUtils.sumAllEnchantmentCount
 import top.catnies.firenchantkt.util.ItemUtils.sumAllEnchantmentLevel
 import kotlin.math.ceil
 
-object FirRepairCostHelper{
+object FirRepairCostHelper {
 
     /**
      * 获取一件装备修复所需的时间;
      */
     fun getRepairTimeCost(player: Player, item: ItemStack): Long {
         val magnification = getPlayerMagnification(player)
-        val config = RepairTableConfig.Companion.instance
+        val config = RepairTableConfig.instance
 
         val baseCost = when (config.REPAIR_TIMERULE_RULE) {
             "static" -> config.REPAIR_TIMERULE_STATIC_TIME
@@ -42,7 +42,7 @@ object FirRepairCostHelper{
      * 获取玩家修复装备时的折扣力度
      */
     fun getPlayerMagnification(player: Player): Double {
-        RepairTableConfig.Companion.instance.REPAIR_MAGNIFICATION_RULE.forEach {
+        RepairTableConfig.instance.REPAIR_MAGNIFICATION_RULE.forEach {
             if (player.hasPermission(it.key)) {
                 return it.value
             }
@@ -55,7 +55,7 @@ object FirRepairCostHelper{
      * 计算玩家的修复队列最大长度
      */
     fun getRepairArraySize(player: Player): Int {
-        val config = RepairTableConfig.Companion.instance
+        val config = RepairTableConfig.instance
         config.MENU_OUTPUT_ARRAY_SIZE_RULE.entries.find { player.hasPermission(it.key) }?.let { return it.value }
         return config.MENU_OUTPUT_ARRAY_SIZE
     }
