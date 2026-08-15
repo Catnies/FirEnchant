@@ -2,7 +2,7 @@
 java = "25"
 
 pluginyml = "0.9.0"
-plugin-version = "3.2.3"
+plugin-version = "3.2.4"
 # Plugins
 kotlin = "2.3.0"
 shadow = "9.0.0-beta6"
@@ -23,7 +23,7 @@ hikaricp = "6.1.0"
 # Library
 rtag = "1.5.16"
 invui = "1.49"
-invui2 = "2.1.0"
+invui2 = "2.3.0"
 
 cc-scheduler = "2.0.4"
 nyana-reflection = "1.0.2"
@@ -33,10 +33,10 @@ nexo = "1.1.0"
 oraxen = "1.181.0"
 mythicmobs = "5.6.1"
 itemsadder = "4.0.10"
-craftengine = "26.5.1"
+craftengine = "26.7.4"
 customcrops = "3.6.29"
 customfishing = "2.3.7"
-placeholderapi = "2.12.2"
+placeholderapi = "2.12.3"
 
 
 [plugins]

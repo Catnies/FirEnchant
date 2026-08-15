@@ -41,6 +41,9 @@ dependencies {
     add(v26_1Runtime.name, project(path = ":nms:v26_1", configuration = "runtimeElements")) {
         isTransitive = false
     }
+    add(v26_1Runtime.name, project(path = ":nms:v26_2", configuration = "runtimeElements")) {
+        isTransitive = false
+    }
 }
 
 
@@ -118,6 +121,7 @@ tasks {
         dependsOn(":nms:v1_21_R6:reobfJar")
         dependsOn(":nms:v1_21_R7:reobfJar")
         dependsOn(":nms:v26_1:jar")
+        dependsOn(":nms:v26_2:jar")
         from({ v26_1Runtime.map { zipTree(it) } })
         mergeServiceFiles()
 
@@ -153,9 +157,11 @@ tasks {
     }
 }
 
+registerPaperTask("1.21.8","1_21_8", javaVersion = 21)
 registerPaperTask("1.21.10","1_21_10", javaVersion = 21)
 registerPaperTask("1.21.11","1_21_11", javaVersion = 21)
 registerPaperTask("26.1.2","26_1_2", javaVersion = 25)
+registerPaperTask("26.2","26_2", javaVersion = 25)
 
 fun registerPaperTask(
     version: String,
@@ -168,7 +174,7 @@ fun registerPaperTask(
         downloadPlugins {
             hangar("PlaceholderAPI", libs.versions.placeholderapi.get())
             modrinth("CraftEngine", libs.versions.craftengine.get())
-            modrinth("packetevents", "2.12.1+spigot")
+            modrinth("packetevents", "2.13.0+spigot")
         }
         minecraftVersion(version)
         serverJarFile?.let { serverJar(it) }

@@ -15,7 +15,7 @@ import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 
 class RecipeListener : Listener {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         if (event.inventory.viewers.isEmpty()) return
         val player = event.inventory.viewers.first() as? Player ?: return

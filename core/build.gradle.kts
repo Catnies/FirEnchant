@@ -1,21 +1,6 @@
 import net.minecrell.pluginyml.bukkit.BukkitPluginDescription
 import net.minecrell.pluginyml.paper.PaperPluginDescription
 
-//java {
-//    sourceCompatibility = JavaVersion.VERSION_25
-//    targetCompatibility = JavaVersion.VERSION_25
-//    toolchain {
-//        languageVersion = JavaLanguageVersion.of(25)
-//    }
-//}
-//
-//kotlin {
-//    jvmToolchain(25)
-//    compilerOptions {
-//        freeCompilerArgs.add("-Xjvm-default=all")
-//    }
-//}
-
 plugins {
     alias(libs.plugins.pluginyml)
 }

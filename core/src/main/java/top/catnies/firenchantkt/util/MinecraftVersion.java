@@ -16,6 +16,7 @@ public final class MinecraftVersion implements Comparable<MinecraftVersion> {
     public static final MinecraftVersion V26_1 = new MinecraftVersion("26.1");
     public static final MinecraftVersion V26_1_1 = new MinecraftVersion("26.1.1");
     public static final MinecraftVersion V26_1_2 = new MinecraftVersion("26.1.2");
+    public static final MinecraftVersion V26_2 = new MinecraftVersion("26.2");
     public static final MinecraftVersion FUTURE = new MinecraftVersion("99.99.99");
 
     private final int version;

@@ -38,6 +38,7 @@ class NMSHandlerHolder {
             "1.21.9", "1.21.10" -> "v1_21_R6"
             "1.21.11" -> "v1_21_R7"
             "26.1", "26.1.1", "26.1.2" -> "v26_1"
+            "26.2" -> "v26_2"
             else -> {
                 Bukkit.getPluginManager().disablePlugin(plugin)
                 throw IllegalArgumentException("Unsupported minecraft version: $minecraftVersion")

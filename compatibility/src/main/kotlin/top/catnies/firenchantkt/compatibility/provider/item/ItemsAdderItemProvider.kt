@@ -18,7 +18,7 @@ class ItemsAdderItemProvider private constructor(
 
     @Nullable
     override fun getIdByItem(item: ItemStack): String? {
-        return CustomStack.byItemStack(item)?.id
+        return CustomStack.byItemStack(item)?.namespacedID
     }
 
     override fun toString(): String {
