@@ -24,7 +24,7 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/gui/${__ID__}"
-    data:
+    client-bound-data:
       item-name: "<!i><#FFFFFF>Empty"
   enchantment:bottom_left:
     material: paper
@@ -36,7 +36,7 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/gui/${__ID__}"
-    data:
+    client-bound-data:
       item-name: "<!i><#FFFFFF>Left"
   enchantment:bottom_right:
     material: paper
@@ -48,7 +48,7 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/gui/${__ID__}"
-    data:
+    client-bound-data:
       item-name: "<!i><#FFFFFF>Right"
 
 

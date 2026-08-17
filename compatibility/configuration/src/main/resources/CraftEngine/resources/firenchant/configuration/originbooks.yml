@@ -26,29 +26,6 @@ categories:
 
 
 ##
-## 语言
-##
-i18n#enchantment#originbooks:
-  zh: 
-    item.enchantment.originbooks.book_of_axe: "斧附魔书"
-    item.enchantment.originbooks.book_of_boots: "靴子附魔书"
-    item.enchantment.originbooks.book_of_bow: "弓附魔书"
-    item.enchantment.originbooks.book_of_chestplate: "胸甲附魔书"
-    item.enchantment.originbooks.book_of_crossbow: "弩附魔书"
-    item.enchantment.originbooks.book_of_elytra: "鞘翅附魔书"
-    item.enchantment.originbooks.book_of_fishing_rod: "鱼竿附魔书"
-    item.enchantment.originbooks.book_of_helmet: "头盔附魔书"
-    item.enchantment.originbooks.book_of_hoe: "锄附魔书"
-    item.enchantment.originbooks.book_of_legging: "护腿附魔书"
-    item.enchantment.originbooks.book_of_mace: "重锤附魔书"
-    item.enchantment.originbooks.book_of_pickaxe: "镐附魔书"
-    item.enchantment.originbooks.book_of_shield: "盾附魔书"
-    item.enchantment.originbooks.book_of_shovel: "铲附魔书"
-    item.enchantment.originbooks.book_of_sword: "剑附魔书"
-    item.enchantment.originbooks.book_of_trident: "三叉戟附魔书"
-
-
-##
 ## 模板
 ##
 templates#enchantment#originbooks:
@@ -62,8 +39,7 @@ templates#enchantment#originbooks:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/originbooks/${__ID__}"
-    data:
-      item-name: "<!i><#FFFFFF><i18n:item.enchantment.originbooks.${__ID__}>"
+    client-bound-data:
       lore:
         - "<!i><#a8a8a8>未注入魔咒的附魔书，可以在附魔台上附魔。"
       components:
@@ -77,33 +53,65 @@ templates#enchantment#originbooks:
 items#enchantment#originbooks:
   enchantment:book_of_axe:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>斧附魔书"
   enchantment:book_of_boots:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>靴子附魔书"
   enchantment:book_of_bow:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>弓附魔书"
   enchantment:book_of_chestplate:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>胸甲附魔书"
   enchantment:book_of_crossbow:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>弩附魔书"
   enchantment:book_of_elytra:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>鞘翅附魔书"
   enchantment:book_of_fishing_rod:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>鱼竿附魔书"
   enchantment:book_of_helmet:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>头盔附魔书"
   enchantment:book_of_hoe:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>锄附魔书"
   enchantment:book_of_leggings:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>护腿附魔书"
   enchantment:book_of_mace:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>重锤附魔书"
   enchantment:book_of_pickaxe:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>镐附魔书"
   enchantment:book_of_shield:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>盾附魔书"
   enchantment:book_of_shovel:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>铲附魔书"
   enchantment:book_of_sword:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>剑附魔书"
   enchantment:book_of_trident:
     template: custom:special/enchantment/originbooks
+    client-bound-data:
+      item-name: "<!i><#FFFFFF>三叉戟附魔书"
