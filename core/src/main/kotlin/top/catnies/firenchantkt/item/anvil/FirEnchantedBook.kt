@@ -168,6 +168,9 @@ class FirEnchantedBook : EnchantedBook {
                 Bukkit.getPluginManager().callEvent(useEvent)
                 if (useEvent.isCancelled) return
 
+                // 扣除经验值
+                if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost
+
                 // 记录数据
                 AnvilEnchantLogTable().apply {
                     this.player = player.uniqueId
@@ -187,7 +190,6 @@ class FirEnchantedBook : EnchantedBook {
                 }
                 // 失败逻辑
                 else {
-                    if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost // 扣除经验值
                     anvilView.setItem(1, ItemStack.empty())
                     anvilView.setItem(2, ItemStack.empty())
 

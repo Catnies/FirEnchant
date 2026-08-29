@@ -222,7 +222,8 @@ val generateVersionProperties by tasks.registering {
         versionProps.setProperty("hikaricp.version", libs.versions.hikaricp.get())
         versionProps.setProperty("rtag.version", libs.versions.rtag.get())
         versionProps.setProperty("invui.version", libs.versions.invui.get())
-        versionProps.setProperty("invui2.version", libs.versions.invui2.get())
+        versionProps.setProperty("invui21.version", libs.versions.invui21.get())
+        versionProps.setProperty("invui23.version", libs.versions.invui23.get())
 
         val outputFile = outputDir.get().asFile.resolve("dependency-version.properties")
         outputFile.parentFile.mkdirs()

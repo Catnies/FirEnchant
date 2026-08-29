@@ -2,7 +2,7 @@
 java = "25"
 
 pluginyml = "0.9.0"
-plugin-version = "3.2.4"
+plugin-version = "3.2.6"
 # Plugins
 kotlin = "2.3.0"
 shadow = "9.0.0-beta6"
@@ -23,7 +23,8 @@ hikaricp = "6.1.0"
 # Library
 rtag = "1.5.16"
 invui = "1.49"
-invui2 = "2.3.0"
+invui21 = "2.1.1"
+invui23 = "2.3.1"
 
 cc-scheduler = "2.0.4"
 nyana-reflection = "1.0.2"
@@ -79,8 +80,11 @@ invui-access-r24 = { module = "xyz.xenondevs.invui:inventory-access-r24",  versi
 invui-access-r25 = { module = "xyz.xenondevs.invui:inventory-access-r25",  version.ref = "invui" }
 invui-access-r26 = { module = "xyz.xenondevs.invui:inventory-access-r26",  version.ref = "invui" }
 
-invui2-base = { module = "xyz.xenondevs.invui:invui",  version.ref = "invui2" }
-invui2-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui2" }
+invui2-base = { module = "xyz.xenondevs.invui:invui",  version.ref = "invui21" }
+invui2-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui21" }
+
+invui23-base = { module = "xyz.xenondevs.invui:invui",  version.ref = "invui23" }
+invui23-kotlin = { module = "xyz.xenondevs.invui:invui-kotlin",  version.ref = "invui23" }
 
 # Compatibility
 nexo = { module = "com.nexomc:nexo", version.ref = "nexo" }

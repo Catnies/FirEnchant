@@ -34,7 +34,8 @@ public class FirEnchantPluginLoader implements PluginLoader {
     // Library
     private static String RTAG;
     private static String INVUI;
-    private static String INVUI2;
+    private static String INVUI21;
+    private static String INVUI23;
 
 
     @Override
@@ -58,9 +59,12 @@ public class FirEnchantPluginLoader implements PluginLoader {
         resolver.addDependency(new Dependency(new DefaultArtifact("com.saicone.rtag:rtag-item:" + RTAG), null));
 
         // InvUI
-        if (VersionHelper.isOrAbove26_1()) {
-            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI2), null));
-            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI2), null));
+        if (VersionHelper.isOrAbove26_2()) {
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI23), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI23), null));
+        } else if (VersionHelper.isOrAbove26_1()) {
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui:" + INVUI21), null));
+            resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI21), null));
         } else {
             resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-core:" + INVUI), null));
             resolver.addDependency(new Dependency(new DefaultArtifact("xyz.xenondevs.invui:invui-kotlin:" + INVUI), null));
@@ -105,7 +109,8 @@ public class FirEnchantPluginLoader implements PluginLoader {
                     // Library
                     RTAG = versionProperties.getProperty("rtag.version");
                     INVUI = versionProperties.getProperty("invui.version");
-                    INVUI2 = versionProperties.getProperty("invui2.version");
+                    INVUI21 = versionProperties.getProperty("invui21.version");
+                    INVUI23 = versionProperties.getProperty("invui23.version");
                 }
             }
         }
