@@ -44,3 +44,6 @@ bin/
 
 /CLAUDE.md
 /runPaper/
+
+/buildSrc/plugin/*.jar
+/buildSrc/.kotlin/

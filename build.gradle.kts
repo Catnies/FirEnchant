@@ -3,14 +3,13 @@ import org.gradle.api.attributes.Category
 import org.gradle.api.attributes.LibraryElements
 import org.gradle.api.attributes.Usage
 import org.gradle.api.attributes.java.TargetJvmVersion
-import xyz.jpenilla.runpaper.task.RunServer
 import java.util.*
 
 // 插件
 plugins {
     alias(libs.plugins.kotlin.jvm) // Kotlin
     alias(libs.plugins.shadow) // Shadow
-    alias(libs.plugins.runpaper) // Run Paper
+    id("firenchant.run-servers")
     alias(libs.plugins.paperweight) apply false // Paper Weight
 }
 
@@ -149,59 +148,6 @@ tasks {
         from(generateVersionProperties.map { it.outputs })
     }
 
-    // 调试测试
-    runServer {
-        dependsOn(shadowJar)
-        dependsOn(jar)
-        minecraftVersion("26.1.2")
-    }
-}
-
-registerPaperTask("1.21.8","1_21_8", javaVersion = 21)
-registerPaperTask("1.21.10","1_21_10", javaVersion = 21)
-registerPaperTask("1.21.11","1_21_11", javaVersion = 21)
-registerPaperTask("26.1.2","26_1_2", javaVersion = 25)
-registerPaperTask("26.2","26_2", javaVersion = 25)
-
-fun registerPaperTask(
-    version: String,
-    taskName: String = version,
-    javaVersion: Int,
-    serverJarFile: File? = null
-) {
-    fun RunServer.applyCommonConfig() {
-        description = "run dev server"
-        downloadPlugins {
-            hangar("PlaceholderAPI", libs.versions.placeholderapi.get())
-            modrinth("CraftEngine", libs.versions.craftengine.get())
-            modrinth("packetevents", "2.13.0+spigot")
-        }
-        minecraftVersion(version)
-        serverJarFile?.let { serverJar(it) }
-        pluginJars.from(tasks.shadowJar.flatMap { it.archiveFile })
-        javaLauncher = javaToolchains.launcherFor {
-            vendor = JvmVendorSpec.JETBRAINS
-            languageVersion = JavaLanguageVersion.of(javaVersion)
-        }
-        systemProperties["com.mojang.eula.agree"] = true
-        jvmArgs(
-//            "-Dnet.kyori.adventure.text.warnWhenLegacyFormattingDetected=false", // 关闭旧版格式的警告
-            "-Dorg.bukkit.plugin.java.LibraryLoader.centralURL=https://maven.aliyun.com/repository/central",
-            "-Dsun.stdout.encoding=UTF-8",
-            "-Dsun.stderr.encoding=UTF-8",
-            "-Ddisable.watchdog=true",
-            "-Xlog:redefine+class*=info",
-            "-XX:+AllowEnhancedClassRedefinition"
-        )
-
-    }
-
-    tasks.register<RunServer>(taskName) {
-        description = "run dev server"
-        group = "run dev server"
-        runDirectory = rootProject.layout.projectDirectory.dir("runPaper/$taskName")
-        applyCommonConfig()
-    }
 }
 
 // 生成版本信息资源文件
