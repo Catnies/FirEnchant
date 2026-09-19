@@ -57,13 +57,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/rune_power"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>升级符文（30%）"
       lore:
         - "<!i><#a7a7a7>成功率: <red>30%"
         - "<!i><#a3aab6>可以在铁砧中使用，将会随机给物品"
         - "<!i><#a3aab6>上的一个可升级魔咒进行升级。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant::PowerChance: 30
@@ -77,13 +76,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/rune_power"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>升级符文（50%）"
       lore:
         - "<!i><#a7a7a7>成功率: <red>50%"
         - "<!i><#a3aab6>可以在铁砧中使用，将会随机给物品"
         - "<!i><#a3aab6>上的一个可升级魔咒进行升级。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant::PowerChance: 50
@@ -97,13 +95,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/rune_power"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>升级符文（75%）"
       lore:
         - "<!i><#a7a7a7>成功率: <red>75%"
         - "<!i><#a3aab6>可以在铁砧中使用，将会随机给物品"
         - "<!i><#a3aab6>上的一个可升级魔咒进行升级。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant::PowerChance: 75
@@ -117,13 +114,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/rune_power"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>升级符文（100%）"
       lore:
         - "<!i><#a7a7a7>成功率: <red>100%"
         - "<!i><#a3aab6>可以在铁砧中使用，将会随机给物品"
         - "<!i><#a3aab6>上的一个可升级魔咒进行升级。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant::PowerChance: 100
@@ -132,7 +128,7 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>保护符文"
       lore:
         - "<!i><#a3aab6>可以在铁砧中使用，将会给物品增加"
@@ -143,7 +139,7 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>拓展符文"
       lore:
         - "<!i><#a3aab6>可以在铁砧中使用，将会给物品"
@@ -153,7 +149,7 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>魔咒之尘"
       lore:
         - "<!i><#a3aab6>可以在铁砧中使用，将会给附魔书"
@@ -163,7 +159,7 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>重生之书"
       lore:
         - "<!i><#a3aab6>可以在附魔台中使用，将刷新"
@@ -173,7 +169,7 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>反转之书"
       lore:
         - "<!i><#a3aab6>可以在附魔台中使用，将获得上一次"
@@ -188,13 +184,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/repair_material"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>修复材料（50%）"
       lore:
         - "<!i><#a7a7a7>减少时间: <red>50%"
         - "<!i><#a3aab6>可以在修复桌中使用，光标持材料点击正在"
         - "<!i><#a3aab6>修复的物品，减少当前装备的修复时间。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant:
@@ -210,13 +205,12 @@ items#misc#materials:
         parent: "minecraft:item/generated"
         textures:
           "layer0": "minecraft:firenchant/props/repair_material"
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>修复材料（600秒）"
       lore:
         - "<!i><#a7a7a7>减少时间: <red>600秒"
         - "<!i><#a3aab6>可以在修复桌中使用，光标持材料点击正在"
         - "<!i><#a3aab6>修复的物品，减少当前装备的修复时间。"
-    data:
       components:
         minecraft:custom_data:
           FirEnchant::RepairType: "static"
@@ -231,5 +225,5 @@ items#misc#materials:
     arguments:
       path: minecraft:firenchant/props/${__ID__}
     material: paper
-    client-bound-data:
+    data:
       item-name: "<!i><yellow>薛定谔的附魔书(技术性材质)"

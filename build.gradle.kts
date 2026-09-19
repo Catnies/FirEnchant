@@ -72,11 +72,11 @@ allprojects {
         maven("https://jitpack.io") // RTag
         maven("https://repo.xenondevs.xyz/releases") // InvUI
         maven("https://repo.papermc.io/repository/maven-public/") // Paper
+        maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://maven.devs.beer/") // ItemsAdder
         maven("https://repo.nexomc.com/releases") // Nexo
         maven("https://repo.oraxen.com/releases") // Oraxen
         maven("https://mvn.lumine.io/repository/maven-public/") // MythicMobs
-        maven("https://repo.momirealms.net/releases/") // CustomCrops, CustomFishing, CraftEngine
         maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
         maven("https://repo-eo.catnies.top/releases") // catnies
         maven("https://repo.nightexpressdev.com/releases") // CoinsEngine

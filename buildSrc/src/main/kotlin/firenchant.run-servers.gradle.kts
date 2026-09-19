@@ -40,7 +40,6 @@ fun RunServer.configureServer(platform: String, version: String) {
     })
     downloadPlugins {
         hangar("PlaceholderAPI", versions.findVersion("placeholderapi").get().requiredVersion)
-        modrinth("CraftEngine", versions.findVersion("craftengine").get().requiredVersion)
         modrinth("packetevents", "2.13.0+spigot")
     }
     systemProperties["com.mojang.eula.agree"] = true

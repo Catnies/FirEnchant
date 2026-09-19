@@ -10,6 +10,7 @@ import top.catnies.firenchantkt.engine.ConfigActionTemplate
 import top.catnies.firenchantkt.engine.ConfigConditionTemplate
 import top.catnies.firenchantkt.gui.IMenuEnchantLineItem
 import top.catnies.firenchantkt.invui_v2.FirEnchantingTableMenu
+import top.catnies.firenchantkt.util.ItemUtils.nullOrAir
 import top.catnies.firenchantkt.util.TaskUtils
 import top.catnies.firenchantkt.util.resource_wrapper.ItemRender
 import xyz.xenondevs.invui.Click
@@ -65,11 +66,8 @@ class MenuEnchantLineItem(
         player: Player,
         click: Click
     ) {
-
         // 光标持有物品点击则不处理
-        // TODO: 这个函数没有了, 为啥把这个改了,不知道有什么可以替代
-//        if (!event.cursor.nullOrAir()) return
-
+        if (!player.itemOnCursor.nullOrAir()) return
 
         // 如果没有记录 或 可点亮栏位少于索引, 则代表条件现在已经不符合要求了
         if (!canEnchant || tableMenu.refreshCanLight() < lineIndex) {
