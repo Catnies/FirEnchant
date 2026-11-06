@@ -149,8 +149,10 @@ class FirEnchantedBook : EnchantedBook {
                 Bukkit.getPluginManager().callEvent(mergeEvent)
                 if (mergeEvent.isCancelled) return
 
-                // 直接设置物品到光标
                 val player = context.viewer
+                if (player.gameMode != GameMode.CREATIVE) player.level -= anvilView.repairCost
+
+                // 直接设置物品到光标
                 player.setItemOnCursor(context.result)
                 event.inventory.clear() // fixed: 将 RecipeListener 的 event.inventory.clear() 补偿到此处
                 player.playSound(player.location, "block.anvil.use", 1f, 1f)
